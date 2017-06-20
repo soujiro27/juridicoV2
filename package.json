@@ -1,0 +1,43 @@
+{
+  "name": "juridico",
+  "version": "1.5.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "gulp",
+    "start": "gulp watch"
+  },
+  "author": "JC",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-polyfill": "^6.23.0",
+    "babel-preset-env": "^1.4.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babelify": "^7.3.0",
+    "browserify": "^14.3.0",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
+    "gulp-rename": "^1.2.2",
+    "gulp-stylus": "^2.6.0",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.9.0"
+  },
+  "dependencies": {
+    "babelify-es6-polyfill": "^1.0.4",
+    "empty-element": "^1.0.0",
+    "empty-it": "^1.0.0",
+    "jquery": "^3.2.1",
+    "jquery-confirm": "^3.2.3",
+    "jquery-ui-browserify": "^1.11.0-pre-seelio",
+    "notie": "^4.3.1",
+    "noty": "^2.4.1",
+    "page": "^1.7.1",
+    "validator": "^7.0.0",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.9.0",
+    "yo-yo": "^1.4.0",
+    "yo-yoify-standalone": "^0.1.0"
+  }
+}
