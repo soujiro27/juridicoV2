@@ -1,28 +1,7 @@
 var yo=require('yo-yo');
 module.exports=function(tipoDocto){
 
-console.log(tipoDocto)
 
-
-
-
-
-/*
-
-function creaOption(combo){
-    let opt='';
-    combo.map(function(json){
-        if(data.idTipoDocto==json.idTipoDocto){
-            opt+=`<option value="${json.idTipoDocto}" selected >${json.nombre}</option>`     
-        }
-        else{
-            opt+=`<option value="${json.idTipoDocto}" >${json.nombre}</option>`
-        }
-
-    }) 
-    return opt
-}
-*/
 
 return yo`<form method="POST" class="form-inline" id="Volantes">
 
@@ -62,6 +41,17 @@ return yo`<form method="POST" class="form-inline" id="Volantes">
     </select>
 </div>
 
+<div class="form-group extemporaneo">
+    <label for="extemporaneo">Extemporáneo</label>
+    <select name="extemporaneo" id="extemporaneo" required="required" class="form-control">
+        <option value=""> Seleccione una Opción </option>
+        <option value="SI"> SI</option>
+        <option value="NO"> NO </option>
+    </select>
+</div>
+
+
+
 </div>
 
 <div class="datosAuditoria">
@@ -90,10 +80,15 @@ return yo`<form method="POST" class="form-inline" id="Volantes">
 
 
 <div class="contentVolante">
-
+    <div class="bloque1">
 <div class="form-group Folio">
     <label for="Folio">Folio</label>
-    <input type="number"  id="Folio" name="folio" required class="form-control" />
+    <input type="number"  id="Folio" name="folio" required class="form-control"  />
+</div>
+
+<div class="form-group subFolio">
+    <label for="subFolio">subFolio</label>
+    <input type="number"  id="subFolio" name="subFolio" required class="form-control"  value="0" />
 </div>
 
 
@@ -101,6 +96,10 @@ return yo`<form method="POST" class="form-inline" id="Volantes">
     <label for="numDocumento">Numero de Documento</label>
     <input type="text" id="numDocumento" name="numDocumento" required class="form-control">
 </div>
+</div>
+
+<div class="bloque2">
+
 
 <div class="form-group fDocumento">
     <label for="fDocumento">Fecha de Documento</label>
@@ -122,26 +121,34 @@ return yo`<form method="POST" class="form-inline" id="Volantes">
     <input type="time" id="hRecepcion" name="hRecepcion" required class="form-control " pattern="([0-1]{1}[0-9]{1}|20|21|22|23):[0-5]{1}[0-9]{1}" placeholder="00:00" title="Formato de 24 horas 00:00">
 </div>
 
+</div>
+
+<div class="bloque3">
 
 <div class="form-group idRemitente">
     <label for="idRemitente">Remitente</label>
      <input type="text" name="idRemitente" id="idRemitente"  readonly class="form-control" />
-  
-
-   
 </div>
 
 
 <div class="form-group Destinatario">
     <label for="Destinatario">Destinatario</label>
     <input type="text" id="Destinatario"  name="destinatario" class="form-control" placeholder="Destinatario" pattern="[a-zA-Z._- ]" required title="Unicamente letras" value="DR. IVÁN DE JESÚS OLMOS CANSINO" readonly />
+</div>
 
 </div>
+
+<div class="bloque4">
 
 <div class="form-group Asunto">
     <label for="Asunto">Asunto</label>
     <textarea class="form-control" rows="3" name="asunto" required placeholder="Asunto"></textarea>
 </div>
+
+</div>
+
+
+<div class="bloque5">
 
 <div class="form-group idCaracter">
     <label for="idCaracter">Caracter</label>
@@ -163,14 +170,12 @@ return yo`<form method="POST" class="form-inline" id="Volantes">
     </select>
 </div>
 
+</div>
 
-
+</div>
 <div class="form-group send">
     <input type="submit" class="btn btn-primary btn-sm" value="Guardar">
     <button class="btn btn-default btn-sm" id="cancelar">Cancelar</button>
-</div>
-
-
 </div>
 </form>`;
 

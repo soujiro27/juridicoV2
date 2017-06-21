@@ -43,14 +43,17 @@ page('/juridico/Volantes/Add',function(ctx,next) {
     let activos=funcion.createObject('estatus','ACTIVO')
     let tipoTurnado=funcion.createObject('idAreaSuperior','DGAJ')
 
+    let folio= insert.getLastFolio('Volantes','idVolante')
     let tipoDocto=funcion.getDatos('tiposdocumentos',tipodoctoObject)
     let caracter=funcion.getDatos('catCaracteres',activos)
     let comboAudi=funcion.getComboAuditorias()
     let turnado=funcion.getDatos('areas',tipoTurnado)
     let accion=funcion.getDatos('catAcciones',activos)
-    Promise.all([tipoDocto,comboAudi,caracter,accion,turnado])
+    Promise.all([tipoDocto,comboAudi,caracter,accion,turnado,folio])
     .then(values=>{
       insert.renderForm(volantes(values[0]))
+      $('div.contentVolante').hide()
+      $('div.datosAuditoria').hide()
       funcion.loadDateInput()
       insert.onchangeTipoDocto()
       let auditorias=funcion.createComboAuditorias(values[1])
@@ -62,7 +65,7 @@ page('/juridico/Volantes/Add',function(ctx,next) {
       $('select#idCaracter').html(caracter)
       $('select#idTurnado').html(turnado)
       $('select#idAccion').html(accion)
-
+      $('input#Folio').attr('title','El ultimo Folio registrado es el: '+values[5][0]['folio'])
       insert.onchangeAuditoria()
       insert.getData()
 

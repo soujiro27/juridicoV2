@@ -22,7 +22,7 @@ class InsertController{
 		$insert=new Insert();
 		$err=new Errores();
 		$ruta= new Rutas;
-		$funcionUpdateController= new UpdateController();
+		
 		if($modulo!='Volantes'){
 			$modulo=$ruta->catalogos($modulo);
 			$duplicado=$getData->getDuplicado($modulo,$datos);
@@ -35,9 +35,25 @@ class InsertController{
 				echo json_encode($salida);
 			}
 		}elseif ($modulo=='Volantes'){
-			$funcionUpdateController->getRegister();
-			$insert->insertaVolantes($modulo,$datos);
+			$this->checaFolio($modulo,$datos);
+			
 		}
+	}
+
+
+	public function checaFolio($modulo,$datos){
+		$folio = array('folio' => $datos['folio'] , 'subFolio' => $datos['subFolio']);
+		$funcionUpdateController= new UpdateController();
+		$res=$funcionUpdateController->getRegister($modulo,$folio);
+		if(empty($res)){
+			$insert=new Insert();
+			$insert->insertaVolantes($modulo,$datos);
+		}else{
+			$salida['insert']='El Numero de Folio ya se encuentra asignado al Volante: '. $res[0]['idVolante'];
+			echo json_encode($salida);
+		}
+
+
 	}
 
 

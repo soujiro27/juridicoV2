@@ -5,10 +5,11 @@ private $caracteres='select idCaracter,siglas, nombre,estatus from sia_CatCaract
 private $acciones='select idAccion,nombre,estatus from sia_catAcciones';
 private $SubTiposDocumentos='select idSubTipoDocumento, idTipoDocto, nombre,estatus from sia_catSubTiposDocumentos';
 
-private $Volantes="select v.idVolante, v.folio, v.numDocumento, v.idRemitente as Remitente, v.idTurnado as Turnado, v.fRecepcion, v.estatus,
+private $Volantes="select v.idVolante, v.folio, v.subfolio, v.numDocumento, v.idRemitente as Remitente, v.idTurnado as Turnado, v.fRecepcion,  v.extemporaneo, 
 a.clave as auditoria,
 sub.nombre as documento,
-t.estadoProceso as estado
+t.estadoProceso as estado,
+v.estatus
 from sia_VolantesDocumentos vd
 inner join sia_Volantes v on vd.idVolante=v.idVolante
 inner join sia_turnosJuridico t on v.idVolante=t.idVolante

@@ -7,6 +7,7 @@ const table=require('./../table')
 const Caracteres=require('./../templates/forms/update/Caracteres.js');
 const Acciones=require('./../templates/forms/update/Acciones.js');
 const SubTiposDocumentos=require('./../templates/forms/update/SubTiposDocumentos.js');
+const Volantes=require('./../templates/forms/update/Volantes.js');
 
 let tabla=new table()
 let confirms=new query()
@@ -18,6 +19,8 @@ module.exports=class Update extends link{
 		if(ruta=='Caracteres'){return Caracteres}
 		if(ruta=='Acciones'){return Acciones}
 		if(ruta=='SubTiposDocumentos'){return SubTiposDocumentos}
+		if(ruta=='Volantes'){return Volantes}
+
 	}
 
 

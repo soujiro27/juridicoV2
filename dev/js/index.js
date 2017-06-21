@@ -11,4 +11,6 @@ tabla.drawTable(ruta);
 require('./rutas/insert');
 require('./rutas/update');
 
+
+
 page();

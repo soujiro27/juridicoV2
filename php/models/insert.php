@@ -41,7 +41,7 @@ class Insert{
 		$valores=$procesa->obtieneValoresQuery($datosVolante);
 		$pdo=$procesa->obtieneArregloPdo($datosVolante);
 		$sql='INSERT INTO sia_'.$modulo.'('.$campos.'usrAlta, fAlta) VALUES('.$valores.':usrAlta, getdate())';
-
+		
 		$dbQuery = $db->prepare($sql);
 		$pdo[':usrAlta']=$_SESSION ["idUsuario"];
 		$dbQuery->execute($pdo);

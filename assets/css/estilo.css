@@ -2935,6 +2935,13 @@ div.widget-head a {
   text-shadow: 0px 0px 0px #000 !important;
   color: #fff !important;
 }
+div.container {
+  width: 95% !important;
+}
+div.jconfirm-box-container {
+  width: 90% !important;
+  margin-left: 5% !important;
+}
 table.principal th.idCaracter,
 table.principal th.idAccion {
   display: none;
@@ -2973,6 +2980,19 @@ form#Caracteres div label,
 form#Acciones div label,
 form#Volantes div label {
   display: block;
+}
+form#Caracteres div.Asunto,
+form#Acciones div.Asunto,
+form#Volantes div.Asunto {
+  width: 90%;
+}
+form#Caracteres div.Asunto textarea,
+form#Acciones div.Asunto textarea,
+form#Volantes div.Asunto textarea {
+  width: 68%;
+}
+div.datosAuditoria {
+  background-color: #efefef;
 }
 @-moz-keyframes load4 {
   0%, 100% {

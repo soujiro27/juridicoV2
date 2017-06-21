@@ -38,3 +38,14 @@ page('/juridico/SubTiposDocumentos/update/:campo/:id',function(ctx,next){
 
 	})
 })
+
+
+
+page('/juridico/Volantes/update/:campo/:id',function(ctx,next){
+	let data=update.creaObjeto(ctx)
+	funcion.getDatos(ruta,data).
+	then(response=>{
+		let template=update.separaTemplates(ruta)
+		update.formUpdate(template(response[0]),ctx.params.campo,ctx.params.id)
+	})
+})

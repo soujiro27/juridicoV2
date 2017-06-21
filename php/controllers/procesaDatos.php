@@ -72,7 +72,7 @@ class procesaDatosQuery{
 
 
 	public function separaDatosVolante($data){
-	$comprobar=['idTipoDocto','numDocumento','folio','fDocumento','idRemitente','destinatario','idCaracter','idTurnado','idAccion','anexos','hRecepcion','fRecepcion','asunto'];
+	$comprobar=['idTipoDocto','numDocumento','folio','fDocumento','idRemitente','destinatario','idCaracter','idTurnado','idAccion','anexos','hRecepcion','fRecepcion','asunto','extemporaneo','subFolio'];
 	$cont=count($comprobar);
 	foreach ($data as $key => $value) {
 		for ($i=0; $i <$cont ; $i++) {
@@ -81,6 +81,7 @@ class procesaDatosQuery{
 			}
 		}
 	}
+	
 	return $datosComprobacion;
 	}
 

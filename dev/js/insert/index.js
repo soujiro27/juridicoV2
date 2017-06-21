@@ -103,10 +103,25 @@ module.exports=class Insert extends link{
 				funcion.separaDatosAuditoria(response[0].objeto,'idObjeto')
 				$('ul#tipoAuditoria').html('<li>'+response[0].tipo+'</li>')
 				$('input#idRemitente').val(response[0].idArea)
+				$('div.datosAuditoria').slideDown('slow')
+				$('div.contentVolante').slideDown('slow')
 			})
 		});
 	}
 
-	
+	getLastFolio(modulo,campo)
+	{
+		let get=new Promise((resolve,reject)=>{
+			$.get({
+				url:'/folio/'+modulo+'/'+campo,
+				success:function(data){
+					let json=JSON.parse(data);
+					resolve(json)
+
+				}
+			})
+		})
+		return get
+	}
 
 }

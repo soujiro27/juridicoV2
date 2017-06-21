@@ -42,6 +42,7 @@ class Get{
 			echo json_encode($datos);
 	}
 
+		//necesaria
 	public function getDuplicado($tabla,$datos){
 			$procesa=new procesaDatosQuery();
 			$sql=$procesa->obtieneCamposWhere($datos);
@@ -68,11 +69,12 @@ class Get{
 		$sql="if (select MAX(".$campo.") from sia_".$tabla.")<1
 			select 1 as folio
 			ELSE
-		select MAX(".$campo.")+1 as folio from sia_".$tabla;
+		select MAX(".$campo.") as folio from sia_".$tabla;
 		$datos=$this->consultaRetorno($sql);
 		echo json_encode($datos);
 	}
 
+		//necesaria
 	public function getComboAuditorias()
 	{
 		$db=$this->conecta();
@@ -84,7 +86,7 @@ class Get{
 		echo json_encode($datos);
 	}
 
-
+	//necesaria
 	public function getAuditoriaById($id){
 		$cuenta=$_SESSION["idCuentaActual"];
 		$db=$this->conecta();
@@ -101,31 +103,7 @@ class Get{
 	}
 
 
-	public function getLastFolioVolantes(){
-		$db=$this->conecta();
-		$sql="select MAX(idVolante) as folio from sia_Volantes";
-		$datos=$this->consultaRetorno($sql);
-		return $datos;
-	}
-
-
-
-	public function getTablaVolantes(){
-		$db=$this->conecta();
-		$sql="select v.idVolante, v.folio, v.numDocumento, v.idRemitente, v.idTurnado, v.fRecepcion, v.estatus,
-a.clave,
-sub.nombre,
-t.estadoProceso
-from sia_VolantesDocumentos vd
-inner join sia_Volantes v on vd.idVolante=v.idVolante
-inner join sia_turnosJuridico t on v.idVolante=t.idVolante
-inner join sia_auditorias a on vd.cveAuditoria=a.idAuditoria
-inner join sia_catSubTiposDocumentos sub on vd.idSubTipoDocumento=sub.idSubTipoDocumento order by idVolante desc";
-$datos=$this->consultaRetorno($sql);
-echo json_encode($datos);
-	}
-
-
+	//necesaria
 	public function getTablaObservaciones($modulo){
 		$db=$this->conecta();
 		$sql="select v.idVolante,v.numDocumento, v.fRecepcion, v.idRemitente, v.asunto, v.estatus, t.estadoProceso from sia_Volantes v
@@ -139,6 +117,14 @@ $datos=$this->consultaRetorno($sql);
 echo json_encode($datos);
 	}
 
+
+
+	public function getLastFolioVolantes(){
+		$db=$this->conecta();
+		$sql="select MAX(idVolante) as folio from sia_Volantes";
+		$datos=$this->consultaRetorno($sql);
+		return $datos;
+	}
 
 
 }
