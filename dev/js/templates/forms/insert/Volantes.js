@@ -1,6 +1,5 @@
 var yo=require('yo-yo');
-module.exports=function(tipoDocto){
-
+module.exports=function(tipoDocto,auditorias,caracter,accion,turnado,lastFolio){
 
 
 return yo`<form method="POST" class="form-inline" id="Volantes">
@@ -38,6 +37,10 @@ return yo`<form method="POST" class="form-inline" id="Volantes">
 <div class="form-group cveAuditoria">
     <label for="cveAuditoria">Clave de Auditoria</label>
     <select name="cveAuditoria" id="cveAuditoria" required="required" class="form-control">
+        <option value=""> Seleccione una Opción </option>
+        ${ auditorias.map(function(json){
+            return yo`<option value="${json.idAuditoria}" >${json.clave} </option>`
+        }) }
     </select>
 </div>
 
@@ -83,7 +86,7 @@ return yo`<form method="POST" class="form-inline" id="Volantes">
     <div class="bloque1">
 <div class="form-group Folio">
     <label for="Folio">Folio</label>
-    <input type="number"  id="Folio" name="folio" required class="form-control"  />
+    <input type="number"  id="Folio" name="folio" required class="form-control"  title="El ultimo folio registrado es el: ${lastFolio[0].folio}" />
 </div>
 
 <div class="form-group subFolio">
@@ -153,6 +156,10 @@ return yo`<form method="POST" class="form-inline" id="Volantes">
 <div class="form-group idCaracter">
     <label for="idCaracter">Caracter</label>
     <select name="idCaracter" id="idCaracter" required="required" class="form-control" >
+     <option value=""> Seleccione una Opción </option>
+        ${ caracter.map(function(json){
+            return yo`<option value="${json.idCaracter}" >${json.nombre} </option>`
+        }) }
    </select>
    
     
@@ -161,12 +168,20 @@ return yo`<form method="POST" class="form-inline" id="Volantes">
 <div class="form-group idTurnado">
     <label for="idTurnado">Turnado a:</label>
      <select name="idTurnado" id="idTurnado" required="required" class="form-control" >
+      <option value=""> Seleccione una Opción </option>
+      ${ turnado.map(function(json){
+            return yo`<option value="${json.idArea}" >${json.nombre} </option>`
+        }) }
     </select>
 </div>
 
 <div class="form-group idAccion">
     <label for="idAccion">Instruccion</label>
      <select name="idAccion" id="idAccion" required="required" class="form-control" >
+      <option value=""> Seleccione una Opción </option>
+      ${ accion.map(function(json){
+            return yo`<option value="${json.idAccion}" >${json.nombre} </option>`
+        }) }
     </select>
 </div>
 

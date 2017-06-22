@@ -43,9 +43,14 @@ page('/juridico/SubTiposDocumentos/update/:campo/:id',function(ctx,next){
 
 page('/juridico/Volantes/update/:campo/:id',function(ctx,next){
 	let data=update.creaObjeto(ctx)
-	funcion.getDatos(ruta,data).
-	then(response=>{
+	let datosVolante=funcion.getDatos(ruta,data)
+	let caracter=funcion.getDatos('catCaracteres',{estatus:'ACTIVO'})
+	let turnado=funcion.getDatos('areas',{idAreaSuperior:'DGAJ'})
+	let accion=funcion.getDatos('catAcciones',{estatus:'ACTIVO'})
+	Promise.all([datosVolante,caracter,turnado,accion])
+	.then(values=>{
+
 		let template=update.separaTemplates(ruta)
-		update.formUpdate(template(response[0]),ctx.params.campo,ctx.params.id)
+		update.formUpdate(template(values[0],values[1],values[2],values[3]),ctx.params.campo,ctx.params.id)
 	})
 })

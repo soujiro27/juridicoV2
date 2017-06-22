@@ -1,12 +1,73 @@
 var yo=require('yo-yo');
 
-module.exports=function(data){
+module.exports=function(data,caracter,turnado,accion){
+
+console.log(caracter)
+data=data[0]
 
 var opuesto;
 data.estatus=='ACTIVO' ? opuesto='INACTIVO':opuesto='ACTIVO';
 
+var extemporaneo;
+data.extemporaneo=='SI' ? extemporaneo='NO':extemporaneo='SI'
+
 var hRecepcion=data.hRecepcion;
 hRecepcion=hRecepcion.substring(5,0);
+
+
+function creaOptionCaracter(combo){
+    let opt='';
+    combo.map(function(json){
+        if(data.idCaracter==json.idCaracter){
+            opt+=`<option value="${json.idCaracter}" selected >${json.nombre}</option>`     
+        }
+        else{
+            opt+=`<option value="${json.idCaracter}" >${json.nombre}</option>`
+        }
+
+    }) 
+    return opt
+}
+
+
+function creaOptionTurnado(combo){
+    let opt='';
+    combo.map(function(json){
+        if(data.idTurnado==json.idArea){
+            opt+=`<option value="${json.idArea}" selected >${json.nombre}</option>`     
+        }
+        else{
+            opt+=`<option value="${json.idArea}" >${json.nombre}</option>`
+        }
+
+    }) 
+    return opt
+}
+
+
+function creaOptionAccion(combo){
+    let opt='';
+    combo.map(function(json){
+        if(data.idAccion==json.idAccion){
+            opt+=`<option value="${json.idAccion}" selected >${json.nombre}</option>`     
+        }
+        else{
+            opt+=`<option value="${json.idAccion}" >${json.nombre}</option>`
+        }
+
+    }) 
+    return opt
+}
+
+
+let optCaracter=$.parseHTML(creaOptionCaracter(caracter))
+let optTurnado=$.parseHTML(creaOptionTurnado(turnado))
+let optAccion=$.parseHTML(creaOptionAccion(accion))
+
+
+
+
+
 
 
 
@@ -88,21 +149,21 @@ return yo`<form method="POST" class="form-inline" id="Volantes">
 <div class="form-group idCaracter">
     <label for="idCaracter">Caracter</label>
     <select class="form-control" name="idCaracter" id="idCaracter" required>
-    
+    ${optCaracter}
     </select>
 </div>
 
 <div class="form-group idTurnado">
     <label for="idTurnado">Turnado a:</label>
     <select class="form-control" name="idTurnado" id="idTurnado" required>
-    
+        ${optTurnado}
     </select>
 </div>
 
 <div class="form-group idAccion">
     <label for="idAccion">Instruccion</label>
     <select class="form-control" name="idAccion" id="idAccion" required>
-    
+         ${optAccion}
     </select>
 </div>
 
@@ -111,9 +172,8 @@ return yo`<form method="POST" class="form-inline" id="Volantes">
 <div class="form-group extemporaneo">
     <label for="subDocumento">Extemporaneo</label>
     <select name="extemporaneo" id="extemporaneo" required="required" class="form-control">
-     <option value=""> Seleccione una Opción </option>
-      <option value="SI"> SI</option>
-       <option value="NO"> NO </option>
+     <option value="${data.extemporaneo}">${data.extemporaneo}</option>
+    <option value="${extemporaneo}">${extemporaneo}</option>
     </select>
 </div>
 

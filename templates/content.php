@@ -1,5 +1,14 @@
 <?php
-$usrActual = $_SESSION ["idUsuario"];
+
+function btnAparece($nombre){
+
+	if($nombre!='Confronta'){
+		$btn='<a href="/juridico/'.$nombre.'/Add" class="btn btn-primary btn-sm" data-formload="'.$nombre.'" id=agregar>Agregar '.$nombre.'</a>';
+		return  $btn;
+	}
+}
+
+
 $main='
 <div class="row">
 	<div class="col-md-9 col-md-offset-2">
@@ -7,7 +16,7 @@ $main='
 			<div class="widget-head">
 				<div class="pull-left">Lista de '.$nombre.' registrados</div>
 				<div class="widget-icons pull-right">
-              		<a href="/juridico/'.$nombre.'/Add" class="btn btn-primary btn-sm" data-formload="'.$nombre.'" id=agregar>Agregar '.$nombre.'</a>
+              		'.btnAparece($nombre).'		
           		</div>
           		<div class="clearfix"></div>
 			</div>

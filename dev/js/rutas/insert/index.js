@@ -1,5 +1,6 @@
 const $=require('jquery');
 const page=require('page');
+require('babelify-es6-polyfill');
 const inst=require('./../../insert/')
 const funct=require('./../../functions')
 
@@ -39,33 +40,19 @@ page('/juridico/SubTiposDocumentos/Add',function(ctx,next) {
 
 
 page('/juridico/Volantes/Add',function(ctx,next) {
-    let tipodoctoObject=funcion.createObject('tipo','JURIDICO')
-    let activos=funcion.createObject('estatus','ACTIVO')
-    let tipoTurnado=funcion.createObject('idAreaSuperior','DGAJ')
-
     let folio= insert.getLastFolio('Volantes','idVolante')
-    let tipoDocto=funcion.getDatos('tiposdocumentos',tipodoctoObject)
-    let caracter=funcion.getDatos('catCaracteres',activos)
+    let tipoDocto=funcion.getDatos('tiposdocumentos',{tipo:'JURIDICO'})
+    let caracter=funcion.getDatos('catCaracteres',{estatus:'ACTIVO'})
     let comboAudi=funcion.getComboAuditorias()
-    let turnado=funcion.getDatos('areas',tipoTurnado)
-    let accion=funcion.getDatos('catAcciones',activos)
+    let turnado=funcion.getDatos('areas',{idAreaSuperior:'DGAJ'})
+    let accion=funcion.getDatos('catAcciones',{estatus:'ACTIVO'})
     Promise.all([tipoDocto,comboAudi,caracter,accion,turnado,folio])
     .then(values=>{
-      insert.renderForm(volantes(values[0]))
+      insert.renderForm(volantes(values[0],values[1],values[2],values[3],values[4],values[5]))
       $('div.contentVolante').hide()
       $('div.datosAuditoria').hide()
       funcion.loadDateInput()
       insert.onchangeTipoDocto()
-      let auditorias=funcion.createComboAuditorias(values[1])
-      let caracter=funcion.createComboCaracter(values[2])
-      let accion=funcion.createComboAccion(values[3])
-      let turnado=funcion.createComboTurnado(values[4])
-      
-      $('select#cveAuditoria').html(auditorias)
-      $('select#idCaracter').html(caracter)
-      $('select#idTurnado').html(turnado)
-      $('select#idAccion').html(accion)
-      $('input#Folio').attr('title','El ultimo Folio registrado es el: '+values[5][0]['folio'])
       insert.onchangeAuditoria()
       insert.getData()
 

@@ -1,3 +1,4 @@
+//require("babel-polyfill");
 require('babelify-es6-polyfill');
 const page=require('page');
 const $=require('jquery')

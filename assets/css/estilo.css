@@ -2943,11 +2943,15 @@ div.jconfirm-box-container {
   margin-left: 5% !important;
 }
 table.principal th.idCaracter,
-table.principal th.idAccion {
+table.principal th.idAccion,
+table.principal th.idSubTipoDocumento,
+table.principal th.idVolante {
   display: none;
 }
 table.principal td#idCaracter,
-table.principal td#idAccion {
+table.principal td#idAccion,
+table.principal td#idSubTipoDocumento,
+table.principal td#idVolante {
   display: none;
 }
 div#principal h2 {
