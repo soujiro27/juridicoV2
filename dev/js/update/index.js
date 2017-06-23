@@ -60,7 +60,15 @@ module.exports=class Update extends link{
 					}
 				},
 				cancel:{
-					text:'Cancelar'
+					text:'Cancelar',
+					btnClass: 'btn-danger',
+				},
+				somethingElse:{
+					text:'Imprimir',
+					btnClass: 'btn-warning',
+					action:function(){
+						if(ruta=='Volantes'){self.reporteVolantes(id)}
+					}
 				}
 			}
 		})

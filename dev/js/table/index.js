@@ -3,6 +3,9 @@ const template=require('./../templates/table')
 const page=require('page');
 
 
+
+
+
 module.exports=class Tabla{
 
 
@@ -23,6 +26,7 @@ module.exports=class Tabla{
       $('div.loader').remove()
       $('div#main-content').html(tabla);
       self.clickTr();
+      
     })
   }
 

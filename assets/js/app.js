@@ -522,6 +522,11 @@ module.exports = function () {
 		value: function main(ruta) {
 			location.href = '/juridico/' + ruta;
 		}
+	}, {
+		key: 'reporteVolantes',
+		value: function reporteVolantes(id) {
+			window.open('/juridico/php/reportes/Volantes.php' + '?param1=' + id);
+		}
 	}]);
 
 	return Redireccion;
@@ -959,7 +964,17 @@ module.exports = function (_link) {
 						}
 					},
 					cancel: {
-						text: 'Cancelar'
+						text: 'Cancelar',
+						btnClass: 'btn-danger'
+					},
+					somethingElse: {
+						text: 'Imprimir',
+						btnClass: 'btn-warning',
+						action: function action() {
+							if (ruta == 'Volantes') {
+								self.reporteVolantes(id);
+							}
+						}
 					}
 				}
 			});
