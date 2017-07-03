@@ -73,11 +73,14 @@ div.jconfirm-box-container
 	width 90% !important
 	margin-left 5% !important
 
+div.sidebar
+	width 15% !important
+
 
 table.principal
-	th.idCaracter,th.idAccion,th.idSubTipoDocumento,th.idVolante
+	th.idCaracter,th.idAccion,th.idSubTipoDocumento,th.idVolante, th.idDocumentoTexto
 		display none
-	td#idCaracter,td#idAccion,td#idSubTipoDocumento,td#idVolante
+	td#idCaracter,td#idAccion,td#idSubTipoDocumento,td#idVolante, td#idDocumentoTexto
 		display none
 
 
@@ -90,7 +93,7 @@ table.principal th
 	&:first-letter
 		text-transform uppercase
 
-form#Caracteres, form#Acciones, form#Volantes
+form#Caracteres, form#Acciones, form#Volantes, form#DoctosTextos
 	div
 		padding 8px
 		&.send
@@ -101,7 +104,7 @@ form#Caracteres, form#Acciones, form#Volantes
 			
 		label
 			display block
-	div.Asunto
+	div.Asunto, div.texto
 		width 90%
 		textarea
 			width 68%

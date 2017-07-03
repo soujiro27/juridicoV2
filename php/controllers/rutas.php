@@ -1,7 +1,7 @@
 <?php
 class Rutas{
 
-protected $catalogos=['Caracteres','Acciones','SubTiposDocumentos'];
+protected $catalogos=['Caracteres','Acciones','SubTiposDocumentos','DoctosTextos'];
 protected $modulos=['Volantes','Confronta'];
 
 

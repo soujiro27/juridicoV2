@@ -8,7 +8,7 @@ const carac=require('./../../templates/forms/insert/Caracteres.js')
 const actions=require('./../../templates/forms/insert/Acciones.js')
 const SubTiposDocumentos=require('./../../templates/forms/insert/SubTiposDocumentos.js')
 const volantes=require('./../../templates/forms/insert/Volantes.js')
-
+const textos= require('./../../templates/forms/insert/Textos');
 
 var insert = new inst();
 let funcion= new funct();
@@ -58,4 +58,20 @@ page('/juridico/Volantes/Add',function(ctx,next) {
 
       
     })
+})
+
+
+page('/juridico/DoctosTextos/Add',function(ctx,next) {
+
+	let dataDocto={tipo:'JURIDICO'}
+	let dataSub={estatus:'Activo'}
+	let doc=funcion.getDatos('tiposdocumentos',dataDocto);
+  let sub=funcion.getDatos('catSubTiposDocumentos',dataSub);
+	Promise.all([doc,sub])
+  .then(values=>{
+  	   insert.renderForm(textos(values[0],values[1]))
+  	   insert.getData()
+       
+  })
+  
 })

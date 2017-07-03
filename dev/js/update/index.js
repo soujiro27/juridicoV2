@@ -8,6 +8,9 @@ const Caracteres=require('./../templates/forms/update/Caracteres.js');
 const Acciones=require('./../templates/forms/update/Acciones.js');
 const SubTiposDocumentos=require('./../templates/forms/update/SubTiposDocumentos.js');
 const Volantes=require('./../templates/forms/update/Volantes.js');
+const Textos=require('./../templates/forms/update/Textos');
+const confronta=require('./../templates/forms/update/Confronta')
+
 
 let tabla=new table()
 let confirms=new query()
@@ -20,6 +23,8 @@ module.exports=class Update extends link{
 		if(ruta=='Acciones'){return Acciones}
 		if(ruta=='SubTiposDocumentos'){return SubTiposDocumentos}
 		if(ruta=='Volantes'){return Volantes}
+		if(ruta=='DoctosTextos'){return Textos}
+		if(ruta=='Confronta'){return confronta}
 
 	}
 

@@ -2945,16 +2945,21 @@ div.jconfirm-box-container {
   width: 90% !important;
   margin-left: 5% !important;
 }
+div.sidebar {
+  width: 15% !important;
+}
 table.principal th.idCaracter,
 table.principal th.idAccion,
 table.principal th.idSubTipoDocumento,
-table.principal th.idVolante {
+table.principal th.idVolante,
+table.principal th.idDocumentoTexto {
   display: none;
 }
 table.principal td#idCaracter,
 table.principal td#idAccion,
 table.principal td#idSubTipoDocumento,
-table.principal td#idVolante {
+table.principal td#idVolante,
+table.principal td#idDocumentoTexto {
   display: none;
 }
 div#principal h2 {
@@ -2969,33 +2974,47 @@ table.principal th:first-letter {
 }
 form#Caracteres div,
 form#Acciones div,
-form#Volantes div {
+form#Volantes div,
+form#DoctosTextos div {
   padding: 8px;
 }
 form#Caracteres div.send,
 form#Acciones div.send,
-form#Volantes div.send {
+form#Volantes div.send,
+form#DoctosTextos div.send {
   display: block;
   margin-top: 10px;
 }
 form#Caracteres div.send button,
 form#Acciones div.send button,
-form#Volantes div.send button {
+form#Volantes div.send button,
+form#DoctosTextos div.send button {
   margin-left: 10px;
 }
 form#Caracteres div label,
 form#Acciones div label,
-form#Volantes div label {
+form#Volantes div label,
+form#DoctosTextos div label {
   display: block;
 }
 form#Caracteres div.Asunto,
 form#Acciones div.Asunto,
-form#Volantes div.Asunto {
+form#Volantes div.Asunto,
+form#DoctosTextos div.Asunto,
+form#Caracteres div.texto,
+form#Acciones div.texto,
+form#Volantes div.texto,
+form#DoctosTextos div.texto {
   width: 90%;
 }
 form#Caracteres div.Asunto textarea,
 form#Acciones div.Asunto textarea,
-form#Volantes div.Asunto textarea {
+form#Volantes div.Asunto textarea,
+form#DoctosTextos div.Asunto textarea,
+form#Caracteres div.texto textarea,
+form#Acciones div.texto textarea,
+form#Volantes div.texto textarea,
+form#DoctosTextos div.texto textarea {
   width: 68%;
 }
 div.datosAuditoria {

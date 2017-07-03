@@ -21,10 +21,12 @@ inner join sia_Volantes v on vd.idVolante=v.idVolante
 inner join sia_turnosJuridico t on v.idVolante=t.idVolante
 inner join sia_auditorias a on vd.cveAuditoria=a.idAuditoria
 inner join sia_catSubTiposDocumentos sub on vd.idSubTipoDocumento=sub.idSubTipoDocumento order by idVolante desc";
-/*
 
+private $doctosTexto="select cdt.idDocumentoTexto, cdt.texto,
+std.idTipoDocto,std.nombre,cdt.estatus
+from sia_CatDoctosTextos cdt
+inner join sia_catSubTiposDocumentos std on cdt.idSubTipoDocumento=std.idSubTipoDocumento";
 
-*/
 public function incio($modulo){
 		
 		$obtener= new Get();
@@ -33,6 +35,7 @@ public function incio($modulo){
 		if($modulo=='SubTiposDocumentos'){$sql=$this->SubTiposDocumentos;}
 		if($modulo=='Volantes'){$sql=$this->Volantes;}
 		if($modulo=='Confronta'){$sql=$this->sqlConfronta($_SESSION["idUsuario"]);}
+		if($modulo=='DoctosTextos'){$sql=$this->doctosTexto;}
 		$obtener->getTable($sql);
 }
 

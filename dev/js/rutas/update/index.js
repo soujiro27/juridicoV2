@@ -54,3 +54,30 @@ page('/juridico/Volantes/update/:campo/:id',function(ctx,next){
 		update.formUpdate(template(values[0],values[1],values[2],values[3]),ctx.params.campo,ctx.params.id)
 	})
 })
+
+
+
+page('/juridico/DoctosTextos/update/:campo/:id',function(ctx,next){
+	let data=update.creaObjeto(ctx)
+	let datosRegistro=funcion.getDatos(ruta,data)
+	let comboTipoDocto=funcion.getDatos('tiposdocumentos',{tipo:'JURIDICO'})
+	let subtipo=funcion.getDatos('catSubTiposDocumentos',{estatus:'ACTIVO'})
+	Promise.all([datosRegistro,comboTipoDocto,subtipo]).then(values=>{
+		let datos=values[0][0]
+		let combo=values[1]
+		let subtipo=values[2]
+		let template=update.separaTemplates(ruta)
+		update.formUpdate(template(datos,combo,subtipo),ctx.params.campo,ctx.params.id)
+
+	})
+})
+
+
+page('/juridico/Confronta/update/:campo/:id',function(ctx,next){
+	let data=update.creaObjeto(ctx)
+	funcion.getDatos(ruta,data).
+	then(response=>{
+		let template=update.separaTemplates(ruta)
+		update.formUpdate(template(response[0]),ctx.params.campo,ctx.params.id)
+	})
+})
