@@ -29,7 +29,7 @@ CONCAT(u.saludo,' ',e.nombre,' ',e.paterno,' ',e.materno) as titular,
 audi.clave,
 dbo.lstSujetosByAuditoria(audi.idAuditoria) as ente,
 audi.fConfronta,
-con.notaInformativa, con.nombreResponsable, con.cargoResponsable, con.siglas, con.siglas, hConfronta
+con.notaInformativa, con.nombreResponsable, con.cargoResponsable, con.siglas, con.siglas,con.fecha, hConfronta
 from sia_Volantes v
 inner join sia_VolantesDocumentos vd on v.idVolante=vd.idVolante
 inner join sia_areas a on v.idRemitente=a.idArea
@@ -54,6 +54,10 @@ function mes($num){
 
 
 $ente=str_replace('/',',', $datos[0]['ente']);
+
+$fecha=explode('-',$datos[0]['fecha']);
+$mes=mes($fecha[1]);
+
 
 $texto='Hago referencia a su oficio '.$datos[0]['numDocumento'];
 $textoDos=' y Nota Informativa '.$datos[0]['notaInformativa'];
@@ -80,8 +84,7 @@ $ente=convierte($ente);
 $footer=convierte('Sin otro particular, hago propicia la ocasión para enviarle un coordial saludo.');
 $hora=substr($datos[0]['hConfronta'],0,-11);
 $tiempo=$datos[0]['fConfronta']."\n".$hora.' Horas.';
-$fecha=getdate();
-$mesTxt=mes($fecha['mon']);
+
 
 
 
@@ -98,7 +101,7 @@ $pdf->Cell(50,5,'NOTA INFORMATIVA',0,0,'L');
 
 $pdf->SetFont('Arial','',10);
 $pdf->Ln(10);
-$pdf->Cell(180,5,$fechaTxt.$fecha['mday'].' de '.$mesTxt.' de '.$fecha['year'],0,0,'R');
+$pdf->Cell(180,5,$fecha[2].' de '.$mes.' de '.$fecha[0],0,0,'R');
 $pdf->Ln(10);
 $pdf->SetFont('Arial','B',10);
 $pdf->Cell(20,5,'PARA: ',0,0,'L');

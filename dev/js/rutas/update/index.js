@@ -1,9 +1,18 @@
+window.CKEDITOR_BASEPATH = 'node_modules/ckeditor/'
+require('ckeditor')
 const page=require('page')
+
 const updateClass=require('./../../update')
 const funct=require('./../../functions')
+const instr= require('./../../insert')
+
+const ConfrontaEmpty=require('./../../templates/forms/insert/Confronta')
+const ifaEmpty=require('./../../templates/forms/insert/Ifa')
+
 
 let update = new updateClass()
 let funcion= new funct()
+let insert= new instr();
 
 page('/juridico/Caracteres/update/:campo/:id',function(ctx,next){
 	let data=update.creaObjeto(ctx)
@@ -73,11 +82,44 @@ page('/juridico/DoctosTextos/update/:campo/:id',function(ctx,next){
 })
 
 
-page('/juridico/Confronta/update/:campo/:id',function(ctx,next){
+page('/juridico/confrontasJuridico/update/:campo/:id',function(ctx,next){
 	let data=update.creaObjeto(ctx)
 	funcion.getDatos(ruta,data).
 	then(response=>{
-		let template=update.separaTemplates(ruta)
-		update.formUpdate(template(response[0]),ctx.params.campo,ctx.params.id)
+		if(response.register=='No se encontro registro'){
+			insert.renderForm(ConfrontaEmpty(ctx.params.id));
+			funcion.loadDateInput();
+			insert.getData()
+
+		}else{
+			var template=update.separaTemplates(ruta)
+			update.formUpdate(template(response[0]),ctx.params.campo,ctx.params.id)
+		
+		}
+	})
+})
+
+
+page('/juridico/Ifa/update/:campo/:id',function(ctx,next){
+	let data=update.creaObjeto(ctx)
+	funcion.getDatos('ObservacionesDoctosJuridico',data).
+	then(response=>{
+		if(response.register=='No se encontro registro'){
+			insert.renderForm(ifaEmpty(ctx.params.id));
+			//CKEDITOR.replace( 'observacion' );
+			
+			CKEDITOR.disableAutoInline = true;
+    		CKEDITOR.inline( 'observacion',{
+				uiColor: '#323538'
+			});
+			CKEDITOR.config.skin = 'office2013';
+			//funcion.loadDateInput();
+			//insert.getData()
+
+		}else{
+			var template=update.separaTemplates(ruta)
+			update.formUpdate(template(response[0]),ctx.params.campo,ctx.params.id)
+		
+		}
 	})
 })

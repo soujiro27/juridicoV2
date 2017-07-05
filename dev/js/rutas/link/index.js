@@ -7,5 +7,8 @@ module.exports=class Redireccion{
 	reporteVolantes(id){
 		window.open('/juridico/php/reportes/Volantes.php'+'?param1='+id)
 	}
+	reporteConfronta(id){
+		window.open('/juridico/php/reportes/Confronta.php'+'?param1='+id)
+	}
 
 }

@@ -2,7 +2,7 @@
 
 function btnAparece($nombre){
 
-	if($nombre!='Confronta'){
+	if($nombre!='confrontasJuridico' && $nombre!='Ifa'){
 		$btn='<a href="/juridico/'.$nombre.'/Add" class="btn btn-primary btn-sm" data-formload="'.$nombre.'" id=agregar>Agregar '.$nombre.'</a>';
 		return  $btn;
 	}

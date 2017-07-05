@@ -4,10 +4,10 @@ var yo=require('yo-yo');
 
 module.exports=function(data){
 
-//var hConfronta=data.hConfronta;
-//hConfronta=hConfronta.substring(5,0);
+var hConfronta=data.hConfronta;
+hConfronta=hConfronta.substring(5,0);
 
-return yo`<form method="POST" class="form-inline" id="UpdateNota">
+return yo`<form method="POST" class="form-inline" id="confrontasJuridico">
 
 <div class="form-group notaInformativa">
     <label for="notaInformativa">nota Informativa</label>
@@ -29,6 +29,11 @@ return yo`<form method="POST" class="form-inline" id="UpdateNota">
     <input type="time" class="form-control" id="hConfronta" placeholder="hConfronta" required pattern="[A-Za-z].{1,49}" name="hConfronta" title="Formato Incorrecto" value="${hConfronta}" >
 </div>
 
+
+<div class="form-group fecha">
+    <label for="fecha">Fecha Documento</label>
+    <input type="text" id="fecha" name="fecha" required class="form-control fechaInput" pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))" value="${data.fecha}" >
+</div>
 
 <div class="form-group siglas">
     <label for="siglas">Siglas</label>

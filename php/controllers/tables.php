@@ -27,6 +27,10 @@ std.idTipoDocto,std.nombre,cdt.estatus
 from sia_CatDoctosTextos cdt
 inner join sia_catSubTiposDocumentos std on cdt.idSubTipoDocumento=std.idSubTipoDocumento";
 
+
+
+private $ifaObservaciones="select * from sia_ObservacionesDoctosJuridico";
+
 public function incio($modulo){
 		
 		$obtener= new Get();
@@ -34,8 +38,9 @@ public function incio($modulo){
 		if($modulo=='Acciones'){$sql=$this->acciones;}
 		if($modulo=='SubTiposDocumentos'){$sql=$this->SubTiposDocumentos;}
 		if($modulo=='Volantes'){$sql=$this->Volantes;}
-		if($modulo=='Confronta'){$sql=$this->sqlConfronta($_SESSION["idUsuario"]);}
+		if($modulo=='confrontasJuridico'){$sql=$this->sqlConfronta($_SESSION["idUsuario"]);}
 		if($modulo=='DoctosTextos'){$sql=$this->doctosTexto;}
+		if($modulo=='Ifa'){$sql=$this->sqlIfa($_SESSION["idUsuario"]);}
 		$obtener->getTable($sql);
 }
 
@@ -69,6 +74,18 @@ where u.idUsuario='$usuario' and std.nombre='CONFRONTA'";
 	//require 'juridico/php/controllers/fechas.php';
 	//$fecha= new Fechas();
 	//$fecha->fechaActual();
+}
+
+
+public function sqlIfa($usuario){
+	$sql="select v.idVolante,v.numDocumento, v.fRecepcion, v.idRemitente, v.asunto, v.estatus, t.estadoProceso from sia_Volantes v
+inner join sia_VolantesDocumentos vd on v.idVolante=vd.idVolante
+inner join sia_catSubTiposDocumentos sub on vd.idSubTipoDocumento=sub.idSubTipoDocumento
+inner join sia_turnosJuridico t on v.idVolante=t.idVolante
+where sub.nombre='Ifa' and v.idTurnado=
+(select nombreCorto from sia_areas where idAreaSuperior='DGAJ' and idEmpleadoTitular=
+(select idEmpleado from sia_usuarios where idUsuario='".$_SESSION ['idUsuario']."')) order by v.idVolante desc";
+	return $sql;
 }
 
 

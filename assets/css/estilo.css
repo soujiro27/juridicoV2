@@ -2975,50 +2975,82 @@ table.principal th:first-letter {
 form#Caracteres div,
 form#Acciones div,
 form#Volantes div,
-form#DoctosTextos div {
+form#DoctosTextos div,
+form#confrontasJuridico div,
+form#Ifa div {
   padding: 8px;
 }
 form#Caracteres div.send,
 form#Acciones div.send,
 form#Volantes div.send,
-form#DoctosTextos div.send {
+form#DoctosTextos div.send,
+form#confrontasJuridico div.send,
+form#Ifa div.send {
   display: block;
   margin-top: 10px;
 }
 form#Caracteres div.send button,
 form#Acciones div.send button,
 form#Volantes div.send button,
-form#DoctosTextos div.send button {
+form#DoctosTextos div.send button,
+form#confrontasJuridico div.send button,
+form#Ifa div.send button {
   margin-left: 10px;
 }
 form#Caracteres div label,
 form#Acciones div label,
 form#Volantes div label,
-form#DoctosTextos div label {
+form#DoctosTextos div label,
+form#confrontasJuridico div label,
+form#Ifa div label {
   display: block;
 }
 form#Caracteres div.Asunto,
 form#Acciones div.Asunto,
 form#Volantes div.Asunto,
 form#DoctosTextos div.Asunto,
+form#confrontasJuridico div.Asunto,
+form#Ifa div.Asunto,
 form#Caracteres div.texto,
 form#Acciones div.texto,
 form#Volantes div.texto,
-form#DoctosTextos div.texto {
+form#DoctosTextos div.texto,
+form#confrontasJuridico div.texto,
+form#Ifa div.texto,
+form#Caracteres div.observacion,
+form#Acciones div.observacion,
+form#Volantes div.observacion,
+form#DoctosTextos div.observacion,
+form#confrontasJuridico div.observacion,
+form#Ifa div.observacion {
   width: 90%;
 }
 form#Caracteres div.Asunto textarea,
 form#Acciones div.Asunto textarea,
 form#Volantes div.Asunto textarea,
 form#DoctosTextos div.Asunto textarea,
+form#confrontasJuridico div.Asunto textarea,
+form#Ifa div.Asunto textarea,
 form#Caracteres div.texto textarea,
 form#Acciones div.texto textarea,
 form#Volantes div.texto textarea,
-form#DoctosTextos div.texto textarea {
+form#DoctosTextos div.texto textarea,
+form#confrontasJuridico div.texto textarea,
+form#Ifa div.texto textarea,
+form#Caracteres div.observacion textarea,
+form#Acciones div.observacion textarea,
+form#Volantes div.observacion textarea,
+form#DoctosTextos div.observacion textarea,
+form#confrontasJuridico div.observacion textarea,
+form#Ifa div.observacion textarea {
   width: 68%;
 }
 div.datosAuditoria {
   background-color: #efefef;
+}
+div.cke_textarea_inline {
+  border: 1px solid #afafaf;
+  border-radius: 5px;
 }
 @-moz-keyframes load4 {
   0%, 100% {

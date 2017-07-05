@@ -24,7 +24,8 @@ module.exports=class Update extends link{
 		if(ruta=='SubTiposDocumentos'){return SubTiposDocumentos}
 		if(ruta=='Volantes'){return Volantes}
 		if(ruta=='DoctosTextos'){return Textos}
-		if(ruta=='Confronta'){return confronta}
+		if(ruta=='confrontasJuridico'){return confronta}
+		debugger
 
 	}
 
@@ -51,6 +52,9 @@ module.exports=class Update extends link{
 			title:'Actualizar Registro',
 			theme: 'material',
 			content:template,
+			onContentReady:function(){
+				funcion.loadDateInput();
+			},
 			buttons:{
 				formSubmit:{
 					text:'Actualizar',
@@ -73,6 +77,7 @@ module.exports=class Update extends link{
 					btnClass: 'btn-warning',
 					action:function(){
 						if(ruta=='Volantes'){self.reporteVolantes(id)}
+						if(ruta=='confrontasJuridico'){self.reporteConfronta(id)}
 					}
 				}
 			}
