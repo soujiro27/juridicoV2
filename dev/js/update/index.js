@@ -25,7 +25,7 @@ module.exports=class Update extends link{
 		if(ruta=='Volantes'){return Volantes}
 		if(ruta=='DoctosTextos'){return Textos}
 		if(ruta=='confrontasJuridico'){return confronta}
-		debugger
+		
 
 	}
 

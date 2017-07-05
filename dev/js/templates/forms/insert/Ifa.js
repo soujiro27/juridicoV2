@@ -1,6 +1,6 @@
 var yo=require('yo-yo');
 var $=require('jquery');
-module.exports=function(){
+module.exports=function(idVolante){
 
 
 $('div.widget-icons').html('  <button class="btn btn-primary btn-sm" id="addIfa" > Agregar Observacion </button>')
@@ -18,6 +18,7 @@ return yo`
     <label for="pagina">Hoja</label>
     <input type="number"  id="pagina" name="pagina" required class="form-control"   >
     <input type="hidden"  name="parrafo" value="0"  >
+    <input type="hidden"  name="idVolante" value="${idVolante}"  >
 </div>
 
 
@@ -25,7 +26,7 @@ return yo`
 
 <div class="form-group observacion">
     <label for="observacion">Observacion</label>
-    <textarea class="form-control" rows="3" name="observacion" required placeholder="Observaciones" id="observacion" ></textarea>
+    <textarea class="form-control" rows="3" name="observacion"  id="observacion" ></textarea>
 </div>
 
 

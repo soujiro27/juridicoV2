@@ -163,15 +163,6 @@ module.exports = function (_link) {
 		value: function loadDateInput() {
 			$('input.fechaInput').datepicker({ dateFormat: "yy-mm-dd" });
 		}
-	}, {
-		key: 'ckeditorCongif',
-		value: function ckeditorCongif() {
-			CKEDITOR.editorConfig = function (config) {
-				config.toolbarGroups = [{ name: 'clipboard', groups: ['clipboard', 'undo'] }, { name: 'editing', groups: ['find', 'selection', 'spellchecker', 'editing'] }, { name: 'links', groups: ['links'] }, { name: 'insert', groups: ['insert'] }, { name: 'forms', groups: ['forms'] }, { name: 'tools', groups: ['tools'] }, { name: 'document', groups: ['mode', 'document', 'doctools'] }, { name: 'others', groups: ['others'] }, '/', { name: 'basicstyles', groups: ['basicstyles', 'cleanup'] }, { name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align', 'bidi', 'paragraph'] }, { name: 'styles', groups: ['styles'] }, { name: 'colors', groups: ['colors'] }, { name: 'about', groups: ['about'] }];
-
-				config.removeButtons = 'Underline,Subscript,Superscript,Undo,Cut,Copy,Redo,Paste,PasteText,PasteFromWord,Scayt,Link,Unlink,Anchor,Image,Table,HorizontalRule,SpecialChar,Maximize,Source,RemoveFormat,Outdent,Indent,Blockquote,About';
-			};
-		}
 	}]);
 
 	return Funciones;
@@ -571,6 +562,7 @@ var page = require('page');
 var updateClass = require('./../../update');
 var funct = require('./../../functions');
 var instr = require('./../../insert');
+var table = require('./../../table');
 
 var ConfrontaEmpty = require('./../../templates/forms/insert/Confronta');
 var ifaEmpty = require('./../../templates/forms/insert/Ifa');
@@ -578,7 +570,7 @@ var ifaEmpty = require('./../../templates/forms/insert/Ifa');
 var update = new updateClass();
 var funcion = new funct();
 var insert = new instr();
-
+var tabla = new table();
 page('/juridico/Caracteres/update/:campo/:id', function (ctx, next) {
 	var data = update.creaObjeto(ctx);
 	funcion.getDatos(ruta, data).then(function (response) {
@@ -653,23 +645,20 @@ page('/juridico/Ifa/update/:campo/:id', function (ctx, next) {
 	funcion.getDatos('ObservacionesDoctosJuridico', data).then(function (response) {
 		if (response.register == 'No se encontro registro') {
 			insert.renderForm(ifaEmpty(ctx.params.id));
-			//CKEDITOR.replace( 'observacion' );
-			funcion.ckeditorCongif();
 			CKEDITOR.disableAutoInline = true;
-			CKEDITOR.inline('observacion', {
-				uiColor: '#323538'
-			});
+			CKEDITOR.inline('observacion');
 			CKEDITOR.config.skin = 'office2013';
 			//funcion.loadDateInput();
-			//insert.getData()
+			insert.getData();
 		} else {
-			var template = update.separaTemplates(ruta);
-			update.formUpdate(template(response[0]), ctx.params.campo, ctx.params.id);
+			//var template=update.separaTemplates(ruta)
+			//update.formUpdate(template(response[0]),ctx.params.campo,ctx.params.id)
+			tabla.drawTable('ObservacionesDoctosJuridico');
 		}
 	});
 });
 
-},{"./../../functions":1,"./../../insert":3,"./../../templates/forms/insert/Confronta":12,"./../../templates/forms/insert/Ifa":13,"./../../update":26,"ckeditor":31,"page":199}],9:[function(require,module,exports){
+},{"./../../functions":1,"./../../insert":3,"./../../table":9,"./../../templates/forms/insert/Confronta":12,"./../../templates/forms/insert/Ifa":13,"./../../update":26,"ckeditor":31,"page":199}],9:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -750,17 +739,17 @@ module.exports = function (idVolante) {
 },{"yo-yo":268}],13:[function(require,module,exports){
 'use strict';
 
-var _templateObject = _taggedTemplateLiteral(['\n\n<div>\n\n<div class="contentIrac" id="contentIrac" >\n    <form method="POST" class="form-inline" id="Ifa">\n\n\n\n<div class="form-group pagina">\n    <label for="pagina">Hoja</label>\n    <input type="number"  id="pagina" name="pagina" required class="form-control"   >\n    <input type="hidden"  name="parrafo" value="0"  >\n</div>\n\n\n\n\n<div class="form-group observacion">\n    <label for="observacion">Observacion</label>\n    <textarea class="form-control" rows="3" name="observacion" required placeholder="Observaciones" id="observacion" ></textarea>\n</div>\n\n\n\n\n\n\n<div class="form-group send">\n    <input type="submit" class="btn btn-primary btn-sm" value="Guardar">\n    <button class="btn btn-default btn-sm" id="cancelar">Cancelar</button>\n</div>\n\n\n</form>\n</div>\n\n</div>'], ['\n\n<div>\n\n<div class="contentIrac" id="contentIrac" >\n    <form method="POST" class="form-inline" id="Ifa">\n\n\n\n<div class="form-group pagina">\n    <label for="pagina">Hoja</label>\n    <input type="number"  id="pagina" name="pagina" required class="form-control"   >\n    <input type="hidden"  name="parrafo" value="0"  >\n</div>\n\n\n\n\n<div class="form-group observacion">\n    <label for="observacion">Observacion</label>\n    <textarea class="form-control" rows="3" name="observacion" required placeholder="Observaciones" id="observacion" ></textarea>\n</div>\n\n\n\n\n\n\n<div class="form-group send">\n    <input type="submit" class="btn btn-primary btn-sm" value="Guardar">\n    <button class="btn btn-default btn-sm" id="cancelar">Cancelar</button>\n</div>\n\n\n</form>\n</div>\n\n</div>']);
+var _templateObject = _taggedTemplateLiteral(['\n\n<div>\n\n<div class="contentIrac" id="contentIrac" >\n    <form method="POST" class="form-inline" id="Ifa">\n\n\n\n<div class="form-group pagina">\n    <label for="pagina">Hoja</label>\n    <input type="number"  id="pagina" name="pagina" required class="form-control"   >\n    <input type="hidden"  name="parrafo" value="0"  >\n    <input type="hidden"  name="idVolante" value="', '"  >\n</div>\n\n\n\n\n<div class="form-group observacion">\n    <label for="observacion">Observacion</label>\n    <textarea class="form-control" rows="3" name="observacion"  id="observacion" ></textarea>\n</div>\n\n\n\n\n\n\n<div class="form-group send">\n    <input type="submit" class="btn btn-primary btn-sm" value="Guardar">\n    <button class="btn btn-default btn-sm" id="cancelar">Cancelar</button>\n</div>\n\n\n</form>\n</div>\n\n</div>'], ['\n\n<div>\n\n<div class="contentIrac" id="contentIrac" >\n    <form method="POST" class="form-inline" id="Ifa">\n\n\n\n<div class="form-group pagina">\n    <label for="pagina">Hoja</label>\n    <input type="number"  id="pagina" name="pagina" required class="form-control"   >\n    <input type="hidden"  name="parrafo" value="0"  >\n    <input type="hidden"  name="idVolante" value="', '"  >\n</div>\n\n\n\n\n<div class="form-group observacion">\n    <label for="observacion">Observacion</label>\n    <textarea class="form-control" rows="3" name="observacion"  id="observacion" ></textarea>\n</div>\n\n\n\n\n\n\n<div class="form-group send">\n    <input type="submit" class="btn btn-primary btn-sm" value="Guardar">\n    <button class="btn btn-default btn-sm" id="cancelar">Cancelar</button>\n</div>\n\n\n</form>\n</div>\n\n</div>']);
 
 function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
 var yo = require('yo-yo');
 var $ = require('jquery');
-module.exports = function () {
+module.exports = function (idVolante) {
 
     $('div.widget-icons').html('  <button class="btn btn-primary btn-sm" id="addIfa" > Agregar Observacion </button>');
 
-    return yo(_templateObject);
+    return yo(_templateObject, idVolante);
 };
 
 },{"jquery":196,"yo-yo":268}],14:[function(require,module,exports){
@@ -1110,7 +1099,6 @@ module.exports = function (_link) {
 			if (ruta == 'confrontasJuridico') {
 				return confronta;
 			}
-			debugger;
 		}
 	}, {
 		key: 'creaObjeto',

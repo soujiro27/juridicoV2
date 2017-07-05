@@ -23,7 +23,7 @@ class InsertController{
 		$err=new Errores();
 		$ruta= new Rutas;
 		
-		if($modulo!='Volantes'){
+		if($modulo!='Volantes' && $modulo!='Ifa' ){
 			$modulo=$ruta->catalogos($modulo);
 			$duplicado=$getData->getDuplicado($modulo,$datos);
 			if(empty($duplicado)){
@@ -36,6 +36,14 @@ class InsertController{
 			}
 		}elseif ($modulo=='Volantes'){
 			$this->checaFolio($modulo,$datos);
+		}elseif($modulo=='Ifa'){
+			$modulo='ObservacionesDoctosJuridico';
+			$volantesDocumentos=array('idVolante'=>$datos['idVolante']);
+			$duplicado=$getData->getDuplicado('VolantesDocumentos',$volantesDocumentos);
+			$datos['idSubTipoDocumento']=$duplicado[0]['idSubTipoDocumento'];
+			$datos['cveAuditoria']=$duplicado[0]['cveAuditoria'];
+			$res=$insert->insertaBd($modulo,$datos);
+			$err->catchError($res);
 			
 		}
 	}

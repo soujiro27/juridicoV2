@@ -5,15 +5,17 @@ const page=require('page')
 const updateClass=require('./../../update')
 const funct=require('./../../functions')
 const instr= require('./../../insert')
+const table=require('./../../table')
 
 const ConfrontaEmpty=require('./../../templates/forms/insert/Confronta')
 const ifaEmpty=require('./../../templates/forms/insert/Ifa')
 
 
+
 let update = new updateClass()
 let funcion= new funct()
 let insert= new instr();
-
+let tabla= new table();
 page('/juridico/Caracteres/update/:campo/:id',function(ctx,next){
 	let data=update.creaObjeto(ctx)
 	funcion.getDatos(ruta,data).
@@ -106,19 +108,16 @@ page('/juridico/Ifa/update/:campo/:id',function(ctx,next){
 	then(response=>{
 		if(response.register=='No se encontro registro'){
 			insert.renderForm(ifaEmpty(ctx.params.id));
-			//CKEDITOR.replace( 'observacion' );
-			
 			CKEDITOR.disableAutoInline = true;
-    		CKEDITOR.inline( 'observacion',{
-				uiColor: '#323538'
-			});
+    		CKEDITOR.inline('observacion');
 			CKEDITOR.config.skin = 'office2013';
 			//funcion.loadDateInput();
-			//insert.getData()
+			insert.getData()
 
 		}else{
-			var template=update.separaTemplates(ruta)
-			update.formUpdate(template(response[0]),ctx.params.campo,ctx.params.id)
+			//var template=update.separaTemplates(ruta)
+			//update.formUpdate(template(response[0]),ctx.params.campo,ctx.params.id)
+			tabla.drawTable('ObservacionesDoctosJuridico')
 		
 		}
 	})
