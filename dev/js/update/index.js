@@ -1,3 +1,5 @@
+window.CKEDITOR_BASEPATH = 'node_modules/ckeditor/'
+require('ckeditor')
 const $=require('jquery')
 const link=require('./../rutas/link')
 const query=require('./../notificaciones')
@@ -10,7 +12,7 @@ const SubTiposDocumentos=require('./../templates/forms/update/SubTiposDocumentos
 const Volantes=require('./../templates/forms/update/Volantes.js');
 const Textos=require('./../templates/forms/update/Textos');
 const confronta=require('./../templates/forms/update/Confronta')
-
+const ifa=require('./../templates/forms/update/Ifa')
 
 let tabla=new table()
 let confirms=new query()
@@ -25,7 +27,7 @@ module.exports=class Update extends link{
 		if(ruta=='Volantes'){return Volantes}
 		if(ruta=='DoctosTextos'){return Textos}
 		if(ruta=='confrontasJuridico'){return confronta}
-		
+		if(ruta=='Ifa'){return ifa}
 
 	}
 
@@ -53,6 +55,9 @@ module.exports=class Update extends link{
 			theme: 'material',
 			content:template,
 			onContentReady:function(){
+				CKEDITOR.disableAutoInline = true;
+				CKEDITOR.inline('observacionUpdate');
+				CKEDITOR.config.skin = 'office2013';
 				funcion.loadDateInput();
 			},
 			buttons:{

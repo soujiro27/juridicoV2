@@ -1,9 +1,8 @@
 var yo=require('yo-yo');
-var $=require('jquery');
 module.exports=function(idVolante){
 
 
-$('div.widget-icons').html('  <button class="btn btn-primary btn-sm" id="addIfa" > Agregar Observacion </button>')
+
 
 return yo`
 
@@ -22,6 +21,10 @@ return yo`
 </div>
 
 
+<div class="form-group fDocumento">
+    <label for="fDocumento">Fecha de Documento</label>
+    <input type="text" id="fDocumento" name="fDocumento" required class="form-control fechaInput" pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))">
+</div>
 
 
 <div class="form-group observacion">

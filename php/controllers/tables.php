@@ -29,7 +29,7 @@ inner join sia_catSubTiposDocumentos std on cdt.idSubTipoDocumento=std.idSubTipo
 
 
 
-private $ifaObservaciones="select idObservacionDoctoJuridico,pagina,observacion from sia_ObservacionesDoctosJuridico";
+private $ifaObservaciones="select idObservacionDoctoJuridico,pagina,observacion,estatus from sia_ObservacionesDoctosJuridico";
 
 
 public function incio($modulo){

@@ -10,7 +10,7 @@ const table=require('./../../table')
 const ConfrontaEmpty=require('./../../templates/forms/insert/Confronta')
 const ifaEmpty=require('./../../templates/forms/insert/Ifa')
 
-
+var cont=0;
 
 let update = new updateClass()
 let funcion= new funct()
@@ -106,19 +106,27 @@ page('/juridico/Ifa/update/:campo/:id',function(ctx,next){
 	let data=update.creaObjeto(ctx)
 	funcion.getDatos('ObservacionesDoctosJuridico',data).
 	then(response=>{
-		if(response.register=='No se encontro registro'){
-			insert.renderForm(ifaEmpty(ctx.params.id));
-			CKEDITOR.disableAutoInline = true;
-    		CKEDITOR.inline('observacion');
-			CKEDITOR.config.skin = 'office2013';
-			//funcion.loadDateInput();
-			insert.getData()
+			$('div.widget-icons').html('<button class="btn btn-primary btn-sm" id="addIfa" > Agregar Observacion </button>')
+			$('button#addIfa').click(function(){
+				$(this).hide();
+				insert.formIfa(ifaEmpty(ctx.params.id))
+			})
+			
+			if(response.register=='No se encontro registro'){
+				tabla.drawTable('ObservacionesDoctosJuridico')
+			
+			}else{
+				if(cont==0){
+					tabla.drawTable('ObservacionesDoctosJuridico')
+					cont++;
+				}else{
+				 	var template=update.separaTemplates(ruta)
+					update.formUpdate(template(response[0]),ctx.params.campo,ctx.params.id)
+					cont--;
+				}
+				
+			}
 
-		}else{
-			//var template=update.separaTemplates(ruta)
-			//update.formUpdate(template(response[0]),ctx.params.campo,ctx.params.id)
-			tabla.drawTable('ObservacionesDoctosJuridico')
 		
-		}
 	})
 })

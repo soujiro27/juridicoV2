@@ -3052,6 +3052,9 @@ div.cke_textarea_inline {
   border: 1px solid #afafaf;
   border-radius: 5px;
 }
+div#cke_observacionUpdate {
+  z-index: 999999999 !important;
+}
 @-moz-keyframes load4 {
   0%, 100% {
     box-shadow: 0 -3em 0 0.2em, 2em -2em 0 0em, 3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 -1em, -3em 0 0 -1em, -2em -2em 0 0;

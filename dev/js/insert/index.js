@@ -124,4 +124,13 @@ module.exports=class Insert extends link{
 		return get
 	}
 
+	formIfa(template){
+		this.renderForm(template);
+		CKEDITOR.disableAutoInline = true;
+		CKEDITOR.inline('observacion');
+		CKEDITOR.config.skin = 'office2013';
+		funcion.loadDateInput();
+		this.getData()
+	}
+
 }
