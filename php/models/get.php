@@ -47,6 +47,7 @@ class Get{
 			$procesa=new procesaDatosQuery();
 			$sql=$procesa->obtieneCamposWhere($datos);
 			$sql="SELECT * FROM sia_".$tabla." WHERE ".$sql;
+			//echo $sql;
 			$pdo=$procesa->obtieneArregloPdo($datos);
 			$datos=$this->consultaRetornoPDO($sql,$pdo);
 			return $datos;

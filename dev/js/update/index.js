@@ -55,9 +55,14 @@ module.exports=class Update extends link{
 			theme: 'material',
 			content:template,
 			onContentReady:function(){
+				try{
 				CKEDITOR.disableAutoInline = true;
 				CKEDITOR.inline('observacionUpdate');
 				CKEDITOR.config.skin = 'office2013';
+				}
+				catch(err){
+				console.log(err)
+				}
 				funcion.loadDateInput();
 			},
 			buttons:{

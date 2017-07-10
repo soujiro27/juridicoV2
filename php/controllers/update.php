@@ -25,9 +25,11 @@ class UpdateController extends Rutas{
 		$ruta=new Rutas();
 		$modulo=$ruta->catalogos($modulo);
 		$modulo=$this->cambioModulo($modulo);
+		
 		$insert=new Insert();
 		$err=new Errores();
 		$result=$this->getRegister($modulo,$datos);
+		var_dump($datos);
 		if(empty($result)){
 			$res=$insert->updateBd($modulo,$datos);
 			$err->catchError($res);
@@ -38,7 +40,7 @@ class UpdateController extends Rutas{
 	}
 
 	public function cambioModulo($modulo){
-		if($modulo='Ifa'){$modulo='ObservacionesDoctosJuridico';}
+		if($modulo=='Ifa'){$modulo='ObservacionesDoctosJuridico';}
 		return $modulo;
 	}
 

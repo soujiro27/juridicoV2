@@ -29,7 +29,7 @@ CONCAT(u.saludo,' ',e.nombre,' ',e.paterno,' ',e.materno) as titular,
 audi.clave,
 dbo.lstSujetosByAuditoria(audi.idAuditoria) as ente,
 audi.fConfronta,
-con.notaInformativa, con.nombreResponsable, con.cargoResponsable, con.siglas, con.siglas,con.fecha, hConfronta
+con.notaInformativa, con.nombreResponsable, con.cargoResponsable, con.siglas, con.siglas,con.fOficio, hConfronta
 from sia_Volantes v
 inner join sia_VolantesDocumentos vd on v.idVolante=vd.idVolante
 inner join sia_areas a on v.idRemitente=a.idArea
@@ -55,7 +55,7 @@ function mes($num){
 
 $ente=str_replace('/',',', $datos[0]['ente']);
 
-$fecha=explode('-',$datos[0]['fecha']);
+$fecha=explode('-',$datos[0]['fOficio']);
 $mes=mes($fecha[1]);
 
 

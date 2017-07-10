@@ -3055,6 +3055,13 @@ div.cke_textarea_inline {
 div#cke_observacionUpdate {
   z-index: 999999999 !important;
 }
+div.pull-left span {
+  background-color: #afafaf;
+  color: #fff;
+  padding: 3px;
+  text-align: center;
+  border-radius: 5px;
+}
 @-moz-keyframes load4 {
   0%, 100% {
     box-shadow: 0 -3em 0 0.2em, 2em -2em 0 0em, 3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 -1em, -3em 0 0 -1em, -2em -2em 0 0;

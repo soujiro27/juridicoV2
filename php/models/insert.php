@@ -73,6 +73,7 @@ class Insert{
 		$where=$datosInsert->obtieneValoresWhereUpdate($datos);
 		$pdo=$datosInsert->obtieneArregloPdo($datos);
 		$sql="UPDATE sia_".$modulo." SET ".$valores."usrModificacion=:usrModificacion,fModificacion=getdate() WHERE ".$where;
+	
 		$dbQuery = $db->prepare($sql);
 		$pdo[':usrModificacion']=$_SESSION ["idUsuario"];
 		$dbQuery->execute($pdo);
