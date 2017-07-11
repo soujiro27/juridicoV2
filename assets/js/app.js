@@ -661,24 +661,31 @@ page('/juridico/Ifa/update/:campo/:id', function (ctx, next) {
 			$(this).hide();
 			insert.formIfa(ifaEmpty(ctx.params.id));
 		});
-
-		if (response.register == 'No se encontro registro') {
-			tabla.drawTable('ObservacionesDoctosJuridico');
-		} else {
-			if (cont == 0) {
-				tabla.drawTable('ObservacionesDoctosJuridico');
-				funcion.getDatos('Volantes', { idVolante: ctx.params.id }).then(function (response) {
-					console.log(response);
-					$('div.pull-left').html('Observaciones del IFA: ' + '<span>' + response[0].numDocumento + '</span>');
-				});
-
-				cont++;
-			} else {
-				var template = update.separaTemplates(ruta);
-				update.formUpdate(template(response[0]), ctx.params.campo, ctx.params.id);
-				cont--;
-			}
-		}
+		update.tableIfa();
+		/*
+  if(response.register=='No se encontro registro'){
+  	tabla.drawTable('ObservacionesDoctosJuridico')
+  	
+  
+  }else{
+  	if(cont==0){
+  		tabla.drawTable('ObservacionesDoctosJuridico')
+  		/*funcion.getDatos('Volantes',{idVolante:ctx.params.id})
+  		.then(response=>{
+  			console.log(response)
+  			$('div.pull-left').html('Observaciones del IFA: '+'<span>'+response[0].numDocumento+'</span>')
+  		
+  		})
+  		
+  		cont=1
+  	}else{
+  	 	var template=update.separaTemplates(ruta)
+  		update.formUpdate(template(response[0]),ctx.params.campo,ctx.params.id)
+  		cont=0;
+  	}
+  	
+  
+  		}*/
 	});
 });
 
@@ -727,6 +734,16 @@ module.exports = function () {
         var campo = $(this).data('nombre');
         page.redirect('/juridico/' + ruta + '/update/' + campo + '/' + id);
       });
+    }
+  }, {
+    key: 'drawTableIfa',
+    value: function drawTableIfa(ruta) {
+      var self = this;
+      var final = self.getTable(ruta).then(function (response) {
+        var tablaIfa = template(response);
+        return tablaIfa;
+      });
+      return final;
     }
   }]);
 
@@ -876,7 +893,7 @@ module.exports = function (data) {
 },{"yo-yo":269}],20:[function(require,module,exports){
 'use strict';
 
-var _templateObject = _taggedTemplateLiteral(['\n\n<div>\n\n<div class="contentIrac" id="contentIrac" >\n    <form method="POST" class="form-inline" id="Ifa">\n\n\n\n<div class="form-group pagina">\n    <label for="pagina">Hoja</label>\n    <input type="number"  id="pagina" name="pagina" required class="form-control" value="', '"  >\n  \n</div>\n\n\n<div class="form-group fDocumento">\n    <label for="fDocumento">Fecha de Documento</label>\n    <input type="text" id="fDocumento" name="fDocumento" required class="form-control fechaInput" pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))" value="', '" >\n</div>\n\n\n\n<div class="form-group observacion">\n    <label for="observacionUpdate">Observacion</label>\n    <textarea class="form-control" rows="3" name="observacion"  id="observacionUpdate" >', '</textarea>\n</div>\n\n<div class="form-group estatus">\n    <label for="estatus">Estatus</label>\n    <select id="estatus" name="estatus" class="form-control">\n    <option value="', '">', '</option>\n    <option value="', '">', '</option>\n    </select>\n</div>\n\n\n\n\n\n</form>\n</div>\n\n</div>'], ['\n\n<div>\n\n<div class="contentIrac" id="contentIrac" >\n    <form method="POST" class="form-inline" id="Ifa">\n\n\n\n<div class="form-group pagina">\n    <label for="pagina">Hoja</label>\n    <input type="number"  id="pagina" name="pagina" required class="form-control" value="', '"  >\n  \n</div>\n\n\n<div class="form-group fDocumento">\n    <label for="fDocumento">Fecha de Documento</label>\n    <input type="text" id="fDocumento" name="fDocumento" required class="form-control fechaInput" pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))" value="', '" >\n</div>\n\n\n\n<div class="form-group observacion">\n    <label for="observacionUpdate">Observacion</label>\n    <textarea class="form-control" rows="3" name="observacion"  id="observacionUpdate" >', '</textarea>\n</div>\n\n<div class="form-group estatus">\n    <label for="estatus">Estatus</label>\n    <select id="estatus" name="estatus" class="form-control">\n    <option value="', '">', '</option>\n    <option value="', '">', '</option>\n    </select>\n</div>\n\n\n\n\n\n</form>\n</div>\n\n</div>']);
+var _templateObject = _taggedTemplateLiteral(['\n\n<div>\n\n<div class="contentIrac" id="contentIrac" >\n    <form method="POST" class="form-inline" id="Ifa">\n\n\n\n<div class="form-group pagina">\n    <label for="pagina">Hoja</label>\n    <input type="number"  id="pagina" name="pagina" required class="form-control" value="', '"  >\n  \n</div>\n\n\n<div class="form-group fDocumento">\n    <label for="fDocumento">Fecha de Documento</label>\n    <input type="text" id="fDocumento" name="fDocumento" required class="form-control fechaInput" pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))" value="', '" >\n</div>\n\n\n\n<div class="form-group observacion">\n    <label for="observacionUpdate">Observacion</label>\n    <textarea class="form-control" rows="4" name="observacion"  id="observacionUpdate" >', '</textarea>\n</div>\n\n<div class="form-group estatus">\n    <label for="estatus">Estatus</label>\n    <select id="estatus" name="estatus" class="form-control">\n    <option value="', '">', '</option>\n    <option value="', '">', '</option>\n    </select>\n</div>\n\n\n\n\n\n</form>\n</div>\n\n</div>'], ['\n\n<div>\n\n<div class="contentIrac" id="contentIrac" >\n    <form method="POST" class="form-inline" id="Ifa">\n\n\n\n<div class="form-group pagina">\n    <label for="pagina">Hoja</label>\n    <input type="number"  id="pagina" name="pagina" required class="form-control" value="', '"  >\n  \n</div>\n\n\n<div class="form-group fDocumento">\n    <label for="fDocumento">Fecha de Documento</label>\n    <input type="text" id="fDocumento" name="fDocumento" required class="form-control fechaInput" pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))" value="', '" >\n</div>\n\n\n\n<div class="form-group observacion">\n    <label for="observacionUpdate">Observacion</label>\n    <textarea class="form-control" rows="4" name="observacion"  id="observacionUpdate" >', '</textarea>\n</div>\n\n<div class="form-group estatus">\n    <label for="estatus">Estatus</label>\n    <select id="estatus" name="estatus" class="form-control">\n    <option value="', '">', '</option>\n    <option value="', '">', '</option>\n    </select>\n</div>\n\n\n\n\n\n</form>\n</div>\n\n</div>']);
 
 function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
@@ -1165,13 +1182,14 @@ module.exports = function (_link) {
 				title: 'Actualizar Registro',
 				theme: 'material',
 				content: template,
-				onContentReady: function onContentReady() {
-
-					CKEDITOR.disableAutoInline = true;
-					CKEDITOR.inline('observacionUpdate');
-					CKEDITOR.config.skin = 'office2013';
-					console.log("entra al editor");
-
+				onOpenBefore: function onOpenBefore() {
+					try {
+						CKEDITOR.disableAutoInline = true;
+						CKEDITOR.inline('observacionUpdate');
+						//CKEDITOR.config.skin = 'office2013';
+					} catch (err) {
+						console.log(err);
+					}
 					funcion.loadDateInput();
 				},
 				buttons: {
@@ -1182,6 +1200,7 @@ module.exports = function (_link) {
 							var form = $('form#' + ruta);
 							var datos = form.serializeArray();
 							var datosSend = form.serialize() + '&' + campo + '=' + id;
+							debugger;
 							if (funcion.validaDatos(datos)) {
 								funcion.sendData(datosSend, 'update').then(function (response) {
 									self.successInsert(response);
@@ -1206,6 +1225,38 @@ module.exports = function (_link) {
 						}
 					}
 				}
+			});
+		}
+	}, {
+		key: 'tableIfa',
+		value: function tableIfa() {
+			var self = this;
+			tabla.drawTableIfa('ObservacionesDoctosJuridico').then(function (response) {
+				$.confirm({
+					title: 'Observaciones Ifa',
+					content: response,
+					buttons: {
+						formSubmit: {
+							text: 'Submit',
+							btnClass: 'btn-blue',
+							action: function action() {
+								console.log("win");
+							}
+
+						}
+					},
+					cancel: function cancel() {},
+					onContentReady: function onContentReady() {
+						$('table.principal tbody tr').click(function () {
+							var id = $(this).data('id');
+							var campo = $(this).data('nombre');
+							funcion.getDatos('ObservacionesDoctosJuridico', { idObservacionDoctoJuridico: id }).then(function (response) {
+								var template = self.separaTemplates(ruta);
+								self.formUpdate(template(response[0]), campo, id);
+							});
+						});
+					}
+				});
 			});
 		}
 	}]);

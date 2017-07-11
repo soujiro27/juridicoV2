@@ -112,7 +112,8 @@ page('/juridico/Ifa/update/:campo/:id',function(ctx,next){
 				$(this).hide();
 				insert.formIfa(ifaEmpty(ctx.params.id))
 			})
-			
+			update.tableIfa();
+			/*
 			if(response.register=='No se encontro registro'){
 				tabla.drawTable('ObservacionesDoctosJuridico')
 				
@@ -120,21 +121,24 @@ page('/juridico/Ifa/update/:campo/:id',function(ctx,next){
 			}else{
 				if(cont==0){
 					tabla.drawTable('ObservacionesDoctosJuridico')
-					funcion.getDatos('Volantes',{idVolante:ctx.params.id})
+					/*funcion.getDatos('Volantes',{idVolante:ctx.params.id})
 					.then(response=>{
 						console.log(response)
 						$('div.pull-left').html('Observaciones del IFA: '+'<span>'+response[0].numDocumento+'</span>')
 					
 					})
 					
-					cont++;
+					cont=1
 				}else{
 				 	var template=update.separaTemplates(ruta)
 					update.formUpdate(template(response[0]),ctx.params.campo,ctx.params.id)
-					cont--;
+					cont=0;
 				}
 				
-			}
+
+
+
+			}*/
 
 		
 	})

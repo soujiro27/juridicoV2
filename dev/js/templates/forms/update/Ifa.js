@@ -30,7 +30,7 @@ return yo`
 
 <div class="form-group observacion">
     <label for="observacionUpdate">Observacion</label>
-    <textarea class="form-control" rows="3" name="observacion"  id="observacionUpdate" >${data.observacion}</textarea>
+    <textarea class="form-control" rows="4" name="observacion"  id="observacionUpdate" >${data.observacion}</textarea>
 </div>
 
 <div class="form-group estatus">

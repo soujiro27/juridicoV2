@@ -54,11 +54,11 @@ module.exports=class Update extends link{
 			title:'Actualizar Registro',
 			theme: 'material',
 			content:template,
-			onContentReady:function(){
+			onOpenBefore:function(){
 				try{
 				CKEDITOR.disableAutoInline = true;
 				CKEDITOR.inline('observacionUpdate');
-				CKEDITOR.config.skin = 'office2013';
+				//CKEDITOR.config.skin = 'office2013';
 				}
 				catch(err){
 				console.log(err)
@@ -73,6 +73,7 @@ module.exports=class Update extends link{
 						let form=$('form#'+ruta);
 						let datos=form.serializeArray();
 						let datosSend=form.serialize()+'&'+campo+'='+id;
+						debugger
 						if(funcion.validaDatos(datos)){
 							funcion.sendData(datosSend,'update').then(response=>{self.successInsert(response)})
 						}
@@ -95,6 +96,44 @@ module.exports=class Update extends link{
 	}
 
 
+
+tableIfa(){
+	let self=this
+	tabla.drawTableIfa('ObservacionesDoctosJuridico')
+	.then(response=>{
+		$.confirm({
+		title: 'Observaciones Ifa',
+		content:response,
+		buttons: {
+			formSubmit: {
+				text: 'Submit',
+				btnClass: 'btn-blue',
+				action: function () {
+						console.log("win")
+					}
+				
+				}
+			},
+			cancel: function () {
+				
+			},
+			onContentReady:function(){
+				 $('table.principal tbody tr').click(function(){
+					let id=$(this).data('id');
+					let campo=$(this).data('nombre')
+					funcion.getDatos('ObservacionesDoctosJuridico',{idObservacionDoctoJuridico:id})
+					.then(response=>{
+						var template=self.separaTemplates(ruta)
+						self.formUpdate(template(response[0]),campo,id)
+
+					})
+				})
+			}
+		})
+	})
+	
+
+}
 
 
 

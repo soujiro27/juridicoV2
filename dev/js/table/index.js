@@ -38,7 +38,16 @@ module.exports=class Tabla{
   })
   }
 
-
+  drawTableIfa(ruta){
+    let self=this
+    let final= self.getTable(ruta)
+    .then(response=>{
+      let tablaIfa=template(response)
+      return tablaIfa
+      
+    })
+    return final
+  }
 
 
 
