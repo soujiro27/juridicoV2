@@ -128,9 +128,26 @@ module.exports=class Insert extends link{
 		this.renderForm(template);
 		CKEDITOR.disableAutoInline = true;
 		CKEDITOR.inline('observacion');
-		CKEDITOR.config.skin = 'office2013';
+		//CKEDITOR.config.skin = 'office2013';
 		funcion.loadDateInput();
 		this.getData()
 	}
+
+
+
+	getDataRuta(ruta){
+		let self=this
+		$('form#'+ruta).submit(function(event) {
+			event.preventDefault()
+			let datos=$(this).serializeArray()
+			let datosSend=$(this).serialize()
+			if(funcion.validaDatos(datos)){
+				funcion.sendDataRuta(datosSend,'insert',ruta).then(response=>{ self. successInsert(response)})
+			}
+
+		});
+	}
+
+
 
 }

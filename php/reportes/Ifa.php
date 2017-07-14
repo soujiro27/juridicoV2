@@ -3,7 +3,7 @@
 session_start();
 require './../models/get.php';
 require('mc_table.php');
-
+require('html_table.php');
 $idVolante = $_GET['param1'];
 
 function conecta(){
@@ -62,6 +62,7 @@ $sujeto=convierte($sujeto);
 
 
 $pdf = new PDF_MC_Table();
+$html= new Html();
 $pdf->AddPage();
 
 $pdf->header(
@@ -101,17 +102,20 @@ $sql="select * from sia_ObservacionesDoctosJuridico where idVolante='$idVolante'
 $datos=consultaRetorno($sql, $db);
 $pdf->Ln(10);
 $pdf->SetWidths(array(20,20,140));
-$pdf->Row(array('No.','HOJA','OBSERVACIONES'));
+$pdf->Row(array('No.','HOJA',''));
 
 foreach ($datos as $key => $value) {
   $texto=convierte($datos[$key]['observacion']);
+  $texto=html_entity_decode($texto);
   $pdf->SetWidths(array(20,20,140));
   $pdf->RowLeft(array($key+1,$datos[$key]['pagina'],$texto));
   $pdf->Ln(0);
 }
+$pdf->SetFont('Arial','',12);
+$html->WriteHTML('<b>prueba de negritas</b>');
 
-  $pdf->Ln(5);
-  $pdf->Cell(180,1,'POTENCIALES PROMOCIONES DE ACCIONES:',0,0,'C');
+$pdf->Ln(5);
+$pdf->Cell(180,1,'POTENCIALES PROMOCIONES DE ACCIONES:',0,0,'C');
 
 $rubrica='La Dirección General de Asuntos Jurídicos conincide con la potencial promoción de accíon señalada en la cédula correspondiente, no obstante, se sugiere precisar él o los incisos relacionados con la misma.';
 
@@ -141,15 +145,7 @@ $pdf->Ln(10);
 $pdf->Cell(90,1,'AUTORIZO',0,0,'C');
 $pdf->Cell(90,1,'REVISO',0,0,'C');
 
-/*
-$pdf->Image('./img/logo-top.png',10,8,33);
-$pdf->SetFont('Arial','B',10);
-$pdf->Cell(80,1,'',0);
-$pdf->Cell(50,1,$dir,0,0,'L');
-$pdf->Ln(5);
-$pdf->Cell(80,1,'',0);
-$pdf->Cell(50,5,'NOTA INFORMATIVA',0,0,'L');
-*/
+
 
 
 

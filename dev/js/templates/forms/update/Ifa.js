@@ -16,17 +16,9 @@ return yo`
 
 <div class="form-group pagina">
     <label for="pagina">Hoja</label>
+    <input type="hidden"  name="idVolante" value="${data.idVolante}"  >
     <input type="number"  id="pagina" name="pagina" required class="form-control" value="${data.pagina}"  >
-  
 </div>
-
-
-<div class="form-group fDocumento">
-    <label for="fDocumento">Fecha de Documento</label>
-    <input type="text" id="fDocumento" name="fDocumento" required class="form-control fechaInput" pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))" value="${data.fDocumento}" >
-</div>
-
-
 
 <div class="form-group observacion">
     <label for="observacionUpdate">Observacion</label>

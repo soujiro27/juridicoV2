@@ -8,7 +8,7 @@ const instr= require('./../../insert')
 const table=require('./../../table')
 
 const ConfrontaEmpty=require('./../../templates/forms/insert/Confronta')
-const ifaEmpty=require('./../../templates/forms/insert/Ifa')
+
 
 var cont=0;
 
@@ -106,40 +106,8 @@ page('/juridico/Ifa/update/:campo/:id',function(ctx,next){
 	let data=update.creaObjeto(ctx)
 	funcion.getDatos('ObservacionesDoctosJuridico',data).
 	then(response=>{
-			$('div.widget-icons').html('<button class="btn btn-primary btn-sm" id="addIfa" > Agregar Observacion </button>')
-			
-			$('button#addIfa').click(function(){
-				$(this).hide();
-				insert.formIfa(ifaEmpty(ctx.params.id))
-			})
-			update.tableIfa();
-			/*
-			if(response.register=='No se encontro registro'){
-				tabla.drawTable('ObservacionesDoctosJuridico')
-				
-			
-			}else{
-				if(cont==0){
-					tabla.drawTable('ObservacionesDoctosJuridico')
-					/*funcion.getDatos('Volantes',{idVolante:ctx.params.id})
-					.then(response=>{
-						console.log(response)
-						$('div.pull-left').html('Observaciones del IFA: '+'<span>'+response[0].numDocumento+'</span>')
-					
-					})
-					
-					cont=1
-				}else{
-				 	var template=update.separaTemplates(ruta)
-					update.formUpdate(template(response[0]),ctx.params.campo,ctx.params.id)
-					cont=0;
-				}
-				
-
-
-
-			}*/
-
+		
+			update.tableIfa(ctx.params.id);
 		
 	})
 })

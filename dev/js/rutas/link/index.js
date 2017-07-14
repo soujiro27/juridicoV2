@@ -10,5 +10,8 @@ module.exports=class Redireccion{
 	reporteConfronta(id){
 		window.open('/juridico/php/reportes/Confronta.php'+'?param1='+id)
 	}
+	reporteObsvIfa(id){
+		window.open('/juridico/php/reportes/tcpdf/examples/Ifa.php'+'?param1='+id)
+	}
 
 }
