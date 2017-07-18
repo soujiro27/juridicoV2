@@ -135,14 +135,14 @@ module.exports=class Insert extends link{
 
 
 
-	getDataRuta(ruta){
+	getDataRuta(ruta,tipo){
 		let self=this
 		$('form#'+ruta).submit(function(event) {
 			event.preventDefault()
 			let datos=$(this).serializeArray()
 			let datosSend=$(this).serialize()
 			if(funcion.validaDatos(datos)){
-				funcion.sendDataRuta(datosSend,'insert',ruta).then(response=>{ self. successInsert(response)})
+				funcion.sendDataRuta(datosSend,tipo,ruta).then(response=>{ self. successInsert(response)})
 			}
 
 		});

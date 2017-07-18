@@ -85,8 +85,10 @@ module.exports=class Update extends link{
 							funcion.sendData(datosSend,'update').then(response=>{self.successInsert(response)})
 						}
 						try{
-							
-							self.tableIfa(datos[0].value)
+							if(ruta=='Ifa'){
+								self.tableIfa(datos[0].value)
+
+							}
 						}catch(err){console.log(err)}
 					}
 				},
@@ -132,22 +134,25 @@ tableIfa(id){
 				text:"Generar Cedula",
 				btnClass:'btn-warning',
 				action:function(){
-					//self.reporteObsvIfa(id)
-
-					console.log(id)
-					funcion.getDatos('DocumentosSiglas',{idVolante:id})
-					.then(volante=>{
-						if(volante.register=='No se encontro registro'){
-							alert("no hay ")
+					let docSiglas=funcion.getDatos('DocumentosSiglas',{idVolante:id})
+					let subTipoDoc=funcion.getDatos('catSubTiposDocumentos',{estatus:'ACTIVO'})
+					Promise.all([docSiglas,subTipoDoc])
+					.then(resolve=>{
+						console.log(resolve)
+						let template=cedulaIfa(id,resolve[0],resolve[1])
+						insert.renderForm(template)
+						funcion.loadDateInput();
+						if(resolve[0].register=='No se encontro registro'){
+							insert.getDataRuta('DocumentosSiglas','insert')
 						}else{
-							alert("si hay")
+							insert.getDataRuta('DocumentosSiglas','update')
 						}
-						
 					})
 
+					/*
 					funcion.getDatos('catSubTiposDocumentos',{estatus:'ACTIVO'})
 					.then(response =>{
-						/*componer toda esta zona */
+					
 						insert.renderForm(cedulaIfa(id,response))
 						funcion.loadDateInput();
 						insert.getDataRuta('DocumentosSiglas')
@@ -193,8 +198,9 @@ tableIfa(id){
 	})
 	
 
-}
 
+
+}
 
 
 
