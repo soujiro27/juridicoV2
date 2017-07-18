@@ -1330,6 +1330,22 @@ module.exports = function (_link) {
 									} else {
 										insert.getDataRuta('DocumentosSiglas', 'update');
 									}
+									$('select#subDocumento').change(function () {
+										var val = $(this).val();
+										funcion.getDatos('CatDoctosTextos', { idSubTipoDocumento: val }).then(function (json) {
+											var td = "";
+											$.each(json, function (index, value) {
+												td += '<tr data-id="' + value.idDocumentoTexto + '"><td>' + value.texto + '</td></tr>';
+											});
+											$('table tbody#textosIfa').html(td);
+											$('table tbody#textosIfa tr').click(function () {
+												var id = $(this).data('id');
+												var texto = $(this).children('td').text();
+												$('input#idDocumentoTexto').attr('value', id);
+												$('textarea#textoIfa').text(texto);
+											});
+										});
+									});
 								});
 
 								/*

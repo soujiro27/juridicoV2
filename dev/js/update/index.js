@@ -147,6 +147,23 @@ tableIfa(id){
 						}else{
 							insert.getDataRuta('DocumentosSiglas','update')
 						}
+						$('select#subDocumento').change(function(){
+							let val= $(this).val()
+							funcion.getDatos('CatDoctosTextos',{idSubTipoDocumento:val})
+							.then(json=>{
+								let td=""
+								$.each(json,function(index,value){
+									td+=`<tr data-id="${value.idDocumentoTexto}"><td>${value.texto}</td></tr>`
+								})
+								$('table tbody#textosIfa').html(td);
+									$('table tbody#textosIfa tr').click(function(){
+									let id=$(this).data('id');
+									let texto=$(this).children('td').text();
+									$('input#idDocumentoTexto').attr('value',id)
+									$('textarea#textoIfa').text(texto)
+								})
+							})
+						})
 					})
 
 					/*
