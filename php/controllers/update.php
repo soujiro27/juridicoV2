@@ -21,6 +21,30 @@ class UpdateController extends Rutas{
 	}
 
 
+
+	public function getRegisterOrder($modulo,$datos,$order){
+		$ruta=new Rutas();
+		$get= new Get();
+		$modulo=$ruta->catalogos($modulo);
+		$result=$get->getDuplicadoOrder($modulo,$datos,$order);
+		return $result;
+
+	}
+
+
+
+	public function showRegisterOrder($modulo,$datos,$order){
+		$result=$this->getRegisterOrder($modulo,$datos,$order);
+		if(empty($result)){
+			$salida['register']='No se encontro registro';
+			echo json_encode($salida);
+		}else{
+			echo json_encode($result);
+		}
+	}
+
+
+
 	public function updateRegister($modulo,$datos){
 		$ruta=new Rutas();
 		$modulo=$ruta->catalogos($modulo);

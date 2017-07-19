@@ -16,6 +16,8 @@ const confronta=require('./../templates/forms/update/Confronta')
 const ifa=require('./../templates/forms/update/Ifa')
 const ifaEmpty=require('./../templates/forms/insert/Ifa')
 const cedulaIfa=require('./../templates/forms/insert/IfaCedula')
+const dibujaTabla=require('./../templates/table')
+
 
 let tabla=new table()
 let confirms=new query()
@@ -134,14 +136,16 @@ tableIfa(id){
 				text:"Generar Cedula",
 				btnClass:'btn-warning',
 				action:function(){
-					let docSiglas=funcion.getDatos('DocumentosSiglas',{idVolante:id})
+					let docSiglas=funcion.getDatos('DocumentosSiglas',{idVolante:'998'})
 					let subTipoDoc=funcion.getDatos('catSubTiposDocumentos',{estatus:'ACTIVO'})
-					Promise.all([docSiglas,subTipoDoc])
+					let empleados=funcion.getDatosOrder('empleados',{idArea:'DGAJ'},'paterno')
+					Promise.all([docSiglas,subTipoDoc,empleados])
 					.then(resolve=>{
-						console.log(resolve)
-						let template=cedulaIfa(id,resolve[0],resolve[1])
+					
+						let template=cedulaIfa(id,resolve[0],resolve[1],resolve[2])
 						insert.renderForm(template)
 						funcion.loadDateInput();
+
 						if(resolve[0].register=='No se encontro registro'){
 							insert.getDataRuta('DocumentosSiglas','insert')
 						}else{
@@ -150,50 +154,12 @@ tableIfa(id){
 						$('select#subDocumento').change(function(){
 							let val= $(this).val()
 							funcion.getDatos('CatDoctosTextos',{idSubTipoDocumento:val})
-							.then(json=>{
-								let td=""
-								$.each(json,function(index,value){
-									td+=`<tr data-id="${value.idDocumentoTexto}"><td>${value.texto}</td></tr>`
-								})
-								$('table tbody#textosIfa').html(td);
-									$('table tbody#textosIfa tr').click(function(){
-									let id=$(this).data('id');
-									let texto=$(this).children('td').text();
-									$('input#idDocumentoTexto').attr('value',id)
-									$('textarea#textoIfa').text(texto)
-								})
-							})
+							.then(json=>{self.tablaTextosIfa(json)})
 						})
+						
 					})
 
-					/*
-					funcion.getDatos('catSubTiposDocumentos',{estatus:'ACTIVO'})
-					.then(response =>{
-					
-						insert.renderForm(cedulaIfa(id,response))
-						funcion.loadDateInput();
-						insert.getDataRuta('DocumentosSiglas')
-						$('select#subDocumento').change(function(){
-							let val= $(this).val()
-							funcion.getDatos('CatDoctosTextos',{idSubTipoDocumento:val})
-							.then(json=>{
-								let td=""
-								$.each(json,function(index,value){
-									td+=`<tr data-id="${value.idDocumentoTexto}"><td>${value.texto}</td></tr>`
-								})
-								
-								$('table tbody#textosIfa').html(td);
-								$('table tbody#textosIfa tr').click(function(){
-									let id=$(this).data('id');
-									let texto=$(this).children('td').text();
-									$('input#idDocumentoTexto').attr('value',id)
-									$('textarea#textoIfa').text(texto)
-								})
-
-							})
-						})
-
-					}) /* toda estra zona hacia rriba hacer en funcion */
+				
 				}
 			}
 			},
@@ -221,7 +187,29 @@ tableIfa(id){
 
 
 
+tablaTextosIfa(json){
+	
+	if(json.register=='No se encontro registro'){
+		var template='<p> No hay Textos Asignados a este Sub Documento</p>'
+	}else{
+		var template=dibujaTabla(json)
+	}
+	
 
+ $.alert({
+	title:'Promocio de Acciones',
+	content:template,
+	onContentReady:function(){
+		$('table.principal tr').click(function(){
+			let id=$(this).data('id')
+			let texto=$(this).children('td#texto').text();
+			$('input#idDocumentoTexto').attr('value',id)
+			$('textarea#textoIfa').text(texto)
+		})
+	},
+	draggable: true
+ })
+}
 
 
 

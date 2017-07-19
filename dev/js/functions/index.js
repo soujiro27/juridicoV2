@@ -161,4 +161,21 @@ module.exports=class Funciones extends link{
 
 
 
+	getDatosOrder(ruta,data,order){
+		let get=new Promise((resolve,reject)=>{
+			$.get({
+				url:'/getRegisterOrder/'+ruta+'/'+order,
+				data:data,
+				success:function(data){
+					let json=JSON.parse(data);
+					resolve(json)
+
+				}
+			})
+		})
+		return get
+	}
+
+
+
 }

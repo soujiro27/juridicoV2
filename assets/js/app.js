@@ -178,6 +178,21 @@ module.exports = function (_link) {
 			});
 			return post;
 		}
+	}, {
+		key: 'getDatosOrder',
+		value: function getDatosOrder(ruta, data, order) {
+			var get = new Promise(function (resolve, reject) {
+				$.get({
+					url: '/getRegisterOrder/' + ruta + '/' + order,
+					data: data,
+					success: function success(data) {
+						var json = JSON.parse(data);
+						resolve(json);
+					}
+				});
+			});
+			return get;
+		}
 	}]);
 
 	return Funciones;
@@ -366,10 +381,43 @@ module.exports = function (_link) {
 				event.preventDefault();
 				var datos = $(this).serializeArray();
 				var datosSend = $(this).serialize();
+				var id = datos[4].value;
 				if (funcion.validaDatos(datos)) {
 					funcion.sendDataRuta(datosSend, tipo, ruta).then(function (response) {
-						self.successInsert(response);
+						self.successCedulaIfa(response, id);
 					});
+				}
+			});
+		}
+	}, {
+		key: 'successCedulaIfa',
+		value: function successCedulaIfa(json, id) {
+			var self = this;
+			json.insert != 'true' ? confirms.modernAlert(json.insert) : self.confirmPrintCedulaIfa(id);
+			$('a#agregar').show();
+		}
+	}, {
+		key: 'confirmPrintCedulaIfa',
+		value: function confirmPrintCedulaIfa(id) {
+			var self = this;
+			$.confirm({
+				title: 'Datos Actualizados',
+				content: 'Desea Imprimir la Cedula',
+				buttons: {
+					confirm: {
+						text: 'Imprimir',
+						btnClass: 'btn-warning',
+						action: function action() {
+							self.reporteObsvIfa(id);
+						}
+					},
+					cancel: {
+						text: 'Cancelar',
+						btnClass: 'btn-red',
+						action: function action() {
+							tabla.drawTable(ruta);
+						}
+					}
 				}
 			});
 		}
@@ -798,15 +846,16 @@ module.exports = function (idVolante) {
 },{"yo-yo":270}],14:[function(require,module,exports){
 'use strict';
 
-var _templateObject = _taggedTemplateLiteral(['\n<div>\n<div class="contentIrac" id="contentIrac" >\n    <form method="POST" class="form-inline" id="DocumentosSiglas">\n<div class="form-group siglas">\n    <label for="siglas">Siglas</label>\n    <input type="text"  id="siglas" name="siglas" required class="form-control"   >\n    <input type="hidden"  name="idVolante" value="', '"  >\n</div>\n<div class="form-group subDocumento">\n    <label for="subDocumento">Tipo de SubDocumento</label>\n    <select name="idSubTipoDocumento" id="subDocumento" required="required" class="form-control" >\n      <option value=""> Seleccione una Opci\xF3n </option>\n        ', '\n    </select>\n</div>\n<div class="form-group tabla">\n    <table  class="table table-striped table-bordered table-hover" >\n        <thead>\n            <tr>\n                <td>Texto</td>\n            </tr>\n        </thead>\n        <tbody id="textosIfa"></tbody>\n    </table>\n</div>\n<div class="form-group textoIfa">\n    <label for="textoIfa">textoIfa</label>\n    <textarea class="form-control" rows="3" readonly  id="textoIfa" ></textarea>\n    <input type="hidden"  name="idDocumentoTexto" id="idDocumentoTexto" value=""  >\n</div>\n\n<div class="form-group fecha">\n    <label for="fecha">Fecha Documento</label>\n    <input type="text" id="fOficio" name="fOficio" required class="form-control fechaInput" pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))">\n</div>\n<div class="form-group send">\n    <input type="submit" class="btn btn-primary btn-sm" value="Guardar">\n    <button class="btn btn-default btn-sm" id="cancelar">Cancelar</button>\n</div>\n\n\n</form>\n</div>\n\n</div>'], ['\n<div>\n<div class="contentIrac" id="contentIrac" >\n    <form method="POST" class="form-inline" id="DocumentosSiglas">\n<div class="form-group siglas">\n    <label for="siglas">Siglas</label>\n    <input type="text"  id="siglas" name="siglas" required class="form-control"   >\n    <input type="hidden"  name="idVolante" value="', '"  >\n</div>\n<div class="form-group subDocumento">\n    <label for="subDocumento">Tipo de SubDocumento</label>\n    <select name="idSubTipoDocumento" id="subDocumento" required="required" class="form-control" >\n      <option value=""> Seleccione una Opci\xF3n </option>\n        ', '\n    </select>\n</div>\n<div class="form-group tabla">\n    <table  class="table table-striped table-bordered table-hover" >\n        <thead>\n            <tr>\n                <td>Texto</td>\n            </tr>\n        </thead>\n        <tbody id="textosIfa"></tbody>\n    </table>\n</div>\n<div class="form-group textoIfa">\n    <label for="textoIfa">textoIfa</label>\n    <textarea class="form-control" rows="3" readonly  id="textoIfa" ></textarea>\n    <input type="hidden"  name="idDocumentoTexto" id="idDocumentoTexto" value=""  >\n</div>\n\n<div class="form-group fecha">\n    <label for="fecha">Fecha Documento</label>\n    <input type="text" id="fOficio" name="fOficio" required class="form-control fechaInput" pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))">\n</div>\n<div class="form-group send">\n    <input type="submit" class="btn btn-primary btn-sm" value="Guardar">\n    <button class="btn btn-default btn-sm" id="cancelar">Cancelar</button>\n</div>\n\n\n</form>\n</div>\n\n</div>']),
+var _templateObject = _taggedTemplateLiteral(['\n<div>\n<div class="contentIrac" id="contentIrac" >\n    <form method="POST" class="form-inline" id="DocumentosSiglas">\n<div class="form-group siglas">\n    <label for="siglas">Siglas</label>\n    <input type="text"  id="siglas" name="siglas" required class="form-control"   >\n    <input type="hidden"  name="idVolante" value="', '"  >\n</div>\n<div class="form-group subDocumento">\n    <label for="subDocumento">Tipo de SubDocumento</label>\n    <select name="idSubTipoDocumento" id="subDocumento" required="required" class="form-control" >\n      <option value=""> Seleccione una Opci\xF3n </option>\n        ', '\n    </select>\n</div>\n\n\n\n<div class="form-group textoIfa">\n    <label for="textoIfa">Potenciales Promociones de Acciones</label>\n    <textarea class="form-control" rows="3" readonly  id="textoIfa" ></textarea>\n    <input type="hidden"  name="idDocumentoTexto" id="idDocumentoTexto" value=""  >\n</div>\n\n\n\n\n\n<div class="form-group firmas">\n    <label for="firmas">Personal que Firma</label>\n    <select name="idSubTipoDocumento" id="firma" required="required" class="form-control" multiple >\n      <option value=""> Seleccione una Opci\xF3n </option>\n        ', '\n    </select>\n</div>\n\n\n<div class="form-group fecha">\n    <label for="fecha">Fecha Documento</label>\n    <input type="text" id="fOficio" name="fOficio" required class="form-control fechaInput" pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))">\n</div>\n\n\n<div class="form-group send">\n    <input type="submit" class="btn btn-primary btn-sm" value="Guardar">\n    <button class="btn btn-default btn-sm" id="cancelar">Cancelar</button>\n</div>\n\n\n</form>\n</div>\n\n</div>'], ['\n<div>\n<div class="contentIrac" id="contentIrac" >\n    <form method="POST" class="form-inline" id="DocumentosSiglas">\n<div class="form-group siglas">\n    <label for="siglas">Siglas</label>\n    <input type="text"  id="siglas" name="siglas" required class="form-control"   >\n    <input type="hidden"  name="idVolante" value="', '"  >\n</div>\n<div class="form-group subDocumento">\n    <label for="subDocumento">Tipo de SubDocumento</label>\n    <select name="idSubTipoDocumento" id="subDocumento" required="required" class="form-control" >\n      <option value=""> Seleccione una Opci\xF3n </option>\n        ', '\n    </select>\n</div>\n\n\n\n<div class="form-group textoIfa">\n    <label for="textoIfa">Potenciales Promociones de Acciones</label>\n    <textarea class="form-control" rows="3" readonly  id="textoIfa" ></textarea>\n    <input type="hidden"  name="idDocumentoTexto" id="idDocumentoTexto" value=""  >\n</div>\n\n\n\n\n\n<div class="form-group firmas">\n    <label for="firmas">Personal que Firma</label>\n    <select name="idSubTipoDocumento" id="firma" required="required" class="form-control" multiple >\n      <option value=""> Seleccione una Opci\xF3n </option>\n        ', '\n    </select>\n</div>\n\n\n<div class="form-group fecha">\n    <label for="fecha">Fecha Documento</label>\n    <input type="text" id="fOficio" name="fOficio" required class="form-control fechaInput" pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))">\n</div>\n\n\n<div class="form-group send">\n    <input type="submit" class="btn btn-primary btn-sm" value="Guardar">\n    <button class="btn btn-default btn-sm" id="cancelar">Cancelar</button>\n</div>\n\n\n</form>\n</div>\n\n</div>']),
     _templateObject2 = _taggedTemplateLiteral(['<option value="', '">', '</option>'], ['<option value="', '">', '</option>']),
-    _templateObject3 = _taggedTemplateLiteral(['\n<div>\n<div class="contentIrac" id="contentIrac" >\n    <form method="POST" class="form-inline" id="DocumentosSiglas">\n<div class="form-group siglas">\n    <label for="siglas">Siglas</label>\n    <input type="text"  id="siglas" name="siglas" required class="form-control" value="', '"   >\n   \n</div>\n<div class="form-group subDocumento">\n    <label for="subDocumento">Tipo de SubDocumento</label>\n    <select name="idSubTipoDocumento" id="subDocumento" required="required" class="form-control" >\n      <option value=""> Seleccione una Opci\xF3n </option>\n        ', '\n    </select>\n</div>\n<div class="form-group tabla">\n    <table  class="table table-striped table-bordered table-hover" >\n        <thead>\n            <tr>\n                <td>Texto</td>\n            </tr>\n        </thead>\n        <tbody id="textosIfa"></tbody>\n    </table>\n</div>\n<div class="form-group textoIfa">\n    <label for="textoIfa">textoIfa</label>\n    <textarea class="form-control" rows="3" readonly  id="textoIfa" >', '</textarea>\n    <input type="hidden"  name="idDocumentoTexto" id="idDocumentoTexto" value="', '"  >\n</div>\n\n<div class="form-group fecha">\n    <label for="fecha">Fecha Documento</label>\n    <input type="text" id="fOficio" name="fOficio" required class="form-control fechaInput" pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))" value="', '" >\n    <input type="hidden"  name="idVolante" value="', '"  >\n</div>\n<div class="form-group send">\n    <input type="submit" class="btn btn-primary btn-sm" value="Guardar">\n    <button class="btn btn-default btn-sm" id="cancelar">Cancelar</button>\n</div>\n\n\n</form>\n</div>\n\n</div>'], ['\n<div>\n<div class="contentIrac" id="contentIrac" >\n    <form method="POST" class="form-inline" id="DocumentosSiglas">\n<div class="form-group siglas">\n    <label for="siglas">Siglas</label>\n    <input type="text"  id="siglas" name="siglas" required class="form-control" value="', '"   >\n   \n</div>\n<div class="form-group subDocumento">\n    <label for="subDocumento">Tipo de SubDocumento</label>\n    <select name="idSubTipoDocumento" id="subDocumento" required="required" class="form-control" >\n      <option value=""> Seleccione una Opci\xF3n </option>\n        ', '\n    </select>\n</div>\n<div class="form-group tabla">\n    <table  class="table table-striped table-bordered table-hover" >\n        <thead>\n            <tr>\n                <td>Texto</td>\n            </tr>\n        </thead>\n        <tbody id="textosIfa"></tbody>\n    </table>\n</div>\n<div class="form-group textoIfa">\n    <label for="textoIfa">textoIfa</label>\n    <textarea class="form-control" rows="3" readonly  id="textoIfa" >', '</textarea>\n    <input type="hidden"  name="idDocumentoTexto" id="idDocumentoTexto" value="', '"  >\n</div>\n\n<div class="form-group fecha">\n    <label for="fecha">Fecha Documento</label>\n    <input type="text" id="fOficio" name="fOficio" required class="form-control fechaInput" pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))" value="', '" >\n    <input type="hidden"  name="idVolante" value="', '"  >\n</div>\n<div class="form-group send">\n    <input type="submit" class="btn btn-primary btn-sm" value="Guardar">\n    <button class="btn btn-default btn-sm" id="cancelar">Cancelar</button>\n</div>\n\n\n</form>\n</div>\n\n</div>']),
-    _templateObject4 = _taggedTemplateLiteral(['<option value="', '" selected >', ' </option>'], ['<option value="', '" selected >', ' </option>']);
+    _templateObject3 = _taggedTemplateLiteral(['<option value="', '">', ' ', ' ', ' </option>'], ['<option value="', '">', ' ', ' ', ' </option>']),
+    _templateObject4 = _taggedTemplateLiteral(['\n<div>\n<div class="contentIrac" id="contentIrac" >\n    <form method="POST" class="form-inline" id="DocumentosSiglas">\n<div class="form-group siglas">\n    <label for="siglas">Siglas</label>\n    <input type="text"  id="siglas" name="siglas" required class="form-control" value="', '"   >\n   \n</div>\n<div class="form-group subDocumento">\n    <label for="subDocumento">Tipo de SubDocumento</label>\n    <select name="idSubTipoDocumento" id="subDocumento" required="required" class="form-control" >\n      <option value=""> Seleccione una Opci\xF3n </option>\n        ', '\n    </select>\n</div>\n\n<div class="form-group textoIfa">\n    <label for="textoIfa">textoIfa</label>\n    <textarea class="form-control" rows="3" readonly  id="textoIfa" >', '</textarea>\n    <input type="hidden"  name="idDocumentoTexto" id="idDocumentoTexto" value="', '"  >\n</div>\n\n\n<div class="form-group fecha">\n    <label for="fecha">Fecha Documento</label>\n    <input type="text" id="fOficio" name="fOficio" required class="form-control fechaInput" pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))" value="', '" >\n    <input type="hidden"  name="idVolante" value="', '"  >\n</div>\n\n\n\n\n<div class="form-group send">\n    <input type="submit" class="btn btn-primary btn-sm" value="Guardar">\n    <button class="btn btn-default btn-sm" id="cancelar">Cancelar</button>\n</div>\n\n\n</form>\n</div>\n\n</div>'], ['\n<div>\n<div class="contentIrac" id="contentIrac" >\n    <form method="POST" class="form-inline" id="DocumentosSiglas">\n<div class="form-group siglas">\n    <label for="siglas">Siglas</label>\n    <input type="text"  id="siglas" name="siglas" required class="form-control" value="', '"   >\n   \n</div>\n<div class="form-group subDocumento">\n    <label for="subDocumento">Tipo de SubDocumento</label>\n    <select name="idSubTipoDocumento" id="subDocumento" required="required" class="form-control" >\n      <option value=""> Seleccione una Opci\xF3n </option>\n        ', '\n    </select>\n</div>\n\n<div class="form-group textoIfa">\n    <label for="textoIfa">textoIfa</label>\n    <textarea class="form-control" rows="3" readonly  id="textoIfa" >', '</textarea>\n    <input type="hidden"  name="idDocumentoTexto" id="idDocumentoTexto" value="', '"  >\n</div>\n\n\n<div class="form-group fecha">\n    <label for="fecha">Fecha Documento</label>\n    <input type="text" id="fOficio" name="fOficio" required class="form-control fechaInput" pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))" value="', '" >\n    <input type="hidden"  name="idVolante" value="', '"  >\n</div>\n\n\n\n\n<div class="form-group send">\n    <input type="submit" class="btn btn-primary btn-sm" value="Guardar">\n    <button class="btn btn-default btn-sm" id="cancelar">Cancelar</button>\n</div>\n\n\n</form>\n</div>\n\n</div>']),
+    _templateObject5 = _taggedTemplateLiteral(['<option value="', '" selected >', ' </option>'], ['<option value="', '" selected >', ' </option>']);
 
 function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
 var yo = require('yo-yo');
-module.exports = function (idVolante, docSiglas, SubTipoDocumento) {
+module.exports = function (idVolante, docSiglas, SubTipoDocumento, empleados) {
 
     //console.log(docSiglas)
     //console.log(SubTipoDocumento)
@@ -816,6 +865,9 @@ module.exports = function (idVolante, docSiglas, SubTipoDocumento) {
 
         return yo(_templateObject, idVolante, SubTipoDocumento.map(function (json) {
             return yo(_templateObject2, json.idSubTipoDocumento, json.nombre);
+        }), empleados.map(function (json) {
+
+            return yo(_templateObject3, json.idEmpleado, json.paterno, json.materno, json.nombre);
         }));
     } else {
         var id = docSiglas[0].idDocumentoTexto;
@@ -834,9 +886,9 @@ module.exports = function (idVolante, docSiglas, SubTipoDocumento) {
 
         });
 
-        return yo(_templateObject3, docSiglas[0].siglas, SubTipoDocumento.map(function (json) {
+        return yo(_templateObject4, docSiglas[0].siglas, SubTipoDocumento.map(function (json) {
             if (json.idSubTipoDocumento == docSiglas[0].idSubTipoDocumento) {
-                return yo(_templateObject4, json.idSubTipoDocumento, json.nombre);
+                return yo(_templateObject5, json.idSubTipoDocumento, json.nombre);
             }
             return yo(_templateObject2, json.idSubTipoDocumento, json.nombre);
         }), texto, docSiglas[0].idDocumentoTexto, docSiglas[0].fOficio, idVolante);
@@ -1177,6 +1229,7 @@ var confronta = require('./../templates/forms/update/Confronta');
 var ifa = require('./../templates/forms/update/Ifa');
 var ifaEmpty = require('./../templates/forms/insert/Ifa');
 var cedulaIfa = require('./../templates/forms/insert/IfaCedula');
+var dibujaTabla = require('./../templates/table');
 
 var tabla = new table();
 var confirms = new query();
@@ -1318,13 +1371,15 @@ module.exports = function (_link) {
 							text: "Generar Cedula",
 							btnClass: 'btn-warning',
 							action: function action() {
-								var docSiglas = funcion.getDatos('DocumentosSiglas', { idVolante: id });
+								var docSiglas = funcion.getDatos('DocumentosSiglas', { idVolante: '998' });
 								var subTipoDoc = funcion.getDatos('catSubTiposDocumentos', { estatus: 'ACTIVO' });
-								Promise.all([docSiglas, subTipoDoc]).then(function (resolve) {
-									console.log(resolve);
-									var template = cedulaIfa(id, resolve[0], resolve[1]);
+								var empleados = funcion.getDatosOrder('empleados', { idArea: 'DGAJ' }, 'paterno');
+								Promise.all([docSiglas, subTipoDoc, empleados]).then(function (resolve) {
+
+									var template = cedulaIfa(id, resolve[0], resolve[1], resolve[2]);
 									insert.renderForm(template);
 									funcion.loadDateInput();
+
 									if (resolve[0].register == 'No se encontro registro') {
 										insert.getDataRuta('DocumentosSiglas', 'insert');
 									} else {
@@ -1333,47 +1388,10 @@ module.exports = function (_link) {
 									$('select#subDocumento').change(function () {
 										var val = $(this).val();
 										funcion.getDatos('CatDoctosTextos', { idSubTipoDocumento: val }).then(function (json) {
-											var td = "";
-											$.each(json, function (index, value) {
-												td += '<tr data-id="' + value.idDocumentoTexto + '"><td>' + value.texto + '</td></tr>';
-											});
-											$('table tbody#textosIfa').html(td);
-											$('table tbody#textosIfa tr').click(function () {
-												var id = $(this).data('id');
-												var texto = $(this).children('td').text();
-												$('input#idDocumentoTexto').attr('value', id);
-												$('textarea#textoIfa').text(texto);
-											});
+											self.tablaTextosIfa(json);
 										});
 									});
 								});
-
-								/*
-        funcion.getDatos('catSubTiposDocumentos',{estatus:'ACTIVO'})
-        .then(response =>{
-        
-        	insert.renderForm(cedulaIfa(id,response))
-        	funcion.loadDateInput();
-        	insert.getDataRuta('DocumentosSiglas')
-        	$('select#subDocumento').change(function(){
-        		let val= $(this).val()
-        		funcion.getDatos('CatDoctosTextos',{idSubTipoDocumento:val})
-        		.then(json=>{
-        			let td=""
-        			$.each(json,function(index,value){
-        				td+=`<tr data-id="${value.idDocumentoTexto}"><td>${value.texto}</td></tr>`
-        			})
-        			
-        			$('table tbody#textosIfa').html(td);
-        			$('table tbody#textosIfa tr').click(function(){
-        				let id=$(this).data('id');
-        				let texto=$(this).children('td').text();
-        				$('input#idDocumentoTexto').attr('value',id)
-        				$('textarea#textoIfa').text(texto)
-        			})
-        				})
-        	})
-        		}) /* toda estra zona hacia rriba hacer en funcion */
 							}
 						}
 					},
@@ -1392,12 +1410,36 @@ module.exports = function (_link) {
 				});
 			});
 		}
+	}, {
+		key: 'tablaTextosIfa',
+		value: function tablaTextosIfa(json) {
+
+			if (json.register == 'No se encontro registro') {
+				var template = '<p> No hay Textos Asignados a este Sub Documento</p>';
+			} else {
+				var template = dibujaTabla(json);
+			}
+
+			$.alert({
+				title: 'Promocio de Acciones',
+				content: template,
+				onContentReady: function onContentReady() {
+					$('table.principal tr').click(function () {
+						var id = $(this).data('id');
+						var texto = $(this).children('td#texto').text();
+						$('input#idDocumentoTexto').attr('value', id);
+						$('textarea#textoIfa').text(texto);
+					});
+				},
+				draggable: true
+			});
+		}
 	}]);
 
 	return Update;
 }(link);
 
-},{"./../functions":1,"./../insert":3,"./../notificaciones":5,"./../rutas/link":7,"./../table":9,"./../templates/forms/insert/Ifa":13,"./../templates/forms/insert/IfaCedula":14,"./../templates/forms/update/Acciones.js":18,"./../templates/forms/update/Caracteres.js":19,"./../templates/forms/update/Confronta":20,"./../templates/forms/update/Ifa":21,"./../templates/forms/update/SubTiposDocumentos.js":22,"./../templates/forms/update/Textos":23,"./../templates/forms/update/Volantes.js":24,"ckeditor":33,"jquery":198}],29:[function(require,module,exports){
+},{"./../functions":1,"./../insert":3,"./../notificaciones":5,"./../rutas/link":7,"./../table":9,"./../templates/forms/insert/Ifa":13,"./../templates/forms/insert/IfaCedula":14,"./../templates/forms/update/Acciones.js":18,"./../templates/forms/update/Caracteres.js":19,"./../templates/forms/update/Confronta":20,"./../templates/forms/update/Ifa":21,"./../templates/forms/update/SubTiposDocumentos.js":22,"./../templates/forms/update/Textos":23,"./../templates/forms/update/Volantes.js":24,"./../templates/table":27,"ckeditor":33,"jquery":198}],29:[function(require,module,exports){
 (function (global){
 'use strict';
 

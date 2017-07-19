@@ -141,13 +141,49 @@ module.exports=class Insert extends link{
 			event.preventDefault()
 			let datos=$(this).serializeArray()
 			let datosSend=$(this).serialize()
+			let id=datos[4].value
 			if(funcion.validaDatos(datos)){
-				funcion.sendDataRuta(datosSend,tipo,ruta).then(response=>{ self. successInsert(response)})
+				funcion.sendDataRuta(datosSend,tipo,ruta).then(response=>{ 
+					self.successCedulaIfa(response,id)
+
+
+				})
 			}
 
 		});
 	}
 
 
+	successCedulaIfa(json,id){
+		let self=this
+		json.insert!='true' ? confirms.modernAlert(json.insert):self.confirmPrintCedulaIfa(id)
+		$('a#agregar').show();
+	}
+
+
+	confirmPrintCedulaIfa(id){
+		let self=this
+		$.confirm({
+			title: 'Datos Actualizados',
+    		content: 'Desea Imprimir la Cedula',
+    	buttons: {
+        	confirm:{
+				text: 'Imprimir',
+				btnClass:'btn-warning',
+				action:function(){
+					self.reporteObsvIfa(id)
+				}
+        },
+        	cancel:{
+				text:'Cancelar',
+				btnClass:'btn-red',
+				action:function(){
+					tabla.drawTable(ruta)
+				}
+        }
+    	}
+		});
+	}
+	
 
 }

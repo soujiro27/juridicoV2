@@ -1,5 +1,5 @@
 var yo=require('yo-yo');
-module.exports=function(idVolante,docSiglas,SubTipoDocumento){
+module.exports=function(idVolante,docSiglas,SubTipoDocumento,empleados){
 
 
 
@@ -28,26 +28,38 @@ return yo`
         })}
     </select>
 </div>
-<div class="form-group tabla">
-    <table  class="table table-striped table-bordered table-hover" >
-        <thead>
-            <tr>
-                <td>Texto</td>
-            </tr>
-        </thead>
-        <tbody id="textosIfa"></tbody>
-    </table>
-</div>
+
+
+
 <div class="form-group textoIfa">
-    <label for="textoIfa">textoIfa</label>
+    <label for="textoIfa">Potenciales Promociones de Acciones</label>
     <textarea class="form-control" rows="3" readonly  id="textoIfa" ></textarea>
     <input type="hidden"  name="idDocumentoTexto" id="idDocumentoTexto" value=""  >
 </div>
+
+
+
+
+
+<div class="form-group firmas">
+    <label for="firmas">Personal que Firma</label>
+    <select name="idSubTipoDocumento" id="firma" required="required" class="form-control" multiple >
+      <option value=""> Seleccione una Opción </option>
+        ${empleados.map(function(json){
+           
+            return yo `<option value="${json.idEmpleado}">${json.paterno} ${json.materno} ${json.nombre} </option>`
+            
+        })}
+    </select>
+</div>
+
 
 <div class="form-group fecha">
     <label for="fecha">Fecha Documento</label>
     <input type="text" id="fOficio" name="fOficio" required class="form-control fechaInput" pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))">
 </div>
+
+
 <div class="form-group send">
     <input type="submit" class="btn btn-primary btn-sm" value="Guardar">
     <button class="btn btn-default btn-sm" id="cancelar">Cancelar</button>
@@ -99,27 +111,23 @@ return yo`
         })}
     </select>
 </div>
-<div class="form-group tabla">
-    <table  class="table table-striped table-bordered table-hover" >
-        <thead>
-            <tr>
-                <td>Texto</td>
-            </tr>
-        </thead>
-        <tbody id="textosIfa"></tbody>
-    </table>
-</div>
+
 <div class="form-group textoIfa">
     <label for="textoIfa">textoIfa</label>
     <textarea class="form-control" rows="3" readonly  id="textoIfa" >${texto}</textarea>
     <input type="hidden"  name="idDocumentoTexto" id="idDocumentoTexto" value="${docSiglas[0].idDocumentoTexto}"  >
 </div>
 
+
 <div class="form-group fecha">
     <label for="fecha">Fecha Documento</label>
     <input type="text" id="fOficio" name="fOficio" required class="form-control fechaInput" pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))" value="${docSiglas[0].fOficio}" >
     <input type="hidden"  name="idVolante" value="${idVolante}"  >
 </div>
+
+
+
+
 <div class="form-group send">
     <input type="submit" class="btn btn-primary btn-sm" value="Guardar">
     <button class="btn btn-default btn-sm" id="cancelar">Cancelar</button>

@@ -37,6 +37,12 @@ $app->get('/getRegister/:modulo',function($modulo) use ($app){
 
 });
 
+$app->get('/getRegisterOrder/:modulo/:order',function($modulo,$order) use ($app){
+	$update=new UpdateController();
+	$update->showRegisterOrder($modulo,$app->request->get(),$order);
+
+});
+
 
 /*-----------------hace el update ------------------*/
 $app->post('/update/:modulo',function($modulo) use ($app){

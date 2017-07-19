@@ -53,6 +53,16 @@ class Get{
 			return $datos;
 	}
 
+	public function getDuplicadoOrder($tabla,$datos,$order){
+			$procesa=new procesaDatosQuery();
+			$sql=$procesa->obtieneCamposWhere($datos);
+			$sql="SELECT * FROM sia_".$tabla." WHERE ".$sql." order by ".$order;
+			//echo $sql;
+			$pdo=$procesa->obtieneArregloPdo($datos);
+			$datos=$this->consultaRetornoPDO($sql,$pdo);
+			return $datos;
+	}
+
 
 	public function getCombo($tabla,$campos,$where,$pdo){
 		$db=$this->conecta();
