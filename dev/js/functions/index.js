@@ -145,15 +145,15 @@ module.exports=class Funciones extends link{
 
 
 
-		sendDataRuta(datos,tipo,ruta){
+	sendDataRuta(datos,tipo,ruta){
 		let post=new Promise((resolve,reject)=>{
-			$.post({
-				url:'/'+tipo+'/'+ruta,
-				data:datos,
-				success:function(json){
-					let data=JSON.parse(json)
-					resolve(data)
-				}
+		$.post({
+			url:'/'+tipo+'/'+ruta,
+			data:datos,
+			success:function(json){
+			let data=JSON.parse(json)
+			resolve(data)
+			}
 			});
 		})
 		return post

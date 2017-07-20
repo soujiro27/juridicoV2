@@ -43,7 +43,7 @@ return yo`
 
 <div class="form-group firmas">
     <label for="firmas">Personal que Firma</label>
-    <select name="idSubTipoDocumento" id="firma" required="required" class="form-control" multiple >
+    <select name="firma" id="firma" required="required" class="form-control" multiple >
       <option value=""> Seleccione una Opción </option>
         ${empleados.map(function(json){
            

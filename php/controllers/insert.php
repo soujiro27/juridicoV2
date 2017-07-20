@@ -23,7 +23,7 @@ class InsertController{
 		$err=new Errores();
 		$ruta= new Rutas;
 		
-		if($modulo!='Volantes' && $modulo!='Ifa' ){
+		if($modulo!='Volantes' && $modulo!='Ifa' && $modulo!='DocumentosSiglas' ){
 			$modulo=$ruta->catalogos($modulo);
 			$duplicado=$getData->getDuplicado($modulo,$datos);
 			if(empty($duplicado)){
@@ -45,7 +45,10 @@ class InsertController{
 			$res=$insert->insertaBd($modulo,$datos);
 			$err->catchError($res);
 			
+		}elseif($modulo=='DocumentosSiglas'){
+			var_dump($datos);
 		}
+		
 	}
 
 

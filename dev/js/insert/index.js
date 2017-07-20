@@ -143,6 +143,9 @@ module.exports=class Insert extends link{
 			let datosSend=$(this).serialize()
 			let id=datos[4].value
 			if(funcion.validaDatos(datos)){
+				if(ruta=='DocumentosSiglas'){
+					getDataFirma(datos)
+				}
 				funcion.sendDataRuta(datosSend,tipo,ruta).then(response=>{ 
 					self.successCedulaIfa(response,id)
 
@@ -185,5 +188,9 @@ module.exports=class Insert extends link{
 		});
 	}
 	
+
+	getDataFirma(datos){
+		console.log(datos)
+	}
 
 }
