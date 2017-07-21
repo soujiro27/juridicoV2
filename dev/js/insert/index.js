@@ -144,13 +144,13 @@ module.exports=class Insert extends link{
 			let id=datos[4].value
 			if(funcion.validaDatos(datos)){
 				if(ruta=='DocumentosSiglas'){
-					getDataFirma(datos)
+					self.getDataFirma(datos)
 				}
-				funcion.sendDataRuta(datosSend,tipo,ruta).then(response=>{ 
+				/*funcion.sendDataRuta(datosSend,tipo,ruta).then(response=>{ 
 					self.successCedulaIfa(response,id)
 
 
-				})
+				})*/
 			}
 
 		});
@@ -190,7 +190,14 @@ module.exports=class Insert extends link{
 	
 
 	getDataFirma(datos){
+		let firma=''
 		console.log(datos)
+		for(let x in datos){
+			if(datos[x].name=='firma'){
+				firma+=datos[x].value+','
+			}	
+		}
+	console.log(firma)
 	}
 
 }
