@@ -136,7 +136,7 @@ tableIfa(id){
 				text:"Generar Cedula",
 				btnClass:'btn-warning',
 				action:function(){
-					let docSiglas=funcion.getDatos('DocumentosSiglas',{idVolante:'998'})
+					let docSiglas=funcion.getDatos('DocumentosSiglas',{idVolante:id})
 					let subTipoDoc=funcion.getDatos('catSubTiposDocumentos',{estatus:'ACTIVO'})
 					let empleados=funcion.getDatosOrder('empleados',{idArea:'DGAJ'},'paterno')
 					Promise.all([docSiglas,subTipoDoc,empleados])

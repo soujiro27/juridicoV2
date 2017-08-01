@@ -46,7 +46,15 @@ class InsertController{
 			$err->catchError($res);
 			
 		}elseif($modulo=='DocumentosSiglas'){
-			var_dump($datos);
+			$duplicado=$getData->getDuplicado($modulo,$datos);
+				if(empty($duplicado)){
+				$res=$insert->insertaBd($modulo,$datos);
+				$err->catchError($res);
+			}
+			else{
+				$salida['insert']='Registro Duplicado';
+				echo json_encode($salida);
+			}
 		}
 		
 	}

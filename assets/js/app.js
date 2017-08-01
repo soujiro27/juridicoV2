@@ -381,10 +381,15 @@ module.exports = function (_link) {
 				event.preventDefault();
 				var datos = $(this).serializeArray();
 				var datosSend = $(this).serialize();
-				var id = datos[4].value;
+				var id = datos[1].value;
+
 				if (funcion.validaDatos(datos)) {
 					if (ruta == 'DocumentosSiglas') {
-						self.getDataFirma(datos);
+						var firma = self.getDataFirma(datos);
+						console.log(firma);
+						funcion.sendDataRuta(firma, tipo, ruta).then(function (response) {
+							self.successCedulaIfa(response, id);
+						});
 					}
 					/*funcion.sendDataRuta(datosSend,tipo,ruta).then(response=>{ 
      	self.successCedulaIfa(response,id)
@@ -428,13 +433,16 @@ module.exports = function (_link) {
 		key: 'getDataFirma',
 		value: function getDataFirma(datos) {
 			var firma = '';
-			console.log(datos);
+			var data = '';
 			for (var x in datos) {
 				if (datos[x].name == 'firma') {
 					firma += datos[x].value + ',';
+				} else {
+					data += datos[x].name + '=' + datos[x].value + '&';
 				}
 			}
-			console.log(firma);
+			data = data + 'idEmpleadosFirma=' + firma;
+			return data;
 		}
 	}]);
 
@@ -864,7 +872,7 @@ module.exports = function (idVolante) {
 var _templateObject = _taggedTemplateLiteral(['\n<div>\n<div class="contentIrac" id="contentIrac" >\n    <form method="POST" class="form-inline" id="DocumentosSiglas">\n<div class="form-group siglas">\n    <label for="siglas">Siglas</label>\n    <input type="text"  id="siglas" name="siglas" required class="form-control"   >\n    <input type="hidden"  name="idVolante" value="', '"  >\n</div>\n<div class="form-group subDocumento">\n    <label for="subDocumento">Tipo de SubDocumento</label>\n    <select name="idSubTipoDocumento" id="subDocumento" required="required" class="form-control" >\n      <option value=""> Seleccione una Opci\xF3n </option>\n        ', '\n    </select>\n</div>\n\n\n\n<div class="form-group textoIfa">\n    <label for="textoIfa">Potenciales Promociones de Acciones</label>\n    <textarea class="form-control" rows="3" readonly  id="textoIfa" ></textarea>\n    <input type="hidden"  name="idDocumentoTexto" id="idDocumentoTexto" value=""  >\n</div>\n\n\n\n\n\n<div class="form-group firmas">\n    <label for="firmas">Personal que Firma</label>\n    <select name="firma" id="firma" required="required" class="form-control" multiple >\n      <option value=""> Seleccione una Opci\xF3n </option>\n        ', '\n    </select>\n</div>\n\n\n<div class="form-group fecha">\n    <label for="fecha">Fecha Documento</label>\n    <input type="text" id="fOficio" name="fOficio" required class="form-control fechaInput" pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))">\n</div>\n\n\n<div class="form-group send">\n    <input type="submit" class="btn btn-primary btn-sm" value="Guardar">\n    <button class="btn btn-default btn-sm" id="cancelar">Cancelar</button>\n</div>\n\n\n</form>\n</div>\n\n</div>'], ['\n<div>\n<div class="contentIrac" id="contentIrac" >\n    <form method="POST" class="form-inline" id="DocumentosSiglas">\n<div class="form-group siglas">\n    <label for="siglas">Siglas</label>\n    <input type="text"  id="siglas" name="siglas" required class="form-control"   >\n    <input type="hidden"  name="idVolante" value="', '"  >\n</div>\n<div class="form-group subDocumento">\n    <label for="subDocumento">Tipo de SubDocumento</label>\n    <select name="idSubTipoDocumento" id="subDocumento" required="required" class="form-control" >\n      <option value=""> Seleccione una Opci\xF3n </option>\n        ', '\n    </select>\n</div>\n\n\n\n<div class="form-group textoIfa">\n    <label for="textoIfa">Potenciales Promociones de Acciones</label>\n    <textarea class="form-control" rows="3" readonly  id="textoIfa" ></textarea>\n    <input type="hidden"  name="idDocumentoTexto" id="idDocumentoTexto" value=""  >\n</div>\n\n\n\n\n\n<div class="form-group firmas">\n    <label for="firmas">Personal que Firma</label>\n    <select name="firma" id="firma" required="required" class="form-control" multiple >\n      <option value=""> Seleccione una Opci\xF3n </option>\n        ', '\n    </select>\n</div>\n\n\n<div class="form-group fecha">\n    <label for="fecha">Fecha Documento</label>\n    <input type="text" id="fOficio" name="fOficio" required class="form-control fechaInput" pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))">\n</div>\n\n\n<div class="form-group send">\n    <input type="submit" class="btn btn-primary btn-sm" value="Guardar">\n    <button class="btn btn-default btn-sm" id="cancelar">Cancelar</button>\n</div>\n\n\n</form>\n</div>\n\n</div>']),
     _templateObject2 = _taggedTemplateLiteral(['<option value="', '">', '</option>'], ['<option value="', '">', '</option>']),
     _templateObject3 = _taggedTemplateLiteral(['<option value="', '">', ' ', ' ', ' </option>'], ['<option value="', '">', ' ', ' ', ' </option>']),
-    _templateObject4 = _taggedTemplateLiteral(['\n<div>\n<div class="contentIrac" id="contentIrac" >\n    <form method="POST" class="form-inline" id="DocumentosSiglas">\n<div class="form-group siglas">\n    <label for="siglas">Siglas</label>\n    <input type="text"  id="siglas" name="siglas" required class="form-control" value="', '"   >\n   \n</div>\n<div class="form-group subDocumento">\n    <label for="subDocumento">Tipo de SubDocumento</label>\n    <select name="idSubTipoDocumento" id="subDocumento" required="required" class="form-control" >\n      <option value=""> Seleccione una Opci\xF3n </option>\n        ', '\n    </select>\n</div>\n\n<div class="form-group textoIfa">\n    <label for="textoIfa">textoIfa</label>\n    <textarea class="form-control" rows="3" readonly  id="textoIfa" >', '</textarea>\n    <input type="hidden"  name="idDocumentoTexto" id="idDocumentoTexto" value="', '"  >\n</div>\n\n\n<div class="form-group fecha">\n    <label for="fecha">Fecha Documento</label>\n    <input type="text" id="fOficio" name="fOficio" required class="form-control fechaInput" pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))" value="', '" >\n    <input type="hidden"  name="idVolante" value="', '"  >\n</div>\n\n\n\n\n<div class="form-group send">\n    <input type="submit" class="btn btn-primary btn-sm" value="Guardar">\n    <button class="btn btn-default btn-sm" id="cancelar">Cancelar</button>\n</div>\n\n\n</form>\n</div>\n\n</div>'], ['\n<div>\n<div class="contentIrac" id="contentIrac" >\n    <form method="POST" class="form-inline" id="DocumentosSiglas">\n<div class="form-group siglas">\n    <label for="siglas">Siglas</label>\n    <input type="text"  id="siglas" name="siglas" required class="form-control" value="', '"   >\n   \n</div>\n<div class="form-group subDocumento">\n    <label for="subDocumento">Tipo de SubDocumento</label>\n    <select name="idSubTipoDocumento" id="subDocumento" required="required" class="form-control" >\n      <option value=""> Seleccione una Opci\xF3n </option>\n        ', '\n    </select>\n</div>\n\n<div class="form-group textoIfa">\n    <label for="textoIfa">textoIfa</label>\n    <textarea class="form-control" rows="3" readonly  id="textoIfa" >', '</textarea>\n    <input type="hidden"  name="idDocumentoTexto" id="idDocumentoTexto" value="', '"  >\n</div>\n\n\n<div class="form-group fecha">\n    <label for="fecha">Fecha Documento</label>\n    <input type="text" id="fOficio" name="fOficio" required class="form-control fechaInput" pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))" value="', '" >\n    <input type="hidden"  name="idVolante" value="', '"  >\n</div>\n\n\n\n\n<div class="form-group send">\n    <input type="submit" class="btn btn-primary btn-sm" value="Guardar">\n    <button class="btn btn-default btn-sm" id="cancelar">Cancelar</button>\n</div>\n\n\n</form>\n</div>\n\n</div>']),
+    _templateObject4 = _taggedTemplateLiteral(['\n<div>\n<div class="contentIrac" id="contentIrac" >\n    <form method="POST" class="form-inline" id="DocumentosSiglas">\n<div class="form-group siglas">\n    <label for="siglas">Siglas</label>\n    <input type="text"  id="siglas" name="siglas" required class="form-control" value="', '"   >\n   \n</div>\n<div class="form-group subDocumento">\n    <label for="subDocumento">Tipo de SubDocumento</label>\n    <select name="idSubTipoDocumento" id="subDocumento" required="required" class="form-control" >\n      <option value=""> Seleccione una Opci\xF3n </option>\n        ', '\n    </select>\n</div>\n\n<div class="form-group textoIfa">\n    <label for="textoIfa">textoIfa</label>\n    <textarea class="form-control" rows="3" readonly  id="textoIfa" >', '</textarea>\n    <input type="hidden"  name="idDocumentoTexto" id="idDocumentoTexto" value="', '"  >\n</div>\n\n<div class="form-group firmas">\n    <label for="firmas">Personal que Firma</label>\n    <select name="firma" id="firma" required="required" class="form-control" multiple >\n      <option value=""> Seleccione una Opci\xF3n </option>\n        ', '\n    </select>\n</div>\n\n\n\n<div class="form-group fecha">\n    <label for="fecha">Fecha Documento</label>\n    <input type="text" id="fOficio" name="fOficio" required class="form-control fechaInput" pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))" value="', '" >\n    <input type="hidden"  name="idVolante" value="', '"  >\n</div>\n\n\n\n\n<div class="form-group send">\n    <input type="submit" class="btn btn-primary btn-sm" value="Guardar">\n    <button class="btn btn-default btn-sm" id="cancelar">Cancelar</button>\n</div>\n\n\n</form>\n</div>\n\n</div>'], ['\n<div>\n<div class="contentIrac" id="contentIrac" >\n    <form method="POST" class="form-inline" id="DocumentosSiglas">\n<div class="form-group siglas">\n    <label for="siglas">Siglas</label>\n    <input type="text"  id="siglas" name="siglas" required class="form-control" value="', '"   >\n   \n</div>\n<div class="form-group subDocumento">\n    <label for="subDocumento">Tipo de SubDocumento</label>\n    <select name="idSubTipoDocumento" id="subDocumento" required="required" class="form-control" >\n      <option value=""> Seleccione una Opci\xF3n </option>\n        ', '\n    </select>\n</div>\n\n<div class="form-group textoIfa">\n    <label for="textoIfa">textoIfa</label>\n    <textarea class="form-control" rows="3" readonly  id="textoIfa" >', '</textarea>\n    <input type="hidden"  name="idDocumentoTexto" id="idDocumentoTexto" value="', '"  >\n</div>\n\n<div class="form-group firmas">\n    <label for="firmas">Personal que Firma</label>\n    <select name="firma" id="firma" required="required" class="form-control" multiple >\n      <option value=""> Seleccione una Opci\xF3n </option>\n        ', '\n    </select>\n</div>\n\n\n\n<div class="form-group fecha">\n    <label for="fecha">Fecha Documento</label>\n    <input type="text" id="fOficio" name="fOficio" required class="form-control fechaInput" pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))" value="', '" >\n    <input type="hidden"  name="idVolante" value="', '"  >\n</div>\n\n\n\n\n<div class="form-group send">\n    <input type="submit" class="btn btn-primary btn-sm" value="Guardar">\n    <button class="btn btn-default btn-sm" id="cancelar">Cancelar</button>\n</div>\n\n\n</form>\n</div>\n\n</div>']),
     _templateObject5 = _taggedTemplateLiteral(['<option value="', '" selected >', ' </option>'], ['<option value="', '" selected >', ' </option>']);
 
 function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
@@ -885,8 +893,14 @@ module.exports = function (idVolante, docSiglas, SubTipoDocumento, empleados) {
             return yo(_templateObject3, json.idEmpleado, json.paterno, json.materno, json.nombre);
         }));
     } else {
+        var firmas = docSiglas[0].idEmpleadosFirma;
+        var firmasArray = firmas.split(',');
+        var largo = parseInt(firmasArray.length);
+        largo = largo - 1;
+        var final = firmasArray.splice(0, largo);
         var id = docSiglas[0].idDocumentoTexto;
         var texto = void 0;
+
         $.get({
             url: '/getRegister/CatDoctosTextos',
             data: {
@@ -906,7 +920,15 @@ module.exports = function (idVolante, docSiglas, SubTipoDocumento, empleados) {
                 return yo(_templateObject5, json.idSubTipoDocumento, json.nombre);
             }
             return yo(_templateObject2, json.idSubTipoDocumento, json.nombre);
-        }), texto, docSiglas[0].idDocumentoTexto, docSiglas[0].fOficio, idVolante);
+        }), texto, docSiglas[0].idDocumentoTexto, empleados.map(function (json) {
+            for (var x in final) {
+                if (final[x] == json.idEmpleado) {
+                    return '<option value="' + json.idEmpleado + '" selected>' + json.paterno + ' ' + json.materno + ' ' + json.nombre + ' </option>';
+                } else {
+                    return yo(_templateObject3, json.idEmpleado, json.paterno, json.materno, json.nombre);
+                }
+            }
+        }), docSiglas[0].fOficio, idVolante);
     }
 };
 
@@ -1386,7 +1408,7 @@ module.exports = function (_link) {
 							text: "Generar Cedula",
 							btnClass: 'btn-warning',
 							action: function action() {
-								var docSiglas = funcion.getDatos('DocumentosSiglas', { idVolante: '998' });
+								var docSiglas = funcion.getDatos('DocumentosSiglas', { idVolante: id });
 								var subTipoDoc = funcion.getDatos('catSubTiposDocumentos', { estatus: 'ACTIVO' });
 								var empleados = funcion.getDatosOrder('empleados', { idArea: 'DGAJ' }, 'paterno');
 								Promise.all([docSiglas, subTipoDoc, empleados]).then(function (resolve) {

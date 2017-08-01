@@ -36,6 +36,23 @@ $sql="SELECT a.idAuditoria auditoria,ta.nombre tipo, COALESCE(convert(varchar(20
 $db=conecta();
 $datos=consultaRetorno($sql, $db);
 
+
+
+
+
+
+$sql="select pagina,observacion from sia_ObservacionesDoctosJuridico  where idVolante='$idVolante' and estatus='ACTIVO'";
+
+$tabla=consultaRetorno($sql,$db);
+
+$sql="select ds.siglas, ds.fOficio, ds.idEmpleadosFirma,dt.texto from sia_DocumentosSiglas ds
+inner join sia_CatDoctosTextos dt on ds.idDocumentoTexto=dt.idDocumentoTexto
+where ds.idVolante='$idVolante'";
+
+$promo=consultaRetorno($sql,$db);
+
+
+
 function convierte($cadena){
   $str = utf8_decode($cadena);
   return $str;
@@ -115,7 +132,7 @@ $pdf->AddPage();
 
 // set some text to print
 $txt = <<<EOD
-AUDITORIA SUPERIO DE LA CIUDAD DE MÉXICO
+AUDITORÍA SUPERIOr DE LA CIUDAD DE MÉXICO
 DIRECCIÓN GENERAL DE ASUNTOS JURÍDICOS
 DIRECCIÓN DE INTERPRETACIÓN JURÍDICA Y PROMOCIÓN DE ACCIONES
 HOJA DE EVALUACIÓN DE INFORMES FINALES DE AUDITORÍA
@@ -127,10 +144,10 @@ $pdf->Write(0, $txt, '', 0, 'C', true, 0, false, false, 0);
 
 // ---------------------------------------------------------
 
-$test="carlois";
+$pdf->Ln(5);
 
 $html = <<<EOD
-<table cellspacing="0" cellpadding="1" border="1">
+<table cellspacing="0" cellpadding="3" border="1">
     <tr>
         <td>UNIDAD ADMINISTRATIVA AUDITORA</td>
         <td>{$datos[0]['nombre']}</td>
@@ -160,37 +177,154 @@ $txt = <<<EOD
 OBSERVACIONES
 EOD;
 
+
 // print a block of text using Write()
 $pdf->Write(0, $txt, '', 0, 'C', true, 0, false, false, 0);
+$pdf->Ln(3);
+$txt='';
+$cont=1;
+foreach($tabla as $llave => $valor){
+    $txt=$txt.'<tr><td align="center" colspan="1" width="50">'.$cont.'</td>';
+    foreach($tabla[$llave] as $key=>$value){
+        $txt=$txt.'<td>'.$value.'</td>';
+    }
+    $txt=$txt.'</tr>';
+    $cont++;
+}
+$html = <<<EOD
+<table cellspacing="0" cellpadding="3" border="1" >
+   <tr>
+       <td align="center" colspan="1" width="50" >No.</td>
+       <td align="center" colspan="1" width="50" >Hoja</td>
+       <td align="left" colspan="1" width="557"></td>
+   </tr>
+   <tbody>
+   $txt</tbody>
+</table>
+EOD;
 
+//echo $html;
+$pdf->writeHTML($html, true, false, false, false, '');
+
+$texto=$promo[0]['texto'];
+$html = <<<EOD
+<table cellspacing="0" cellpadding="1" border="1" >
+<tr><td align="center" >POTENCIALES PROMOCIONES DE ACCIONES:</td></tr>
+<tr><td align="left" > $texto</td></tr>
+</table>
+EOD;
+
+
+
+$pdf->writeHTML($html, true, false, false, false, '');
+
+
+function mes($num){
+  $meses= ['Enero','Febrero','Marzo','Abril','Mayo','Junio', 'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+  return $meses[$num-1];
+}
+
+$fecha=explode('-',$promo[0]['fOficio']);
+//var_dump($fecha);
+$mes=mes(intval($fecha[1]));
 
 
 $html = <<<EOD
-<table cellspacing="0" cellpadding="1" border="1">
-   <tr>
-       <td>No.</td>
-       <td>Hoja</td>
-       <td></td>
-   </tr>
-    <tr>
-        <td>1</td>
-        <td>56</td>
-        <td>Lorem Ipsum es un texto de marcador de posición comúnmente utilizado en las industrias gráficas, gráficas y editoriales para previsualizar diseños y maquetas visuales.
-</td>
-    </tr>
-</table>
+<p align="right">Ciudad de México, $fecha[2] de $mes de $fecha[0]</p>
 EOD;
+
+
 $pdf->writeHTML($html, true, false, false, false, '');
 
 
 
 
+$pdf->Ln(7);
+
+$html = <<<EOD
+<table cellspacing="0" cellpadding="1" border="0" >
+<tr><td align="center" >AUTORIZÓ</td><td align="center">REVISÓ</td></tr>
+
+</table>
+EOD;
+$pdf->writeHTML($html, true, false, false, false, '');
+
+$pdf->Ln(15);
+
+
+$usr=$_SESSION["idUsuario"];
+
+$sql="select u.saludo, CONCAT(u.nombre,' ',u.paterno,' ',u.materno) as titular,a.nombre from sia_usuarios u
+inner join sia_empleados e on u.idEmpleado=e.idEmpleado
+inner join sia_areas a on a.idEmpleadoTitular=e.idEmpleado
+where u.idUsuario='$usr'";
+
+$jefe=consultaRetorno($sql,$db);
+$saludo=$jefe[0]['saludo'];
+$titular=$jefe[0]['titular'];
+$area=$jefe[0]['nombre'];
+$html = <<<EOD
+<table cellspacing="0" cellpadding="1" border="0">
+<tr>
+<td colspan="1" width="70"></td>
+<td align="center" colspan="1" width="200" style="border-top:1px solid black" >DR. IVÁN DE JESÚS OLMOS CANSINO DIRECTOR GENERAL DE ASUNTOS JURIDICOS</td>
+<td colspan="1" width="120"></td>
+<td align="center" colspan="1" width="230" style="border-top:1px solid black" >$saludo $titular $area</td>
+</tr>
+
+</table>
+EOD;
+
+$pdf->writeHTML($html, true, false, false, false, '');
+
+
+$ef=explode(",",$promo[0]['idEmpleadosFirma']);
+$nombres=array();
+for($i=0;$i<count($ef)-1;$i++){
+    $usrf=$ef[$i];
+    $sql="select concat(nombre,' ',paterno,' ',materno) as nombre from sia_empleados where idEmpleado='$usrf'";
+    $nombre=consultaRetorno($sql,$db);
+    array_push($nombres,$nombre[0]['nombre']);
+}
+ 
+
+$linea='';
+$elaboro='';
+foreach($nombres as $llave => $valor){
+    $elaboro=$elaboro.'<td align="center" colspan="1">ELABORÓ</td>';
+    $linea=$linea.'<td align="center" colspan="1"  style="border-top:1px solid black">'.$valor.'</td>';
+}
+//echo $linea;
+$pdf->Ln(10);
+
+$html = <<<EOD
+<table cellspacing="0" cellpadding="1" border="0" >
+<tr>$elaboro</tr>
+</table>
+EOD;
+$pdf->writeHTML($html, true, false, false, false, '');
+$pdf->Ln(10);
 
 
 
+$html = <<<EOD
+<table cellspacing="0" cellpadding="1" border="0" >
+<tr>
+$linea
+</tr>
+</table>
+EOD;
 
+$pdf->writeHTML($html, true, false, false, false, '');
+$pdf->Ln(10);
 
+$siglas=$promo[0]['siglas'];
 
+$html = <<<EOD
+<p>$siglas</p>
+EOD;
+
+$pdf->writeHTML($html, true, false, false, false, '');
 
 
 

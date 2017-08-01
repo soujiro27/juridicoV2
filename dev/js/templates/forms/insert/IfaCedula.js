@@ -3,6 +3,7 @@ module.exports=function(idVolante,docSiglas,SubTipoDocumento,empleados){
 
 
 
+
 //console.log(docSiglas)
 //console.log(SubTipoDocumento)
 //console.log(idVolante)
@@ -71,8 +72,14 @@ return yo`
 
 </div>`;
 }else{
+let firmas=docSiglas[0].idEmpleadosFirma;
+let firmasArray=firmas.split(',')
+let largo=parseInt(firmasArray.length);
+largo=largo-1
+let final=firmasArray.splice(0,largo)
 let id=docSiglas[0].idDocumentoTexto
 let texto
+
 $.get({
         url:'/getRegister/CatDoctosTextos',
         data:{
@@ -117,6 +124,25 @@ return yo`
     <textarea class="form-control" rows="3" readonly  id="textoIfa" >${texto}</textarea>
     <input type="hidden"  name="idDocumentoTexto" id="idDocumentoTexto" value="${docSiglas[0].idDocumentoTexto}"  >
 </div>
+
+<div class="form-group firmas">
+    <label for="firmas">Personal que Firma</label>
+    <select name="firma" id="firma" required="required" class="form-control" multiple >
+      <option value=""> Seleccione una Opción </option>
+        ${empleados.map(function(json){
+           for(let x in final){
+               if(final[x]==json.idEmpleado){
+                    return `<option value="${json.idEmpleado}" selected>${json.paterno} ${json.materno} ${json.nombre} </option>`       
+               }else{
+                    return yo `<option value="${json.idEmpleado}">${json.paterno} ${json.materno} ${json.nombre} </option>`
+               }
+           }
+            
+            
+        })}
+    </select>
+</div>
+
 
 
 <div class="form-group fecha">

@@ -141,10 +141,15 @@ module.exports=class Insert extends link{
 			event.preventDefault()
 			let datos=$(this).serializeArray()
 			let datosSend=$(this).serialize()
-			let id=datos[4].value
+			let id=datos[1].value
+			
 			if(funcion.validaDatos(datos)){
 				if(ruta=='DocumentosSiglas'){
-					self.getDataFirma(datos)
+					let firma=self.getDataFirma(datos)
+					console.log(firma)
+					funcion.sendDataRuta(firma,tipo,ruta).then(response=>{
+						self.successCedulaIfa(response,id)
+					})
 				}
 				/*funcion.sendDataRuta(datosSend,tipo,ruta).then(response=>{ 
 					self.successCedulaIfa(response,id)
@@ -191,13 +196,16 @@ module.exports=class Insert extends link{
 
 	getDataFirma(datos){
 		let firma=''
-		console.log(datos)
+		let data=''
 		for(let x in datos){
 			if(datos[x].name=='firma'){
 				firma+=datos[x].value+','
+			}else{
+				data+=datos[x].name+'='+datos[x].value+'&'
 			}	
 		}
-	console.log(firma)
+		data=data+'idEmpleadosFirma='+firma
+		return data
 	}
 
 }
