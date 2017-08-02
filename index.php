@@ -102,8 +102,34 @@ $app->get('/auditorias/:id',function($id) use ($app){
 
 });
 
+/*--------------- upload de documento ------------------*/
 
 
-
+$app->post('/juridico/uploadFile',function() use ($app){
+	$numDoc=$app->request->post();
+	$numDoc=$numDoc['numDocumento'];
+	$datos=array('numDocumento'=>$numDoc);
+	$update=new UpdateController();
+	$registro=$update->getRegisterPhp('Volantes',$datos);
+	if($registro==1){
+		$file=$_FILES['anexoDoc']['name'];
+		$file=explode('.',$file);
+		if ($file && move_uploaded_file($_FILES['anexoDoc']['tmp_name'],"./juridico/files/".$numDoc.'.'.$file[1]))
+    	{
+			$insert=new Insert();
+			$res=$insert->updateVolante('Volantes',$numDoc);
+			var_dump($res);
+       		$salida['update']='true';
+			echo json_encode($salida);
+    	}else{
+    		$salida['update']='false';
+			echo json_encode($salida);   
+		}
+	}else{
+		$salida['update']='false';
+		echo json_encode($salida);
+	}
+	
+});
 
 ?>

@@ -9,6 +9,8 @@ const actions=require('./../../templates/forms/insert/Acciones.js')
 const SubTiposDocumentos=require('./../../templates/forms/insert/SubTiposDocumentos.js')
 const volantes=require('./../../templates/forms/insert/Volantes.js')
 const textos= require('./../../templates/forms/insert/Textos');
+const documentos=require('./../../templates/forms/insert/documentos')
+
 
 var insert = new inst();
 let funcion= new funct();
@@ -74,4 +76,11 @@ page('/juridico/DoctosTextos/Add',function(ctx,next) {
        
   })
   
+})
+
+
+page('/juridico/Documentos/Add',function(ctx,next) {
+  	insert.renderForm(documentos)
+    insert.dataFileUpload()
+    insert.uploadFile()
 })

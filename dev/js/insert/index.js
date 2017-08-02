@@ -34,7 +34,7 @@ module.exports=class Insert extends link{
 			let datos=$(this).serializeArray()
 			let datosSend=$(this).serialize()
 			if(funcion.validaDatos(datos)){
-				funcion.sendData(datosSend,'insert').then(response=>{ self. successInsert(response)})
+				funcion.sendData(datosSend,'insert').then(response=>{ self.successInsert(response)})
 			}
 
 		});
@@ -146,7 +146,6 @@ module.exports=class Insert extends link{
 			if(funcion.validaDatos(datos)){
 				if(ruta=='DocumentosSiglas'){
 					let firma=self.getDataFirma(datos)
-					console.log(firma)
 					funcion.sendDataRuta(firma,tipo,ruta).then(response=>{
 						self.successCedulaIfa(response,id)
 					})
@@ -207,5 +206,52 @@ module.exports=class Insert extends link{
 		data=data+'idEmpleadosFirma='+firma
 		return data
 	}
+
+	dataFileUpload(){
+		 var fileExtension = "";
+		 $('input[type=file]').change(function(){
+			var file = $("#imagen")[0].files[0];
+			var fileName = file.name;
+			fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
+			var fileSize = file.size;
+			var fileType = file.type;
+    	});
+	}
+
+	uploadFile(){
+		let self=this
+		$('form#documentosJur').on('submit',function(e){
+			e.preventDefault()
+			 var formData = new FormData($(this)[0]);
+			    $.ajax({
+            url: '/juridico/uploadFile',  
+            type: 'POST',
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            beforeSend: function(){
+               // message = $("<span class='before'>Subiendo la imagen, por favor espere...</span>");
+                //showMessage(message)        
+            },
+          
+            success: function(json){
+			  let data=JSON.parse(json)
+			  if(data.update=='false'){
+					confirms.modernAlert('El numero de Documento no se encuentra Registrado')
+			  }else{
+				confirms.modernAlert('El Documento se a cargado con exito')
+				//self.main('Documentos');
+			  }
+            },
+         
+            error: function(){
+                alert('ocurrio un eror')
+            }
+        });
+		})
+	}
+
+
 
 }

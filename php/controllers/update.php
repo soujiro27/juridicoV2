@@ -67,6 +67,19 @@ class UpdateController extends Rutas{
 		return $modulo;
 	}
 
+
+	public function getRegisterPhp($modulo,$datos){
+		$result=$this->getRegister($modulo,$datos);
+		if(empty($result)){
+			
+			return 0;
+		}else{
+			return 1;
+		}
+	}
+
+	
+
 }
 
 

@@ -2,7 +2,7 @@
 class Rutas{
 
 protected $catalogos=['Caracteres','Acciones','SubTiposDocumentos','DoctosTextos'];
-protected $modulos=['Volantes','confrontasJuridico','Ifa'];
+protected $modulos=['Volantes','confrontasJuridico','Ifa','Documentos'];
 
 
 public function validaUrl($modulo){
