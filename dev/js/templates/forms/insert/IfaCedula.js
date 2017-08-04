@@ -1,5 +1,5 @@
 var yo=require('yo-yo');
-module.exports=function(idVolante,docSiglas,SubTipoDocumento,empleados){
+module.exports=function(idVolante,docSiglas,empleados,idTipoDocto){
 
 
 
@@ -13,34 +13,26 @@ if(docSiglas.register=='No se encontro registro'){
 return yo`
 <div>
 <div class="contentIrac" id="contentIrac" >
-    <form method="POST" class="form-inline" id="DocumentosSiglas">
+<form method="POST" class="form-inline" id="DocumentosSiglas">
+
+
+
+
+
+<div class="form-group textoIfa">
+    <button type="button" class="btn btn-primary" id="addPromoAccion">Agregar Promocion de Acciones</button>
+    <textarea class="form-control" rows="7" readonly  id="textoIfa"></textarea>
+    <input type="hidden"  name="idDocumentoTexto" id="idDocumentoTexto" value=""  >
+    <input type="hidden"  name="idSubTipoDocumento" id="idDocumentoTexto" value="${idTipoDocto}"  >
+</div>
+
+
+
 <div class="form-group siglas">
     <label for="siglas">Siglas</label>
     <input type="text"  id="siglas" name="siglas" required class="form-control"   >
     <input type="hidden"  name="idVolante" value="${idVolante}"  >
 </div>
-<div class="form-group subDocumento">
-    <label for="subDocumento">Tipo de SubDocumento</label>
-    <select name="idSubTipoDocumento" id="subDocumento" required="required" class="form-control" >
-      <option value=""> Seleccione una Opción </option>
-        ${SubTipoDocumento.map(function(json){
-            return yo `<option value="${json.idSubTipoDocumento}">${json.nombre}</option>`
-            
-        })}
-    </select>
-</div>
-
-
-
-<div class="form-group textoIfa">
-    <label for="textoIfa">Potenciales Promociones de Acciones</label>
-    <textarea class="form-control" rows="3" readonly  id="textoIfa" ></textarea>
-    <input type="hidden"  name="idDocumentoTexto" id="idDocumentoTexto" value=""  >
-</div>
-
-
-
-
 
 <div class="form-group firmas">
     <label for="firmas">Personal que Firma</label>

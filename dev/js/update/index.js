@@ -140,12 +140,12 @@ tableIfa(id){
 				action:function(){
 					let nombre=ruta.toUpperCase()
 					let docSiglas=funcion.getDatos('DocumentosSiglas',{idVolante:id})
-					let subTipoDoc=funcion.getDatos('catSubTiposDocumentos',{estatus:'ACTIVO'})
 					let empleados=funcion.getDatosOrder('empleados',{idArea:'DGAJ'},'paterno')
-					Promise.all([docSiglas,subTipoDoc,empleados])
+					let idTipoDocto=funcion.getDatos('catSubTiposDocumentos',{nombre:nombre})
+					Promise.all([docSiglas,empleados,idTipoDocto])
 					.then(resolve=>{
-					
-						let template=cedulaIfa(id,resolve[0],resolve[1],resolve[2])
+						let idDocto=resolve[2][0].idSubTipoDocumento
+						let template=cedulaIfa(id,resolve[0],resolve[1],idDocto)
 						insert.renderForm(template)
 						funcion.loadDateInput();
 
@@ -154,10 +154,11 @@ tableIfa(id){
 						}else{
 							insert.getDataRuta('DocumentosSiglas','update')
 						}
-						$('select#subDocumento').change(function(){
-							let val= $(this).val()
-							funcion.getDatos('CatDoctosTextos',{idSubTipoDocumento:val})
-							.then(json=>{self.tablaTextosIfa(json)})
+
+
+						$('button#addPromoAccion').click(function(){
+							funcion.getDatos('CatDoctosTextos',{idSubTipoDocumento:idDocto})
+							.then(data=>{self.tablaTextosIfa(data)})
 						})
 						
 					})
