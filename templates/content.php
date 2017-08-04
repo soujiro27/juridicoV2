@@ -9,6 +9,13 @@ function btnAparece($nombre){
 }
 
 
+function btnOrderAparece($nombre){
+	if($nombre=='Volantes'){
+		$btn='<button type="button" class="btn btn-info" id="orderBy">Ordenar</button>';
+		return $btn;
+	}
+}
+
 $main='
 <div class="row">
 	<div class="col-md-9 col-md-offset-2">
@@ -16,6 +23,7 @@ $main='
 			<div class="widget-head">
 				<div class="pull-left">Lista de '.$nombre.' registrados</div>
 				<div class="widget-icons pull-right">
+					'.btnOrderAparece($nombre).'
               		'.btnAparece($nombre).'		
           		</div>
           		<div class="clearfix"></div>

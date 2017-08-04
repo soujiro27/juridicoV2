@@ -68,7 +68,7 @@ class InsertController{
 			$insert=new Insert();
 			$insert->insertaVolantes($modulo,$datos);
 		}else{
-			$salida['insert']='El Numero de Folio ya se encuentra asignado al Volante: '. $res[0]['idVolante'];
+			$salida['insert']='El Numero de Folio y/o Subfolio ya se encuentra asignado';
 			echo json_encode($salida);
 		}
 

@@ -50,15 +50,17 @@ page('/juridico/Volantes/Add',function(ctx,next) {
     let accion=funcion.getDatos('catAcciones',{estatus:'ACTIVO'})
     Promise.all([tipoDocto,comboAudi,caracter,accion,turnado,folio])
     .then(values=>{
-      insert.renderForm(volantes(values[0],values[1],values[2],values[3],values[4],values[5]))
-      $('div.contentVolante').hide()
-      $('div.datosAuditoria').hide()
-      funcion.loadDateInput()
-      insert.onchangeTipoDocto()
+      
+      insert.renderForm(volantes(values[0],values[1],values[2],values[3],values[4],values[5]));
+     $('div.contentVolante').hide();
+      $('div.datosAuditoria').hide();
+      funcion.loadDateInput();
+      insert.onchangeTipoDocto();
       insert.onchangeAuditoria()
       insert.getData()
-
       
+
+            
     })
 })
 

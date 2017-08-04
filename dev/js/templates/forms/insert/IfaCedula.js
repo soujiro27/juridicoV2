@@ -120,7 +120,7 @@ return yo`
 </div>
 
 <div class="form-group textoIfa">
-    <label for="textoIfa">textoIfa</label>
+    <label for="textoIfa">Promociones de Acciones</label>
     <textarea class="form-control" rows="3" readonly  id="textoIfa" >${texto}</textarea>
     <input type="hidden"  name="idDocumentoTexto" id="idDocumentoTexto" value="${docSiglas[0].idDocumentoTexto}"  >
 </div>

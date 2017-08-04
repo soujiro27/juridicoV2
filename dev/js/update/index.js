@@ -113,9 +113,11 @@ module.exports=class Update extends link{
 
 
 tableIfa(id){
+	
 	let self=this
-	tabla.drawTableIfa('ObservacionesDoctosJuridico')
+	tabla.drawTableIfa('ObservacionesDoctosJuridico',{idVolante:id})
 	.then(response=>{
+		
 		$.confirm({
 		title: 'Observaciones Ifa',
 		content:response,
@@ -136,6 +138,7 @@ tableIfa(id){
 				text:"Generar Cedula",
 				btnClass:'btn-warning',
 				action:function(){
+					let nombre=ruta.toUpperCase()
 					let docSiglas=funcion.getDatos('DocumentosSiglas',{idVolante:id})
 					let subTipoDoc=funcion.getDatos('catSubTiposDocumentos',{estatus:'ACTIVO'})
 					let empleados=funcion.getDatosOrder('empleados',{idArea:'DGAJ'},'paterno')
@@ -165,12 +168,14 @@ tableIfa(id){
 			},
 			onContentReady:function(){
 				let _this=this
-				 $('table.principal tbody tr').click(function(){
+				console.log($(this))
+				 $('table#ObservacionesDoctosJuridico tbody tr').click(function(){
 					let id=$(this).data('id');
 					let campo=$(this).data('nombre')
 					_this.close()
 					funcion.getDatos('ObservacionesDoctosJuridico',{idObservacionDoctoJuridico:id})
 					.then(response=>{
+						
 						var template=self.separaTemplates(ruta)
 						self.formUpdate(template(response[0]),campo,id)
 						

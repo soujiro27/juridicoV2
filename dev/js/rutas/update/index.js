@@ -104,10 +104,5 @@ page('/juridico/confrontasJuridico/update/:campo/:id',function(ctx,next){
 
 page('/juridico/Ifa/update/:campo/:id',function(ctx,next){
 	let data=update.creaObjeto(ctx)
-	funcion.getDatos('ObservacionesDoctosJuridico',data).
-	then(response=>{
-		
-			update.tableIfa(ctx.params.id);
-		
-	})
+	update.tableIfa(ctx.params.id);
 })

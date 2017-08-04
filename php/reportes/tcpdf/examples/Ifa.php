@@ -70,9 +70,8 @@ $num=convierte('NÚM DE DOCUMENTO');
 $cuenta=convierte('CUENTA PÚBLICA 2015');
 $fechaTxt=convierte('Ciudad de México, ');
 $destTxt=convierte('DR. IVÁN DE JESÚS OLMOS CANSINO');
-$ente=convierte($ente);
-$sujeto=convierte($sujeto);
-
+//$ente=convierte($ente);
+//$sujeto=convierte($sujeto);
 
 
 
@@ -132,7 +131,7 @@ $pdf->AddPage();
 
 // set some text to print
 $txt = <<<EOD
-AUDITORÍA SUPERIOr DE LA CIUDAD DE MÉXICO
+AUDITORÍA SUPERIOR DE LA CIUDAD DE MÉXICO
 DIRECCIÓN GENERAL DE ASUNTOS JURÍDICOS
 DIRECCIÓN DE INTERPRETACIÓN JURÍDICA Y PROMOCIÓN DE ACCIONES
 HOJA DE EVALUACIÓN DE INFORMES FINALES DE AUDITORÍA
@@ -145,6 +144,8 @@ $pdf->Write(0, $txt, '', 0, 'C', true, 0, false, false, 0);
 // ---------------------------------------------------------
 
 $pdf->Ln(5);
+
+
 
 $html = <<<EOD
 <table cellspacing="0" cellpadding="3" border="1">
@@ -170,6 +171,7 @@ $html = <<<EOD
     </tr>
 </table>
 EOD;
+
 $pdf->writeHTML($html, true, false, false, false, '');
 
 

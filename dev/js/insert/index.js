@@ -62,12 +62,15 @@ module.exports=class Insert extends link{
 
 
 	onchangeTipoDocto(){
-		self=this
-		$('select#idDocumento').change(function(event) {
-			let val=$(this).val()
-			let obj={}
+
+		var self=this
+		$('select#idDocumento').change(function() {
+			
+			var val=$(this).val()
+			var obj={}
 			obj['idTipoDocto']=val
 			obj['estatus']='ACTIVO'
+			
 			funcion.getDatos('catSubTiposDocumentos',obj)
 			.then(response=>{
 				if(response.register){
@@ -93,7 +96,7 @@ module.exports=class Insert extends link{
 
 
 	onchangeAuditoria(){
-		self=this
+		var self=this
 		$('select#cveAuditoria').change(function(event) {
 			let id=$(this).val()
 			funcion.getAuditoriaById(id)
