@@ -10,6 +10,7 @@ const SubTiposDocumentos=require('./../../templates/forms/insert/SubTiposDocumen
 const volantes=require('./../../templates/forms/insert/Volantes.js')
 const textos= require('./../../templates/forms/insert/Textos');
 const documentos=require('./../../templates/forms/insert/documentos')
+const personal=require('./../../templates/forms/insert/Personal')
 
 
 var insert = new inst();
@@ -85,4 +86,13 @@ page('/juridico/Documentos/Add',function(ctx,next) {
   	insert.renderForm(documentos)
     insert.dataFileUpload()
     insert.uploadFile()
+})
+
+
+page('/juridico/personal/Add',function(ctx,next) {
+  
+    funcion.getDatos('empleados',{idArea:'DGAJ'})
+    .then(response=>{
+      	insert.renderForm(personal(response))
+    })
 })
