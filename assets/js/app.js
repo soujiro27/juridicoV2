@@ -410,8 +410,8 @@ module.exports = function (_link) {
 				event.preventDefault();
 				var datos = $(this).serializeArray();
 				var datosSend = $(this).serialize();
-				var id = datos[1].value;
-
+				var id = datos[3].value;
+				console.log(datos);
 				if (funcion.validaDatos(datos)) {
 					if (ruta == 'DocumentosSiglas') {
 						var firma = self.getDataFirma(datos);

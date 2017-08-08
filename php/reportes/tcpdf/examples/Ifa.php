@@ -256,15 +256,15 @@ $pdf->Ln(15);
 
 $usr=$_SESSION["idUsuario"];
 
-$sql="select u.saludo, CONCAT(u.nombre,' ',u.paterno,' ',u.materno) as titular,a.nombre from sia_usuarios u
+$sql="select u.saludo, CONCAT(u.nombre,' ',u.paterno,' ',u.materno) as titular,p.cargo from sia_usuarios u
 inner join sia_empleados e on u.idEmpleado=e.idEmpleado
-inner join sia_areas a on a.idEmpleadoTitular=e.idEmpleado
+inner join sia_plazas p on e.idPlaza=p.idPlaza
 where u.idUsuario='$usr'";
 
 $jefe=consultaRetorno($sql,$db);
 $saludo=$jefe[0]['saludo'];
 $titular=$jefe[0]['titular'];
-$area=$jefe[0]['nombre'];
+$area=$jefe[0]['cargo'];
 $html = <<<EOD
 <table cellspacing="0" cellpadding="1" border="0">
 <tr>
@@ -284,7 +284,9 @@ $ef=explode(",",$promo[0]['idEmpleadosFirma']);
 $nombres=array();
 for($i=0;$i<count($ef)-1;$i++){
     $usrf=$ef[$i];
-    $sql="select concat(nombre,' ',paterno,' ',materno) as nombre from sia_empleados where idEmpleado='$usrf'";
+    $sql="select concat(e.nombre,' ',e.paterno,' ',e.materno) as nombre, p.cargo from sia_empleados e
+inner join sia_plazas p on e.idPlaza=p.idPlaza
+where idEmpleado='$usrf'";
     $nombre=consultaRetorno($sql,$db);
     array_push($nombres,$nombre[0]['nombre']);
 }

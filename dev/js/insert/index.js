@@ -144,8 +144,8 @@ module.exports=class Insert extends link{
 			event.preventDefault()
 			let datos=$(this).serializeArray()
 			let datosSend=$(this).serialize()
-			let id=datos[1].value
-			
+			let id=datos[3].value
+			console.log(datos)
 			if(funcion.validaDatos(datos)){
 				if(ruta=='DocumentosSiglas'){
 					let firma=self.getDataFirma(datos)
