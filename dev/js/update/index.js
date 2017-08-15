@@ -203,7 +203,7 @@ tablaTextosIfa(json){
 	
 
  $.alert({
-	title:'Promocio de Acciones',
+	title:'Promoción de Acciones',
 	content:template,
 	onContentReady:function(){
 		$('table.principal tr').click(function(){
@@ -217,6 +217,12 @@ tablaTextosIfa(json){
  })
 }
 
+cerrarVolante(id){
+	funcion.getDatos('turnosJuridico',{idVolante:id})
+	.then(response=>{
+		
+	})
+}
 
 
 

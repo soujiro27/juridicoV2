@@ -29,7 +29,7 @@ CONCAT(u.saludo,' ',e.nombre,' ',e.paterno,' ',e.materno) as titular,
 audi.clave,
 dbo.lstSujetosByAuditoria(audi.idAuditoria) as ente,
 audi.fConfronta,
-con.notaInformativa, con.nombreResponsable, con.cargoResponsable, con.siglas, con.siglas,con.fOficio, hConfronta
+con.notaInformativa, con.nombreResponsable, con.cargoResponsable, con.siglas, con.siglas,con.fOficio,con.hConfronta, con.fConfronta
 from sia_Volantes v
 inner join sia_VolantesDocumentos vd on v.idVolante=vd.idVolante
 inner join sia_areas a on v.idRemitente=a.idArea

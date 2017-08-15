@@ -32,6 +32,7 @@ inner join sia_catSubTiposDocumentos std on cdt.idSubTipoDocumento=std.idSubTipo
 private $ifaObservaciones="select idObservacionDoctoJuridico,pagina,observacion,estatus from sia_ObservacionesDoctosJuridico";
 
 
+
 public function incio($modulo){
 		
 		$obtener= new Get();
@@ -44,6 +45,7 @@ public function incio($modulo){
 		if($modulo=='Ifa'){$sql=$this->sqlIfa($_SESSION["idUsuario"]);}
 		if($modulo=='ObservacionesDoctosJuridico'){$sql=$this->ifaObservaciones;}
 		$obtener->getTable($sql);
+		
 }
 
 
@@ -89,6 +91,9 @@ where sub.nombre='Ifa' and v.idTurnado=
 (select idEmpleado from sia_usuarios where idUsuario='".$_SESSION ['idUsuario']."')) order by v.idVolante desc";
 	return $sql;
 }
+
+
+
 
 
 }

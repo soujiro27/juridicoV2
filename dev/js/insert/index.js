@@ -257,4 +257,29 @@ module.exports=class Insert extends link{
 
 
 
+	checkNumeroDocumento(){
+	let self=this
+		$('input#numDocumento').keyup(function(){
+			let valor=$(this).val();
+			funcion.getDatos('volantes',{numDocumento:valor})
+			.then(response=>{
+				let div=$('div.uploadContainer')
+				if(response.register=='No se encontro registro'){
+					div.html('<p>El documento no Existe</p>')
+				}else{
+					let anexoDoc=response[0]
+					anexoDoc=anexoDoc.anexoDoc
+					if(anexoDoc!=null){
+						div.html(`<p>hay un Documento Asignado ${anexoDoc}</p>`)
+					}else{
+						div.html(`<p>No hay Documentos Asignados al documento</p>`)
+					}
+				}
+			})
+
+		
+		})
+	}
+
+
 }

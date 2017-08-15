@@ -53,6 +53,7 @@ class UpdateController extends Rutas{
 		$insert=new Insert();
 		$err=new Errores();
 		$result=$this->getRegister($modulo,$datos);
+	
 		if(empty($result)){
 			$res=$insert->updateBd($modulo,$datos);
 			$err->catchError($res);

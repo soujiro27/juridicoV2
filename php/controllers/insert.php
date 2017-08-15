@@ -1,6 +1,7 @@
 <?php  
 
 require 'juridico/php/models/errors.php';
+
 class InsertController{
 
 
@@ -22,8 +23,9 @@ class InsertController{
 		$insert=new Insert();
 		$err=new Errores();
 		$ruta= new Rutas;
+		$update= new updateController();
 		
-		if($modulo!='Volantes' && $modulo!='Ifa' && $modulo!='DocumentosSiglas' ){
+		if($modulo!='Volantes' && $modulo!='Ifa' && $modulo!='DocumentosSiglas' && $modulo!='personal' ){
 			$modulo=$ruta->catalogos($modulo);
 			$duplicado=$getData->getDuplicado($modulo,$datos);
 			if(empty($duplicado)){
@@ -55,6 +57,13 @@ class InsertController{
 				$salida['insert']='Registro Duplicado';
 				echo json_encode($salida);
 			}
+		}elseif($modulo=='personal'){
+			$data = array('idEmpleado' => $datos['idEmpleado'] );
+			$superior = array('idEmpleado' => $datos['idPlazaSuperior']);
+			$plazaEmpleado=$getData->getDuplicado('empleados',$data);
+			$plazaSuperior=$getData->getDuplicado('empleados',$superior);
+			$send = array('idPlazaSuperior' => $plazaSuperior[0]['idPlaza'], 'cargo' => $datos['cargo'], 'idPlaza' => $plazaEmpleado[0]['idPlaza']);
+			$insert->updateBd('plazas',$send);
 		}
 		
 	}
