@@ -177,7 +177,7 @@ module.exports = function (_link) {
 	}, {
 		key: 'separaDatosAuditoria',
 		value: function separaDatosAuditoria(data, id) {
-			var arreglo = data.split("/");
+			var arreglo = data.split(",");
 			var li = "";
 			$.each(arreglo, function (index, val) {
 				li += '<li>' + val + '</li>';
@@ -325,7 +325,17 @@ module.exports = function (_link) {
 	}, {
 		key: 'successInsert',
 		value: function successInsert(json) {
-			json.insert != 'true' ? confirms.modernAlert(json.insert) : tabla.drawTable(ruta);
+			var self = this;
+			//json.insert!='true' ? confirms.modernAlert(json.insert):tabla.drawTable(ruta)
+			if (json.insert != 'true') {
+				confirms.modernAlert(json.insert);
+			} else {
+				self.getLastFolio('Volantes', 'idVolante').then(function (response) {
+					var idVolante = response[0].folio;
+					console.log("el ultimo volante es: " + idVolante);
+				});
+				tabla.drawTable(ruta);
+			}
 			$('a#agregar').show();
 		}
 	}, {
@@ -370,7 +380,9 @@ module.exports = function (_link) {
 				funcion.getAuditoriaById(id).then(function (response) {
 
 					funcion.separaDatosAuditoria(response[0].sujeto, 'idUnidad');
-					funcion.separaDatosAuditoria(response[0].objeto, 'idObjeto');
+					funcion.separaDatosAuditoria(response[0].rubros, 'idObjeto');
+					//$('ul#idObjeto').html('<li>'+response[0].rubros+'</li>')
+
 					$('ul#tipoAuditoria').html('<li>' + response[0].tipo + '</li>');
 					$('input#idRemitente').val(response[0].idArea);
 					$('div.datosAuditoria').slideDown('slow');
@@ -769,10 +781,17 @@ module.exports = function () {
 		value: function reporteObsvIfa(id) {
 			window.open('/juridico/php/reportes/tcpdf/examples/Ifa.php' + '?param1=' + id);
 		}
+	}, {
+		key: 'notificaciones',
+		value: function notificaciones() {
+			//console.log
+		}
 	}]);
 
 	return Redireccion;
 }();
+
+//http://172.16.6.33/altanotifica/998|mensajePrueba|2293|86|Volantes|idVolante
 
 },{}],9:[function(require,module,exports){
 'use strict';

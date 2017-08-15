@@ -13,5 +13,11 @@ module.exports=class Redireccion{
 	reporteObsvIfa(id){
 		window.open('/juridico/php/reportes/tcpdf/examples/Ifa.php'+'?param1='+id)
 	}
+	notificaciones(){
+		//console.log
+	}
 
 }
+
+
+//http://172.16.6.33/altanotifica/998|mensajePrueba|2293|86|Volantes|idVolante

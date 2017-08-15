@@ -128,7 +128,7 @@ module.exports=class Funciones extends link{
 
 
 	separaDatosAuditoria(data,id){
-		var arreglo=data.split("/");
+		var arreglo=data.split(",");
   		var li="";
   		$.each(arreglo, function(index, val) {
     		li+='<li>'+val+'</li>';

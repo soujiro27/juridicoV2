@@ -56,7 +56,18 @@ module.exports=class Insert extends link{
 
 	successInsert(json)
 	{
-		json.insert!='true' ? confirms.modernAlert(json.insert):tabla.drawTable(ruta)
+		let self=this
+		//json.insert!='true' ? confirms.modernAlert(json.insert):tabla.drawTable(ruta)
+		if(json.insert!='true'){
+			confirms.modernAlert(json.insert)
+		}else{
+			self.getLastFolio('Volantes','idVolante')
+			.then(response=>{
+				let idVolante=response[0].folio
+				console.log("el ultimo volante es: " + idVolante)
+			})
+			tabla.drawTable(ruta)
+		}
 		$('a#agregar').show();
 	}
 
@@ -103,7 +114,9 @@ module.exports=class Insert extends link{
 			.then(response=>{
 				
 				funcion.separaDatosAuditoria(response[0].sujeto,'idUnidad')
-				funcion.separaDatosAuditoria(response[0].objeto,'idObjeto')
+				funcion.separaDatosAuditoria(response[0].rubros,'idObjeto')
+				//$('ul#idObjeto').html('<li>'+response[0].rubros+'</li>')
+				
 				$('ul#tipoAuditoria').html('<li>'+response[0].tipo+'</li>')
 				$('input#idRemitente').val(response[0].idArea)
 				$('div.datosAuditoria').slideDown('slow')

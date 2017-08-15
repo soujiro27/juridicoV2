@@ -102,12 +102,12 @@ class Get{
 		$cuenta=$_SESSION["idCuentaActual"];
 		$db=$this->conecta();
 		$sql="SELECT a.idAuditoria auditoria,ta.nombre tipo, COALESCE(convert(varchar(20),a.clave),convert(varchar(20),a.idAuditoria)) claveAuditoria,
- dbo.lstSujetosByAuditoria(a.idAuditoria) sujeto, dbo.lstObjetosByAuditoria(a.idAuditoria) objeto, a.idArea
+ dbo.lstSujetosByAuditoria(a.idAuditoria) sujeto, a.idArea, a.rubros
  FROM sia_programas p
  INNER JOIN sia_auditorias a on p.idCuenta=a.idCuenta and p.idPrograma=a.idPrograma
  INNER JOIN sia_areas ar on a.idArea=ar.idArea
  LEFT JOIN sia_tiposauditoria ta on a.tipoAuditoria= ta.idTipoAuditoria
- WHERE a.idCuenta='$cuenta' and a.idAuditoria='$id' GROUP BY a.idAuditoria, a.clave,ta.nombre,a.idProceso,a.idEtapa,ar.nombre, a.idArea";
+ WHERE a.idCuenta='$cuenta' and a.idAuditoria='$id' GROUP BY a.idAuditoria, a.clave,ta.nombre,a.idProceso,a.idEtapa,ar.nombre, a.idArea, a.rubros";
 	$datos=$this->consultaRetorno($sql);
 	echo json_encode($datos);
 
