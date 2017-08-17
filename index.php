@@ -102,6 +102,16 @@ $app->get('/auditorias/:id',function($id) use ($app){
 
 });
 
+
+
+/*-------------notificaciones-----------------*/
+$app->get('/juridico/notificaciones/:idVolante',function($idVolante) use ($app){
+	$obtiene= new Get();
+
+	$obtiene->getDatosNotificacion($idVolante);
+});
+
+
 /*--------------- upload de documento ------------------*/
 
 

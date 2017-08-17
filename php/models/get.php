@@ -138,6 +138,20 @@ echo json_encode($datos);
 	}
 
 
+	public function getDatosNotificacion($idVolante){
+		$db=$this->conecta();
+		$sql="select u.idUsuario,concat('Tienes un Nuevo Documento: ',subtipo.nombre) as mensaje, 
+audi.idAuditoria from sia_Volantes v
+inner join sia_areas a on v.idTurnado=a.nombreCorto
+inner join sia_VolantesDocumentos vd on v.idVolante=vd.idVolante
+inner join sia_catSubTiposDocumentos subtipo on vd.idSubTipoDocumento=subtipo.idSubTipoDocumento
+inner join sia_auditorias audi on vd.cveAuditoria=audi.idAuditoria
+inner join sia_usuarios u on a.idEmpleadoTitular=u.idEmpleado
+where v.idVolante='$idVolante'";
+$datos=$this->consultaRetorno($sql);
+	echo json_encode($datos);
+	}
+
 }
 
 

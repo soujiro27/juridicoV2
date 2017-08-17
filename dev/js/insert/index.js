@@ -61,11 +61,9 @@ module.exports=class Insert extends link{
 		if(json.insert!='true'){
 			confirms.modernAlert(json.insert)
 		}else{
-			self.getLastFolio('Volantes','idVolante')
-			.then(response=>{
-				let idVolante=response[0].folio
-				console.log("el ultimo volante es: " + idVolante)
-			})
+			if(ruta=='Volantes'){
+				self.notificacionVolante()
+			}
 			tabla.drawTable(ruta)
 		}
 		$('a#agregar').show();
@@ -295,4 +293,27 @@ module.exports=class Insert extends link{
 	}
 
 
+	notificacionVolante(){
+		let self=this
+		self.getLastFolio('Volantes','idVolante')
+		.then(response=>{
+			let idVolante=response[0].folio
+			$.get({
+				url:'/juridico/notificaciones/'+idVolante,
+				success:function(json){
+					let data=JSON.parse(json)
+					$.get({
+						url:'/altanotifica/'+data["0"].idUsuario+'|'+data["0"].mensaje+'|'+idVolante+'|'+data["0"].idAuditoria+'|Volantes|idVolante'
+					})
+				
+					
+				}
+			})
+			
+		})
+	}
+
 }
+
+
+//http://172.16.6.33/altanotifica/998|mensajePrueba|2293|86|Volantes|idVolante

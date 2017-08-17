@@ -330,10 +330,9 @@ module.exports = function (_link) {
 			if (json.insert != 'true') {
 				confirms.modernAlert(json.insert);
 			} else {
-				self.getLastFolio('Volantes', 'idVolante').then(function (response) {
-					var idVolante = response[0].folio;
-					console.log("el ultimo volante es: " + idVolante);
-				});
+				if (ruta == 'Volantes') {
+					self.notificacionVolante();
+				}
 				tabla.drawTable(ruta);
 			}
 			$('a#agregar').show();
@@ -553,10 +552,29 @@ module.exports = function (_link) {
 				});
 			});
 		}
+	}, {
+		key: 'notificacionVolante',
+		value: function notificacionVolante() {
+			var self = this;
+			self.getLastFolio('Volantes', 'idVolante').then(function (response) {
+				var idVolante = response[0].folio;
+				$.get({
+					url: '/juridico/notificaciones/' + idVolante,
+					success: function success(json) {
+						var data = JSON.parse(json);
+						$.get({
+							url: '/altanotifica/' + data["0"].idUsuario + '|' + data["0"].mensaje + '|' + idVolante + '|' + data["0"].idAuditoria + '|Volantes|idVolante'
+						});
+					}
+				});
+			});
+		}
 	}]);
 
 	return Insert;
 }(link);
+
+//http://172.16.6.33/altanotifica/998|mensajePrueba|2293|86|Volantes|idVolante
 
 },{"./../functions":2,"./../notificaciones":6,"./../rutas/link":8,"./../table":10,"jquery":200}],5:[function(require,module,exports){
 "use strict";
