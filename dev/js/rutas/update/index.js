@@ -106,3 +106,27 @@ page('/juridico/Ifa/update/:campo/:id',function(ctx,next){
 	let data=update.creaObjeto(ctx)
 	update.tableIfa(ctx.params.id);
 })
+
+
+page('/juridico/Documentos/update/:campo/:id',function(ctx,next){
+	let data=update.creaObjeto(ctx)
+	let id=data.idVolante
+	funcion.getDatos('Volantes',{idVolante:id})
+	.then(json=>{
+		let doc=json["0"].anexoDoc
+		window.open("/juridico/files/"+doc)
+		
+	})
+})
+
+
+page('/juridico/DocumentosGral/update/:campo/:id',function(ctx,next){
+	let data=update.creaObjeto(ctx)
+	let id=data.idVolante
+	funcion.getDatos('Volantes',{idVolante:id})
+	.then(json=>{
+		let doc=json["0"].anexoDoc
+		window.open("/juridico/files/"+doc)
+		
+	})
+})

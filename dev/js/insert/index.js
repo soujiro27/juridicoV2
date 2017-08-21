@@ -57,7 +57,6 @@ module.exports=class Insert extends link{
 	successInsert(json)
 	{
 		let self=this
-		//json.insert!='true' ? confirms.modernAlert(json.insert):tabla.drawTable(ruta)
 		if(json.insert!='true'){
 			confirms.modernAlert(json.insert)
 		}else{
@@ -254,8 +253,8 @@ module.exports=class Insert extends link{
 			  if(data.update=='false'){
 					confirms.modernAlert('El numero de Documento no se encuentra Registrado')
 			  }else{
-				confirms.modernAlert('El Documento se a cargado con exito')
-				//self.main('Documentos');
+				//confirms.modernAlert('El Documento se a cargado con exito')
+				self.main('Documentos');
 			  }
             },
          
@@ -272,21 +271,29 @@ module.exports=class Insert extends link{
 	let self=this
 		$('input#numDocumento').keyup(function(){
 			let valor=$(this).val();
-			funcion.getDatos('volantes',{numDocumento:valor})
-			.then(response=>{
-				let div=$('div.uploadContainer')
-				if(response.register=='No se encontro registro'){
-					div.html('<p>El documento no Existe</p>')
-				}else{
-					let anexoDoc=response[0]
-					anexoDoc=anexoDoc.anexoDoc
-					if(anexoDoc!=null){
-						div.html(`<p>hay un Documento Asignado ${anexoDoc}</p>`)
+			let idEmpleado=funcion.getDatos('usuarios',{idUsuario:nUsr})
+			.then(empleado=>{
+				let area=empleado["0"].idArea
+				funcion.getDatos('Volantes',{numDocumento:valor,idTurnado:area})
+				.then(json=>{
+					let container=$('div.uploadContainer')
+					let send=$('div.uploadInput')
+					if(json.register=='No se encontro registro'){
+						container.html(`<h3>${json.register}</h3>`)
+						send.hide()
 					}else{
-						div.html(`<p>No hay Documentos Asignados al documento</p>`)
+						if(json["0"].anexoDoc==null){
+							container.html(`<h3>No hay Documentos Asignados</h3>`)
+							send.show()
+						}else{
+							container.html(`<h3>Hay un Documento Asignado <a href="/juridico/files/${json["0"].anexoDoc}" target="_blank"> ${json["0"].anexoDoc}</a></h3>`)
+							send.show()
+						}
 					}
-				}
+				})
 			})
+			
+			
 
 		
 		})
@@ -313,7 +320,36 @@ module.exports=class Insert extends link{
 		})
 	}
 
+
+	checkDocumentoGral(){
+		let self=this
+		$('input#numDocumento').keyup(function(){
+			let valor=$(this).val();
+				funcion.getDatos('Volantes',{numDocumento:valor})
+				.then(json=>{
+					let container=$('div.uploadContainer')
+					let send=$('div.uploadInput')
+					if(json.register=='No se encontro registro'){
+						container.html(`<h3>${json.register}</h3>`)
+						send.hide()
+					}else{
+						if(json["0"].anexoDoc==null){
+							container.html(`<h3>No hay Documentos Asignados</h3>`)
+							send.show()
+						}else{
+							container.html(`<h3>Hay un Documento Asignado <a href="/juridico/files/${json["0"].anexoDoc}" target="_blank"> ${json["0"].anexoDoc}</a></h3>`)
+							send.show()
+						}
+					}
+				})
+		
+			
+			
+
+		
+		})
+	}
+
 }
 
 
-//http://172.16.6.33/altanotifica/998|mensajePrueba|2293|86|Volantes|idVolante

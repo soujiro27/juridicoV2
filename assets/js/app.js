@@ -519,8 +519,8 @@ module.exports = function (_link) {
 						if (data.update == 'false') {
 							confirms.modernAlert('El numero de Documento no se encuentra Registrado');
 						} else {
-							confirms.modernAlert('El Documento se a cargado con exito');
-							//self.main('Documentos');
+							//confirms.modernAlert('El Documento se a cargado con exito')
+							self.main('Documentos');
 						}
 					},
 
@@ -536,19 +536,24 @@ module.exports = function (_link) {
 			var self = this;
 			$('input#numDocumento').keyup(function () {
 				var valor = $(this).val();
-				funcion.getDatos('volantes', { numDocumento: valor }).then(function (response) {
-					var div = $('div.uploadContainer');
-					if (response.register == 'No se encontro registro') {
-						div.html('<p>El documento no Existe</p>');
-					} else {
-						var anexoDoc = response[0];
-						anexoDoc = anexoDoc.anexoDoc;
-						if (anexoDoc != null) {
-							div.html('<p>hay un Documento Asignado ' + anexoDoc + '</p>');
+				var idEmpleado = funcion.getDatos('usuarios', { idUsuario: nUsr }).then(function (empleado) {
+					var area = empleado["0"].idArea;
+					funcion.getDatos('Volantes', { numDocumento: valor, idTurnado: area }).then(function (json) {
+						var container = $('div.uploadContainer');
+						var send = $('div.uploadInput');
+						if (json.register == 'No se encontro registro') {
+							container.html('<h3>' + json.register + '</h3>');
+							send.hide();
 						} else {
-							div.html('<p>No hay Documentos Asignados al documento</p>');
+							if (json["0"].anexoDoc == null) {
+								container.html('<h3>No hay Documentos Asignados</h3>');
+								send.show();
+							} else {
+								container.html('<h3>Hay un Documento Asignado <a href="/juridico/files/' + json["0"].anexoDoc + '" target="_blank"> ' + json["0"].anexoDoc + '</a></h3>');
+								send.show();
+							}
 						}
-					}
+					});
 				});
 			});
 		}
@@ -569,12 +574,34 @@ module.exports = function (_link) {
 				});
 			});
 		}
+	}, {
+		key: 'checkDocumentoGral',
+		value: function checkDocumentoGral() {
+			var self = this;
+			$('input#numDocumento').keyup(function () {
+				var valor = $(this).val();
+				funcion.getDatos('Volantes', { numDocumento: valor }).then(function (json) {
+					var container = $('div.uploadContainer');
+					var send = $('div.uploadInput');
+					if (json.register == 'No se encontro registro') {
+						container.html('<h3>' + json.register + '</h3>');
+						send.hide();
+					} else {
+						if (json["0"].anexoDoc == null) {
+							container.html('<h3>No hay Documentos Asignados</h3>');
+							send.show();
+						} else {
+							container.html('<h3>Hay un Documento Asignado <a href="/juridico/files/' + json["0"].anexoDoc + '" target="_blank"> ' + json["0"].anexoDoc + '</a></h3>');
+							send.show();
+						}
+					}
+				});
+			});
+		}
 	}]);
 
 	return Insert;
 }(link);
-
-//http://172.16.6.33/altanotifica/998|mensajePrueba|2293|86|Volantes|idVolante
 
 },{"./../functions":2,"./../notificaciones":6,"./../rutas/link":8,"./../table":10,"jquery":200}],5:[function(require,module,exports){
 "use strict";
@@ -763,8 +790,15 @@ page('/juridico/DoctosTextos/Add', function (ctx, next) {
 page('/juridico/Documentos/Add', function (ctx, next) {
   insert.renderForm(documentos);
   insert.checkNumeroDocumento();
-  // insert.dataFileUpload()
-  //insert.uploadFile()
+  insert.dataFileUpload();
+  insert.uploadFile();
+});
+
+page('/juridico/DocumentosGral/Add', function (ctx, next) {
+  insert.renderForm(documentos);
+  insert.checkDocumentoGral();
+  insert.dataFileUpload();
+  insert.uploadFile();
 });
 
 },{"./../../functions":2,"./../../insert/":4,"./../../templates/forms/insert/Acciones.js":11,"./../../templates/forms/insert/Caracteres.js":12,"./../../templates/forms/insert/SubTiposDocumentos.js":16,"./../../templates/forms/insert/Textos":17,"./../../templates/forms/insert/Volantes.js":18,"./../../templates/forms/insert/documentos":19,"babelify-es6-polyfill":31,"jquery":200,"page":203}],8:[function(require,module,exports){
@@ -903,6 +937,24 @@ page('/juridico/confrontasJuridico/update/:campo/:id', function (ctx, next) {
 page('/juridico/Ifa/update/:campo/:id', function (ctx, next) {
 	var data = update.creaObjeto(ctx);
 	update.tableIfa(ctx.params.id);
+});
+
+page('/juridico/Documentos/update/:campo/:id', function (ctx, next) {
+	var data = update.creaObjeto(ctx);
+	var id = data.idVolante;
+	funcion.getDatos('Volantes', { idVolante: id }).then(function (json) {
+		var doc = json["0"].anexoDoc;
+		window.open("/juridico/files/" + doc);
+	});
+});
+
+page('/juridico/DocumentosGral/update/:campo/:id', function (ctx, next) {
+	var data = update.creaObjeto(ctx);
+	var id = data.idVolante;
+	funcion.getDatos('Volantes', { idVolante: id }).then(function (json) {
+		var doc = json["0"].anexoDoc;
+		window.open("/juridico/files/" + doc);
+	});
 });
 
 },{"./../../functions":2,"./../../insert":4,"./../../table":10,"./../../templates/forms/insert/Confronta":13,"./../../update":30,"ckeditor":35,"page":203}],10:[function(require,module,exports){
@@ -1145,7 +1197,7 @@ module.exports = function (tipoDocto, auditorias, caracter, accion, turnado, las
 },{"yo-yo":272}],19:[function(require,module,exports){
 'use strict';
 
-var _templateObject = _taggedTemplateLiteral(['<form method="POST" class="form-inline" id="documentosJur" enctype="multipart/form-data">\n\n\n<div class="form-group numDocumento">\n    <label for="numDocumento" class="control-label">Numero de Documento</label>\n    <input type="text" id="numDocumento" name="numDocumento" required class="form-control file">\n</div>\n\n<div class="uploadContainer"></div>\n\n<div class="form-group send">\n    <input type="submit" class="btn btn-primary btn-sm" value="Guardar" disabled />\n    <button class="btn btn-default btn-sm" id="cancelar">Cancelar</button>\n</div>\n\n</form>'], ['<form method="POST" class="form-inline" id="documentosJur" enctype="multipart/form-data">\n\n\n<div class="form-group numDocumento">\n    <label for="numDocumento" class="control-label">Numero de Documento</label>\n    <input type="text" id="numDocumento" name="numDocumento" required class="form-control file">\n</div>\n\n<div class="uploadContainer"></div>\n\n<div class="form-group send">\n    <input type="submit" class="btn btn-primary btn-sm" value="Guardar" disabled />\n    <button class="btn btn-default btn-sm" id="cancelar">Cancelar</button>\n</div>\n\n</form>']);
+var _templateObject = _taggedTemplateLiteral(['<form method="POST" class="form-inline" id="documentosJur" enctype="multipart/form-data">\n\n\n<div class="form-group numDocumento">\n    <label for="numDocumento" class="control-label">Numero de Documento</label>\n    <input type="text" id="numDocumento" name="numDocumento" required class="form-control file">\n</div>\n\n<div class="uploadContainer"></div>\n<div class="uploadInput">\n    <div class="form-group anexoDoc">\n    <label for="anexoDoc">Documento</label>\n    <input type="file" class="form-control"   name="anexoDoc" id="imagen" required >\n    </div>\n\n\n<div class="form-group send">\n    <input type="submit"  class="btn btn-primary btn-sm" value="Guardar"  />\n    <button class="btn btn-default btn-sm" id="cancelar">Cancelar</button>\n</div>\n\n\n</div>\n</form>'], ['<form method="POST" class="form-inline" id="documentosJur" enctype="multipart/form-data">\n\n\n<div class="form-group numDocumento">\n    <label for="numDocumento" class="control-label">Numero de Documento</label>\n    <input type="text" id="numDocumento" name="numDocumento" required class="form-control file">\n</div>\n\n<div class="uploadContainer"></div>\n<div class="uploadInput">\n    <div class="form-group anexoDoc">\n    <label for="anexoDoc">Documento</label>\n    <input type="file" class="form-control"   name="anexoDoc" id="imagen" required >\n    </div>\n\n\n<div class="form-group send">\n    <input type="submit"  class="btn btn-primary btn-sm" value="Guardar"  />\n    <button class="btn btn-default btn-sm" id="cancelar">Cancelar</button>\n</div>\n\n\n</div>\n</form>']);
 
 function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 

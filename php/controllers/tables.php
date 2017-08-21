@@ -32,6 +32,16 @@ inner join sia_catSubTiposDocumentos std on cdt.idSubTipoDocumento=std.idSubTipo
 private $ifaObservaciones="select idObservacionDoctoJuridico,pagina,observacion,estatus from sia_ObservacionesDoctosJuridico";
 
 
+private $documentosGral="select v.idVolante,v.numDocumento,a.clave,subd.nombre as Documento, v.idTurnado as Remitente,
+v.anexoDoc
+from sia_Volantes v
+inner join sia_VolantesDocumentos vd on v.idVolante=vd.idVolante
+inner join sia_auditorias a on vd.cveAuditoria=a.idAuditoria
+inner join sia_catSubTiposDocumentos subd on vd.idSubTipoDocumento=subd.idSubTipoDocumento
+and v.anexoDoc is not null
+";
+
+
 
 public function incio($modulo){
 		
@@ -44,6 +54,8 @@ public function incio($modulo){
 		if($modulo=='DoctosTextos'){$sql=$this->doctosTexto;}
 		if($modulo=='Ifa'){$sql=$this->sqlIfa($_SESSION["idUsuario"]);}
 		if($modulo=='ObservacionesDoctosJuridico'){$sql=$this->ifaObservaciones;}
+		if($modulo=='Documentos'){$sql=$this->Documentos($_SESSION["idUsuario"]);}
+		if($modulo=='DocumentosGral'){$sql=$this->documentosGral;}
 		$obtener->getTable($sql);
 		
 }
@@ -90,6 +102,20 @@ where sub.nombre='Ifa' and v.idTurnado=
 (select nombreCorto from sia_areas where idAreaSuperior='DGAJ' and idEmpleadoTitular=
 (select idEmpleado from sia_usuarios where idUsuario='".$_SESSION ['idUsuario']."')) order by v.idVolante desc";
 	return $sql;
+}
+
+
+public function Documentos($usuario)
+{
+	$sql="select v.idVolante,v.numDocumento,a.clave as Auditoria,subd.nombre as Tipo,
+v.anexoDoc
+from sia_Volantes v
+inner join sia_VolantesDocumentos vd on v.idVolante=vd.idVolante
+inner join sia_auditorias a on vd.cveAuditoria=a.idAuditoria
+inner join sia_catSubTiposDocumentos subd on vd.idSubTipoDocumento=subd.idSubTipoDocumento
+where v.idTurnado=(select idArea from sia_usuarios where idUsuario='$usuario')
+and v.anexoDoc is not null";
+return $sql;
 }
 
 

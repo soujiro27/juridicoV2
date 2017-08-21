@@ -127,7 +127,7 @@ $app->post('/juridico/uploadFile',function() use ($app){
 		if ($file && move_uploaded_file($_FILES['anexoDoc']['tmp_name'],"./juridico/files/".$numDoc.'.'.$file[1]))
     	{
 			$insert=new Insert();
-			$res=$insert->updateVolante('Volantes',$numDoc.$file[1]);
+			$res=$insert->updateVolante('Volantes',$numDoc,$file[1]);
 		
        		$salida['update']='true';
 			echo json_encode($salida);

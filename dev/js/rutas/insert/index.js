@@ -85,10 +85,15 @@ page('/juridico/DoctosTextos/Add',function(ctx,next) {
 page('/juridico/Documentos/Add',function(ctx,next) {
     insert.renderForm(documentos)
     insert.checkNumeroDocumento()
-   // insert.dataFileUpload()
-    //insert.uploadFile()
+    insert.dataFileUpload()
+    insert.uploadFile()
 })
 
 
-
+page('/juridico/DocumentosGral/Add',function(ctx,next) {
+  insert.renderForm(documentos)
+  insert.checkDocumentoGral()
+  insert.dataFileUpload()
+  insert.uploadFile()
+})
 
