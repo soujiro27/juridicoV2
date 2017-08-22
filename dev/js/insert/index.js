@@ -253,7 +253,6 @@ module.exports=class Insert extends link{
 			  if(data.update=='false'){
 					confirms.modernAlert('El numero de Documento no se encuentra Registrado')
 			  }else{
-				//confirms.modernAlert('El Documento se a cargado con exito')
 				self.main('Documentos');
 			  }
             },
@@ -309,14 +308,17 @@ module.exports=class Insert extends link{
 				url:'/juridico/notificaciones/'+idVolante,
 				success:function(json){
 					let data=JSON.parse(json)
-					$.get({
-						url:'/altanotifica/'+data["0"].idUsuario+'|'+data["0"].mensaje+'|'+idVolante+'|'+data["0"].idAuditoria+'|Volantes|idVolante'
-					})
-				
-					
+					self.sendNotificacion(data["0"].idUsuario,data["0"].mensaje,data["0"].idAuditoria,idVolante)
 				}
 			})
 			
+		}) 
+	}
+
+
+	sendNotificacion(userDest,mensaje,auditoria,id){
+		$.get({
+			url:'/altanotifica/'+userDest+'|'+mensaje+'|'+id+'|'+auditoria+'|Volantes|idVolante'
 		})
 	}
 

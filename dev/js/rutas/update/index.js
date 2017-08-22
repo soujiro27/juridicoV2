@@ -104,8 +104,14 @@ page('/juridico/confrontasJuridico/update/:campo/:id',function(ctx,next){
 
 page('/juridico/Ifa/update/:campo/:id',function(ctx,next){
 	let data=update.creaObjeto(ctx)
-	update.tableIfa(ctx.params.id);
+	update.tableIfa(ctx.params.id,'Ifa');
 })
+
+page('/juridico/Irac/update/:campo/:id',function(ctx,next){
+	let data=update.creaObjeto(ctx)
+	update.tableIfa(ctx.params.id,'Irac');
+})
+
 
 
 page('/juridico/Documentos/update/:campo/:id',function(ctx,next){

@@ -18,6 +18,7 @@ class InsertController{
 
 
 	public function checkDataInsert($modulo,$datos){
+		
 		$db=$this->conecta();
 		$getData=new Get();
 		$insert=new Insert();
@@ -25,7 +26,7 @@ class InsertController{
 		$ruta= new Rutas;
 		$update= new updateController();
 		
-		if($modulo!='Volantes' && $modulo!='Ifa' && $modulo!='DocumentosSiglas' && $modulo!='personal' ){
+		if($modulo!='Volantes' && $modulo!='Ifa' && $modulo!='DocumentosSiglas' && $modulo!='personal' && $modulo!='Irac' ){
 			$modulo=$ruta->catalogos($modulo);
 			$duplicado=$getData->getDuplicado($modulo,$datos);
 			if(empty($duplicado)){
@@ -38,7 +39,7 @@ class InsertController{
 			}
 		}elseif ($modulo=='Volantes'){
 			$this->checaFolio($modulo,$datos);
-		}elseif($modulo=='Ifa'){
+		}elseif($modulo=='Ifa' || $modulo=='Irac'){
 			$modulo='ObservacionesDoctosJuridico';
 			$volantesDocumentos=array('idVolante'=>$datos['idVolante']);
 			$duplicado=$getData->getDuplicado('VolantesDocumentos',$volantesDocumentos);

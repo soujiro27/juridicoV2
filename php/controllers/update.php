@@ -65,6 +65,7 @@ class UpdateController extends Rutas{
 
 	public function cambioModulo($modulo){
 		if($modulo=='Ifa'){$modulo='ObservacionesDoctosJuridico';}
+		if($modulo=='Irac'){$modulo='ObservacionesDoctosJuridico';}
 		return $modulo;
 	}
 

@@ -2980,7 +2980,8 @@ form#confrontasJuridico div,
 form#Ifa div,
 form#CatDoctosTextos div,
 form#DocumentosSiglas div,
-form#documentosJur div {
+form#documentosJur div,
+form#Irac div {
   padding: 8px;
 }
 form#Caracteres div.send,
@@ -2991,7 +2992,8 @@ form#confrontasJuridico div.send,
 form#Ifa div.send,
 form#CatDoctosTextos div.send,
 form#DocumentosSiglas div.send,
-form#documentosJur div.send {
+form#documentosJur div.send,
+form#Irac div.send {
   display: block;
   margin-top: 10px;
 }
@@ -3003,7 +3005,8 @@ form#confrontasJuridico div.send button,
 form#Ifa div.send button,
 form#CatDoctosTextos div.send button,
 form#DocumentosSiglas div.send button,
-form#documentosJur div.send button {
+form#documentosJur div.send button,
+form#Irac div.send button {
   margin-left: 10px;
 }
 form#Caracteres div label,
@@ -3014,7 +3017,8 @@ form#confrontasJuridico div label,
 form#Ifa div label,
 form#CatDoctosTextos div label,
 form#DocumentosSiglas div label,
-form#documentosJur div label {
+form#documentosJur div label,
+form#Irac div label {
   display: block;
 }
 form#Caracteres div.Asunto,
@@ -3026,6 +3030,7 @@ form#Ifa div.Asunto,
 form#CatDoctosTextos div.Asunto,
 form#DocumentosSiglas div.Asunto,
 form#documentosJur div.Asunto,
+form#Irac div.Asunto,
 form#Caracteres div.texto,
 form#Acciones div.texto,
 form#Volantes div.texto,
@@ -3035,6 +3040,7 @@ form#Ifa div.texto,
 form#CatDoctosTextos div.texto,
 form#DocumentosSiglas div.texto,
 form#documentosJur div.texto,
+form#Irac div.texto,
 form#Caracteres div.observacion,
 form#Acciones div.observacion,
 form#Volantes div.observacion,
@@ -3044,6 +3050,7 @@ form#Ifa div.observacion,
 form#CatDoctosTextos div.observacion,
 form#DocumentosSiglas div.observacion,
 form#documentosJur div.observacion,
+form#Irac div.observacion,
 form#Caracteres div.textoIfa,
 form#Acciones div.textoIfa,
 form#Volantes div.textoIfa,
@@ -3052,7 +3059,8 @@ form#confrontasJuridico div.textoIfa,
 form#Ifa div.textoIfa,
 form#CatDoctosTextos div.textoIfa,
 form#DocumentosSiglas div.textoIfa,
-form#documentosJur div.textoIfa {
+form#documentosJur div.textoIfa,
+form#Irac div.textoIfa {
   width: 90%;
 }
 form#Caracteres div.Asunto textarea,
@@ -3064,6 +3072,7 @@ form#Ifa div.Asunto textarea,
 form#CatDoctosTextos div.Asunto textarea,
 form#DocumentosSiglas div.Asunto textarea,
 form#documentosJur div.Asunto textarea,
+form#Irac div.Asunto textarea,
 form#Caracteres div.texto textarea,
 form#Acciones div.texto textarea,
 form#Volantes div.texto textarea,
@@ -3073,6 +3082,7 @@ form#Ifa div.texto textarea,
 form#CatDoctosTextos div.texto textarea,
 form#DocumentosSiglas div.texto textarea,
 form#documentosJur div.texto textarea,
+form#Irac div.texto textarea,
 form#Caracteres div.observacion textarea,
 form#Acciones div.observacion textarea,
 form#Volantes div.observacion textarea,
@@ -3082,6 +3092,7 @@ form#Ifa div.observacion textarea,
 form#CatDoctosTextos div.observacion textarea,
 form#DocumentosSiglas div.observacion textarea,
 form#documentosJur div.observacion textarea,
+form#Irac div.observacion textarea,
 form#Caracteres div.textoIfa textarea,
 form#Acciones div.textoIfa textarea,
 form#Volantes div.textoIfa textarea,
@@ -3090,7 +3101,8 @@ form#confrontasJuridico div.textoIfa textarea,
 form#Ifa div.textoIfa textarea,
 form#CatDoctosTextos div.textoIfa textarea,
 form#DocumentosSiglas div.textoIfa textarea,
-form#documentosJur div.textoIfa textarea {
+form#documentosJur div.textoIfa textarea,
+form#Irac div.textoIfa textarea {
   width: 68%;
 }
 form#Caracteres div.textoIfa,
@@ -3102,6 +3114,7 @@ form#Ifa div.textoIfa,
 form#CatDoctosTextos div.textoIfa,
 form#DocumentosSiglas div.textoIfa,
 form#documentosJur div.textoIfa,
+form#Irac div.textoIfa,
 form#Caracteres div.firmas,
 form#Acciones div.firmas,
 form#Volantes div.firmas,
@@ -3110,7 +3123,8 @@ form#confrontasJuridico div.firmas,
 form#Ifa div.firmas,
 form#CatDoctosTextos div.firmas,
 form#DocumentosSiglas div.firmas,
-form#documentosJur div.firmas {
+form#documentosJur div.firmas,
+form#Irac div.firmas {
   display: block !important;
 }
 form#Caracteres div.textoIfa textarea,
@@ -3122,6 +3136,7 @@ form#Ifa div.textoIfa textarea,
 form#CatDoctosTextos div.textoIfa textarea,
 form#DocumentosSiglas div.textoIfa textarea,
 form#documentosJur div.textoIfa textarea,
+form#Irac div.textoIfa textarea,
 form#Caracteres div.firmas textarea,
 form#Acciones div.firmas textarea,
 form#Volantes div.firmas textarea,
@@ -3130,7 +3145,8 @@ form#confrontasJuridico div.firmas textarea,
 form#Ifa div.firmas textarea,
 form#CatDoctosTextos div.firmas textarea,
 form#DocumentosSiglas div.firmas textarea,
-form#documentosJur div.firmas textarea {
+form#documentosJur div.firmas textarea,
+form#Irac div.firmas textarea {
   width: 90% !important;
 }
 form#Caracteres div.textoIfa select,
@@ -3142,6 +3158,7 @@ form#Ifa div.textoIfa select,
 form#CatDoctosTextos div.textoIfa select,
 form#DocumentosSiglas div.textoIfa select,
 form#documentosJur div.textoIfa select,
+form#Irac div.textoIfa select,
 form#Caracteres div.firmas select,
 form#Acciones div.firmas select,
 form#Volantes div.firmas select,
@@ -3150,7 +3167,8 @@ form#confrontasJuridico div.firmas select,
 form#Ifa div.firmas select,
 form#CatDoctosTextos div.firmas select,
 form#DocumentosSiglas div.firmas select,
-form#documentosJur div.firmas select {
+form#documentosJur div.firmas select,
+form#Irac div.firmas select {
   width: 50%;
   height: 200px;
 }

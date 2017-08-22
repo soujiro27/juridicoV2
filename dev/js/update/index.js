@@ -15,6 +15,7 @@ const Textos=require('./../templates/forms/update/Textos');
 const confronta=require('./../templates/forms/update/Confronta')
 const ifa=require('./../templates/forms/update/Ifa')
 const ifaEmpty=require('./../templates/forms/insert/Ifa')
+const iracEmpty=require('./../templates/forms/insert/Irac')
 const cedulaIfa=require('./../templates/forms/insert/IfaCedula')
 const dibujaTabla=require('./../templates/table')
 
@@ -112,22 +113,28 @@ module.exports=class Update extends link{
 
 
 
-tableIfa(id){
+tableIfa(id,titulo){
 	
 	let self=this
+	let header='Obervaciones '+ titulo
 	tabla.drawTableIfa('ObservacionesDoctosJuridico',{idVolante:id})
 	.then(response=>{
 		
 		$.confirm({
-		title: 'Observaciones Ifa',
+		title: header,
 		content:response,
 		buttons: {
 			newObvsIfa: {
 				text: 'Agregar Observacion',
 				btnClass: 'btn-blue',
 				action: function () {
+					if(ruta=='Irac'){
+						insert.formIfa(iracEmpty(id))
+					}else{
 						insert.formIfa(ifaEmpty(id))
 					}
+					
+				}
 				
 				},
 			cancel:{

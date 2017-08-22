@@ -83,11 +83,11 @@ class Insert{
 	}
 
 
-	public function updateVolante($modulo,$dato,$extension){
+	public function updateVolante($modulo,$nombre,$dato,$extension){
 		$db=$this->conecta();
 		$sql="UPDATE sia_".$modulo." SET anexoDoc=:anexoDoc, usrModificacion=:usrModificacion,fModificacion=getdate() WHERE  NumDocumento='$dato'";
 		$dbQuery = $db->prepare($sql);
-		$pdo[':anexoDoc']=$dato.'.'.$extension;
+		$pdo[':anexoDoc']=$nombre.'.'.$extension;
 		$pdo[':usrModificacion']=$_SESSION ["idUsuario"];
 		$dbQuery->execute($pdo);
 		$errores=$dbQuery->errorInfo();
