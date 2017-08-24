@@ -29,7 +29,7 @@ return yo`<form method="POST" class="form-inline" id="confrontasJuridico">
 
 <div class="form-group hConfronta">
     <label for="hConfronta">Hora de Confronta</label>
-    <input type="time" class="form-control" id="hConfronta" placeholder="hConfronta" required pattern="[A-Za-z].{1,49}" name="hConfronta" title="Formato Incorrecto"  >
+    <input type="time" class="form-control" id="hConfronta"  required pattern="([0-1]{1}[0-9]{1}|20|21|22|23):[0-5]{1}[0-9]{1}" placeholder="00:00" name="hConfronta" title="Formato Incorrecto"  >
 </div>
 
 <div class="form-group fecha">

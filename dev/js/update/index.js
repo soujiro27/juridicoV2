@@ -15,6 +15,7 @@ const Textos=require('./../templates/forms/update/Textos');
 const confronta=require('./../templates/forms/update/Confronta')
 const ifa=require('./../templates/forms/update/Ifa')
 const ifaEmpty=require('./../templates/forms/insert/Ifa')
+const irac=require('./../templates/forms/update/Irac')
 const iracEmpty=require('./../templates/forms/insert/Irac')
 const cedulaIfa=require('./../templates/forms/insert/IfaCedula')
 const dibujaTabla=require('./../templates/table')
@@ -35,6 +36,7 @@ module.exports=class Update extends link{
 		if(ruta=='DoctosTextos'){return Textos}
 		if(ruta=='confrontasJuridico'){return confronta}
 		if(ruta=='Ifa'){return ifa}
+		if(ruta=='Irac'){return irac}
 
 	}
 
@@ -153,6 +155,7 @@ tableIfa(id,titulo){
 					.then(resolve=>{
 						let idDocto=resolve[2][0].idSubTipoDocumento
 						let template=cedulaIfa(id,resolve[0],resolve[1],idDocto)
+						/* carga el template de la cedula del ifa */
 						insert.renderForm(template)
 						funcion.loadDateInput();
 
