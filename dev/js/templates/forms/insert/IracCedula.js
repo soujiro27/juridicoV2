@@ -1,17 +1,12 @@
 var yo=require('yo-yo');
 module.exports=function(idVolante,docSiglas,empleados,idTipoDocto){
 
-
 if(docSiglas.register=='No se encontro registro'){
 
 return yo`
 <div>
 <div class="contentIrac" id="contentIrac" >
 <form method="POST" class="form-inline" id="DocumentosSiglas">
-
-
-
-
 
 
 <div class="form-group siglas">
@@ -24,14 +19,21 @@ return yo`
 
 <div class="form-group firmas">
     <label for="firmas">Personal que Firma</label>
-    <select name="firma" id="firma" required="required" class="form-control" multiple >
-      <option value=""> Seleccione una Opción </option>
-        ${empleados.map(function(json){
-           
-            return yo `<option value="${json.idEmpleado}">${json.paterno} ${json.materno} ${json.nombre} </option>`
-            
-        })}
-    </select>
+    <div class="personal">
+    ${empleados.map(function(json){
+        console.log(json)
+         return yo `<div data-idPuesto="${json.idPuestoJuridico}" class="puestoContainer">
+         <div class="imgPuesto">
+            <p><i class="fa fa-user" aria-hidden="true"></i></p>
+        </div>
+        <div class="textosPuestos">
+            <p class="nombre">${json.nombre} ${json.paterno} ${json.materno}</p>
+            <p>${json.puesto}</p>
+        </div>
+    </div>`
+         
+     })}
+    </div>
 </div>
 
 
@@ -149,3 +151,16 @@ return yo`
 
 
 }
+
+
+/*
+<select name="firma" id="firma" required="required" class="form-control" multiple >
+      <option value=""> Seleccione una Opción </option>
+        ${empleados.map(function(json){
+           
+            return yo `<option value="${json.idEmpleado}">${json.paterno} ${json.materno} ${json.nombre} </option>`
+            
+        })}
+    </select>
+
+    */

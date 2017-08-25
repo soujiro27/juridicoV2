@@ -17,6 +17,7 @@ const ifa=require('./../templates/forms/update/Ifa')
 const ifaEmpty=require('./../templates/forms/insert/Ifa')
 const irac=require('./../templates/forms/update/Irac')
 const iracEmpty=require('./../templates/forms/insert/Irac')
+const cedulaIrac=require('./../templates/forms/insert/IracCedula')
 const cedulaIfa=require('./../templates/forms/insert/IfaCedula')
 const dibujaTabla=require('./../templates/table')
 
@@ -147,39 +148,46 @@ tableIfa(id,titulo){
 				text:"Generar Cedula",
 				btnClass:'btn-warning',
 				action:function(){
-					let nombre=ruta.toUpperCase()
-					let docSiglas=funcion.getDatos('DocumentosSiglas',{idVolante:id})
-					let empleados=funcion.getDatosOrder('empleados',{idArea:'DGAJ'},'paterno')
-					let idTipoDocto=funcion.getDatos('catSubTiposDocumentos',{nombre:nombre})
-					Promise.all([docSiglas,empleados,idTipoDocto])
-					.then(resolve=>{
-						let idDocto=resolve[2][0].idSubTipoDocumento
-						let template=cedulaIfa(id,resolve[0],resolve[1],idDocto)
-						/* carga el template de la cedula del ifa */
-						insert.renderForm(template)
-						funcion.loadDateInput();
+					let usertest=funcion.getDatos('usuarios',{idUsuario:nUsr})
+					.then(json=>{
+						let idArea=json["0"].idArea
+						let nombre=ruta.toUpperCase()
+						let docSiglas=funcion.getDatos('DocumentosSiglas',{idVolante:id})
+						let usuario=funcion.getDatos('PuestosJuridico',{idArea:idArea}) 
+						let idTipoDocto=funcion.getDatos('catSubTiposDocumentos',{nombre:nombre})
+						Promise.all([docSiglas,usuario,idTipoDocto])
+						.then(resolve=>{
+							let idDocto=resolve[2][0].idSubTipoDocumento
+							//console.log(resolve[1][0].idArea)					
 
-						if(resolve[0].register=='No se encontro registro'){
-							insert.getDataRuta('DocumentosSiglas','insert')
-						}else{
-							insert.getDataRuta('DocumentosSiglas','update')
-						}
+							if(ruta=='Ifa'){var template=cedulaIfa(id,resolve[0],resolve[1],idDocto)}
+							else if(ruta=='Irac'){var template=cedulaIrac(id,resolve[0],resolve[1],idDocto)}
+							//let template=cedulaIfa(id,resolve[0],resolve[1],idDocto)
+							/* carga el template de la cedula del ifa */
+							insert.renderForm(template)
+							funcion.loadDateInput();
+
+							if(resolve[0].register=='No se encontro registro'){
+								insert.getDataRuta('DocumentosSiglas','insert')
+							}else{
+								insert.getDataRuta('DocumentosSiglas','update')
+							}
 
 
-						$('button#addPromoAccion').click(function(){
-							funcion.getDatos('CatDoctosTextos',{idSubTipoDocumento:idDocto})
+							$('button#addPromoAccion').click(function(){
+								funcion.getDatos('CatDoctosTextos',{idSubTipoDocumento:idDocto})
 							.then(data=>{self.tablaTextosIfa(data)})
-						})
+							})
 						
+						})
 					})
-
 				
 				}
 			}
 			},
 			onContentReady:function(){
 				let _this=this
-				console.log($(this))
+				
 				 $('table#ObservacionesDoctosJuridico tbody tr').click(function(){
 					let id=$(this).data('id');
 					let campo=$(this).data('nombre')

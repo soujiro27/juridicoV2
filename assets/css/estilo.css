@@ -3192,6 +3192,20 @@ div.pull-left span {
 div.uploadInput {
   display: none;
 }
+div.personal {
+  width: 100%;
+  display: flex;
+}
+div.personal div.puestoContainer {
+  width: 20%;
+  display: flex;
+}
+div.personal div.puestoContainer div.imgPuesto {
+  width: 15%;
+}
+div.personal div.puestoContainer div.textosPuestos {
+  width: 80%;
+}
 @-moz-keyframes load4 {
   0%, 100% {
     box-shadow: 0 -3em 0 0.2em, 2em -2em 0 0em, 3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 -1em, -3em 0 0 -1em, -2em -2em 0 0;
