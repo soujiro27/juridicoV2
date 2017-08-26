@@ -3197,7 +3197,7 @@ div.personal {
   display: flex;
 }
 div.personal div.puestoContainer {
-  width: 20%;
+  width: 30%;
   display: flex;
 }
 div.personal div.puestoContainer div.imgPuesto {
@@ -3205,6 +3205,9 @@ div.personal div.puestoContainer div.imgPuesto {
 }
 div.personal div.puestoContainer div.textosPuestos {
   width: 80%;
+}
+div.personal div.puestoContainer div.textosPuestos p {
+  font-size: 14px;
 }
 @-moz-keyframes load4 {
   0%, 100% {
