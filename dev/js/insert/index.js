@@ -155,7 +155,6 @@ module.exports=class Insert extends link{
 			let datos=$(this).serializeArray()
 			let datosSend=$(this).serialize()
 			let id=datos[3].value
-			console.log(datos)
 			if(funcion.validaDatos(datos)){
 				if(ruta=='DocumentosSiglas'){
 					let firma=self.getDataFirma(datos)
@@ -209,14 +208,19 @@ module.exports=class Insert extends link{
 	getDataFirma(datos){
 		let firma=''
 		let data=''
+		let volante=''
 		for(let x in datos){
 			if(datos[x].name=='firma'){
 				firma+=datos[x].value+','
-			}else{
+			}else if(datos[x].name=='idVolante'){
+				volante+=datos[x].value
+			}
+			else{
 				data+=datos[x].name+'='+datos[x].value+'&'
 			}	
 		}
-		data=data+'idEmpleadosFirma='+firma
+		data=data+'idPuestosJuridico='+firma+'&'
+		data=data+'idVolante='+volante
 		return data
 	}
 

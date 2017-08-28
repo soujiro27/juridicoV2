@@ -421,7 +421,6 @@ module.exports = function (_link) {
 				var datos = $(this).serializeArray();
 				var datosSend = $(this).serialize();
 				var id = datos[3].value;
-				console.log(datos);
 				if (funcion.validaDatos(datos)) {
 					if (ruta == 'DocumentosSiglas') {
 						var firma = self.getDataFirma(datos);
@@ -472,14 +471,18 @@ module.exports = function (_link) {
 		value: function getDataFirma(datos) {
 			var firma = '';
 			var data = '';
+			var volante = '';
 			for (var x in datos) {
 				if (datos[x].name == 'firma') {
 					firma += datos[x].value + ',';
+				} else if (datos[x].name == 'idVolante') {
+					volante += datos[x].value;
 				} else {
 					data += datos[x].name + '=' + datos[x].value + '&';
 				}
 			}
-			data = data + 'idEmpleadosFirma=' + firma;
+			data = data + 'idPuestosJuridico=' + firma + '&';
+			data = data + 'idVolante=' + volante;
 			return data;
 		}
 	}, {
@@ -1161,12 +1164,9 @@ module.exports = function (idVolante) {
 },{"yo-yo":275}],17:[function(require,module,exports){
 'use strict';
 
-var _templateObject = _taggedTemplateLiteral(['\n<div>\n<div class="contentIrac" id="contentIrac" >\n<form method="POST" class="form-inline" id="DocumentosSiglas">\n\n\n<div class="form-group siglas">\n    <label for="siglas">Siglas</label>\n    <input type="text"  id="siglas" name="siglas" required class="form-control"   >\n    <input type="hidden"  name="idDocumentoTexto" id="idDocumentoTexto" value=""  >\n    <input type="hidden"  name="idSubTipoDocumento" id="idDocumentoTexto" value="', '"  >\n    <input type="hidden"  name="idVolante" value="', '"  >\n</div>\n\n<div class="form-group firmas">\n    <label for="firmas">Personal que Firma</label>\n    <div class="personal">\n    ', '\n    </div>\n</div>\n\n\n<div class="form-group fecha">\n    <label for="fecha">Fecha Documento</label>\n    <input type="text" id="fOficio" name="fOficio" required class="form-control fechaInput" pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))">\n</div>\n\n\n<div class="form-group send">\n    <input type="submit" class="btn btn-primary btn-sm" value="Guardar">\n    <button class="btn btn-default btn-sm" id="cancelar">Cancelar</button>\n</div>\n\n\n</form>\n</div>\n\n</div>'], ['\n<div>\n<div class="contentIrac" id="contentIrac" >\n<form method="POST" class="form-inline" id="DocumentosSiglas">\n\n\n<div class="form-group siglas">\n    <label for="siglas">Siglas</label>\n    <input type="text"  id="siglas" name="siglas" required class="form-control"   >\n    <input type="hidden"  name="idDocumentoTexto" id="idDocumentoTexto" value=""  >\n    <input type="hidden"  name="idSubTipoDocumento" id="idDocumentoTexto" value="', '"  >\n    <input type="hidden"  name="idVolante" value="', '"  >\n</div>\n\n<div class="form-group firmas">\n    <label for="firmas">Personal que Firma</label>\n    <div class="personal">\n    ', '\n    </div>\n</div>\n\n\n<div class="form-group fecha">\n    <label for="fecha">Fecha Documento</label>\n    <input type="text" id="fOficio" name="fOficio" required class="form-control fechaInput" pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))">\n</div>\n\n\n<div class="form-group send">\n    <input type="submit" class="btn btn-primary btn-sm" value="Guardar">\n    <button class="btn btn-default btn-sm" id="cancelar">Cancelar</button>\n</div>\n\n\n</form>\n</div>\n\n</div>']),
-    _templateObject2 = _taggedTemplateLiteral(['<div data-idPuesto="', '" class="puestoContainer">\n         <div class="imgPuesto">\n            <p><i class="fa fa-user" aria-hidden="true"></i></p>\n        </div>\n        <div class="textosPuestos">\n            <p class="nombre">', ' ', ' ', '</p>\n            <p>', '</p>\n        </div>\n    </div>'], ['<div data-idPuesto="', '" class="puestoContainer">\n         <div class="imgPuesto">\n            <p><i class="fa fa-user" aria-hidden="true"></i></p>\n        </div>\n        <div class="textosPuestos">\n            <p class="nombre">', ' ', ' ', '</p>\n            <p>', '</p>\n        </div>\n    </div>']),
-    _templateObject3 = _taggedTemplateLiteral(['\n<div>\n<div class="contentIrac" id="contentIrac" >\n    <form method="POST" class="form-inline" id="DocumentosSiglas">\n<div class="form-group siglas">\n    <label for="siglas">Siglas</label>\n    <input type="text"  id="siglas" name="siglas" required class="form-control" value="', '"   >\n   \n</div>\n<div class="form-group subDocumento">\n    <label for="subDocumento">Tipo de SubDocumento</label>\n    <select name="idSubTipoDocumento" id="subDocumento" required="required" class="form-control" >\n      <option value=""> Seleccione una Opci\xF3n </option>\n        ', '\n    </select>\n</div>\n\n<div class="form-group textoIfa">\n    <label for="textoIfa">Promociones de Acciones</label>\n    <textarea class="form-control" rows="3" readonly  id="textoIfa" >', '</textarea>\n    <input type="hidden"  name="idDocumentoTexto" id="idDocumentoTexto" value="', '"  >\n</div>\n\n<div class="form-group firmas">\n    <label for="firmas">Personal que Firma</label>\n    <select name="firma" id="firma" required="required" class="form-control" multiple >\n      <option value=""> Seleccione una Opci\xF3n </option>\n        ', '\n    </select>\n</div>\n\n\n\n<div class="form-group fecha">\n    <label for="fecha">Fecha Documento</label>\n    <input type="text" id="fOficio" name="fOficio" required class="form-control fechaInput" pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))" value="', '" >\n    <input type="hidden"  name="idVolante" value="', '"  >\n</div>\n\n\n\n\n<div class="form-group send">\n    <input type="submit" class="btn btn-primary btn-sm" value="Guardar">\n    <button class="btn btn-default btn-sm" id="cancelar">Cancelar</button>\n</div>\n\n\n</form>\n</div>\n\n</div>'], ['\n<div>\n<div class="contentIrac" id="contentIrac" >\n    <form method="POST" class="form-inline" id="DocumentosSiglas">\n<div class="form-group siglas">\n    <label for="siglas">Siglas</label>\n    <input type="text"  id="siglas" name="siglas" required class="form-control" value="', '"   >\n   \n</div>\n<div class="form-group subDocumento">\n    <label for="subDocumento">Tipo de SubDocumento</label>\n    <select name="idSubTipoDocumento" id="subDocumento" required="required" class="form-control" >\n      <option value=""> Seleccione una Opci\xF3n </option>\n        ', '\n    </select>\n</div>\n\n<div class="form-group textoIfa">\n    <label for="textoIfa">Promociones de Acciones</label>\n    <textarea class="form-control" rows="3" readonly  id="textoIfa" >', '</textarea>\n    <input type="hidden"  name="idDocumentoTexto" id="idDocumentoTexto" value="', '"  >\n</div>\n\n<div class="form-group firmas">\n    <label for="firmas">Personal que Firma</label>\n    <select name="firma" id="firma" required="required" class="form-control" multiple >\n      <option value=""> Seleccione una Opci\xF3n </option>\n        ', '\n    </select>\n</div>\n\n\n\n<div class="form-group fecha">\n    <label for="fecha">Fecha Documento</label>\n    <input type="text" id="fOficio" name="fOficio" required class="form-control fechaInput" pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))" value="', '" >\n    <input type="hidden"  name="idVolante" value="', '"  >\n</div>\n\n\n\n\n<div class="form-group send">\n    <input type="submit" class="btn btn-primary btn-sm" value="Guardar">\n    <button class="btn btn-default btn-sm" id="cancelar">Cancelar</button>\n</div>\n\n\n</form>\n</div>\n\n</div>']),
-    _templateObject4 = _taggedTemplateLiteral(['<option value="', '" selected >', ' </option>'], ['<option value="', '" selected >', ' </option>']),
-    _templateObject5 = _taggedTemplateLiteral(['<option value="', '">', '</option>'], ['<option value="', '">', '</option>']),
-    _templateObject6 = _taggedTemplateLiteral(['<option value="', '">', ' ', ' ', ' </option>'], ['<option value="', '">', ' ', ' ', ' </option>']);
+var _templateObject = _taggedTemplateLiteral(['\n<div>\n<div class="contentIrac" id="contentIrac" >\n<form method="POST" class="form-inline" id="DocumentosSiglas">\n\n\n<div class="form-group siglas">\n    <label for="siglas">Siglas</label>\n    <input type="text"  id="siglas" name="siglas" required class="form-control"   >\n    <input type="hidden"  name="idSubTipoDocumento" id="idDocumentoTexto" value="', '"  >\n    <input type="hidden"  name="idVolante" value="', '"  >\n</div>\n\n<div class="form-group firmas">\n<label for="firmas">Personal que Firma</label>\n<select name="firma" id="firma" required="required" class="form-control" multiple >\n<option value=""> Seleccione una Opci\xF3n </option>\n  ', '\n</select>\n</div>\n\n\n<div class="form-group fecha">\n    <label for="fecha">Fecha Documento</label>\n    <input type="text" id="fOficio" name="fOficio" required class="form-control fechaInput" pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))">\n</div>\n\n\n<div class="form-group send">\n    <input type="submit" class="btn btn-primary btn-sm" value="Guardar">\n    <button class="btn btn-default btn-sm" id="cancelar">Cancelar</button>\n</div>\n\n\n</form>\n</div>\n\n</div>'], ['\n<div>\n<div class="contentIrac" id="contentIrac" >\n<form method="POST" class="form-inline" id="DocumentosSiglas">\n\n\n<div class="form-group siglas">\n    <label for="siglas">Siglas</label>\n    <input type="text"  id="siglas" name="siglas" required class="form-control"   >\n    <input type="hidden"  name="idSubTipoDocumento" id="idDocumentoTexto" value="', '"  >\n    <input type="hidden"  name="idVolante" value="', '"  >\n</div>\n\n<div class="form-group firmas">\n<label for="firmas">Personal que Firma</label>\n<select name="firma" id="firma" required="required" class="form-control" multiple >\n<option value=""> Seleccione una Opci\xF3n </option>\n  ', '\n</select>\n</div>\n\n\n<div class="form-group fecha">\n    <label for="fecha">Fecha Documento</label>\n    <input type="text" id="fOficio" name="fOficio" required class="form-control fechaInput" pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))">\n</div>\n\n\n<div class="form-group send">\n    <input type="submit" class="btn btn-primary btn-sm" value="Guardar">\n    <button class="btn btn-default btn-sm" id="cancelar">Cancelar</button>\n</div>\n\n\n</form>\n</div>\n\n</div>']),
+    _templateObject2 = _taggedTemplateLiteral(['<option value="', '">', ' ', ' ', ' </option>'], ['<option value="', '">', ' ', ' ', ' </option>']),
+    _templateObject3 = _taggedTemplateLiteral(['\n<div>\n<div class="contentIrac" id="contentIrac" >\n    <form method="POST" class="form-inline" id="DocumentosSiglas">\n<div class="form-group siglas">\n    <label for="siglas">Siglas</label>\n    <input type="text"  id="siglas" name="siglas" required class="form-control" value="', '"   >\n   \n</div>\n\n<div class="form-group firmas">\n    <label for="firmas">Personal que Firma</label>\n    <select name="firma" id="firma" required="required" class="form-control" multiple >\n      <option value=""> Seleccione una Opci\xF3n </option>\n        ', '\n    </select>\n</div>\n\n\n\n<div class="form-group fecha">\n    <label for="fecha">Fecha Documento</label>\n    <input type="text" id="fOficio" name="fOficio" required class="form-control fechaInput" pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))" value="', '" >\n    <input type="hidden"  name="idVolante" value="', '" >\n</div>\n\n\n\n\n<div class="form-group send">\n    <input type="submit" class="btn btn-primary btn-sm" value="Guardar">\n    <button class="btn btn-default btn-sm" id="cancelar">Cancelar</button>\n</div>\n\n\n</form>\n</div>\n\n</div>'], ['\n<div>\n<div class="contentIrac" id="contentIrac" >\n    <form method="POST" class="form-inline" id="DocumentosSiglas">\n<div class="form-group siglas">\n    <label for="siglas">Siglas</label>\n    <input type="text"  id="siglas" name="siglas" required class="form-control" value="', '"   >\n   \n</div>\n\n<div class="form-group firmas">\n    <label for="firmas">Personal que Firma</label>\n    <select name="firma" id="firma" required="required" class="form-control" multiple >\n      <option value=""> Seleccione una Opci\xF3n </option>\n        ', '\n    </select>\n</div>\n\n\n\n<div class="form-group fecha">\n    <label for="fecha">Fecha Documento</label>\n    <input type="text" id="fOficio" name="fOficio" required class="form-control fechaInput" pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))" value="', '" >\n    <input type="hidden"  name="idVolante" value="', '" >\n</div>\n\n\n\n\n<div class="form-group send">\n    <input type="submit" class="btn btn-primary btn-sm" value="Guardar">\n    <button class="btn btn-default btn-sm" id="cancelar">Cancelar</button>\n</div>\n\n\n</form>\n</div>\n\n</div>']);
 
 function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
@@ -1176,11 +1176,28 @@ module.exports = function (idVolante, docSiglas, empleados, idTipoDocto) {
     if (docSiglas.register == 'No se encontro registro') {
 
         return yo(_templateObject, idTipoDocto, idVolante, empleados.map(function (json) {
-            console.log(json);
-            return yo(_templateObject2, json.idPuestoJuridico, json.nombre, json.paterno, json.materno, json.puesto);
+
+            return yo(_templateObject2, json.idPuestoJuridico, json.paterno, json.materno, json.nombre);
         }));
     } else {
-        var firmas = docSiglas[0].idEmpleadosFirma;
+        var creaOption = function creaOption(combo, final) {
+            var opt = '';
+            combo.map(function (json) {
+                for (var x in final) {
+                    if (final[x] == json.idPuestoJuridico) {
+                        opt += '<option value="' + json.idPuestoJuridico + '" selected>' + json.paterno + ' ' + json.materno + ' ' + json.nombre + ' </option>';
+                        final.splice(x, 1);
+                        break;
+                    } else {
+                        opt += '<option value="' + json.idPuestoJuridico + '">' + json.paterno + ' ' + json.materno + ' ' + json.nombre + ' </option>';
+                        break;
+                    }
+                }
+            });
+            return opt;
+        };
+
+        var firmas = docSiglas[0].idPuestosJuridico;
         var firmasArray = firmas.split(',');
         var largo = parseInt(firmasArray.length);
         largo = largo - 1;
@@ -1188,34 +1205,8 @@ module.exports = function (idVolante, docSiglas, empleados, idTipoDocto) {
         var id = docSiglas[0].idDocumentoTexto;
         var texto = void 0;
 
-        $.get({
-            url: '/getRegister/CatDoctosTextos',
-            data: {
-                idDocumentoTexto: id
-            },
-            async: false,
-            success: function success(data) {
-                var json = JSON.parse(data);
-                console.log(json);
-                texto = json[0].texto;
-            }
-
-        });
-
-        return yo(_templateObject3, docSiglas[0].siglas, SubTipoDocumento.map(function (json) {
-            if (json.idSubTipoDocumento == docSiglas[0].idSubTipoDocumento) {
-                return yo(_templateObject4, json.idSubTipoDocumento, json.nombre);
-            }
-            return yo(_templateObject5, json.idSubTipoDocumento, json.nombre);
-        }), texto, docSiglas[0].idDocumentoTexto, empleados.map(function (json) {
-            for (var x in final) {
-                if (final[x] == json.idEmpleado) {
-                    return '<option value="' + json.idEmpleado + '" selected>' + json.paterno + ' ' + json.materno + ' ' + json.nombre + ' </option>';
-                } else {
-                    return yo(_templateObject6, json.idEmpleado, json.paterno, json.materno, json.nombre);
-                }
-            }
-        }), docSiglas[0].fOficio, idVolante);
+        var opt = $.parseHTML(creaOption(empleados, final));
+        return yo(_templateObject3, docSiglas[0].siglas, opt, docSiglas[0].fOficio, idVolante);
     }
 };
 
