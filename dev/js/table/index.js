@@ -30,7 +30,7 @@ module.exports=class Tabla{
       $('div.loader').remove()
       $('div#main-content').html(tabla);
       self.clickTr();
-      self.btnOrderBy(ruta)
+      self.orderColumns(ruta)
     })
   }
 
@@ -43,14 +43,21 @@ module.exports=class Tabla{
   }
 
 
- 
+ /*checar esta funcion para ver si si se queda 
   btnOrderBy(ruta){
     if(ruta=='Volantes'){
       $('button#orderBy').click(function(){
           orderVolantes.menu()
       })
     }
+  }*/
+
+  orderColumns(){
+    $('table thead tr td').click(function(){
+      alert("lest go")
+    })
   }
+
 
 
 
