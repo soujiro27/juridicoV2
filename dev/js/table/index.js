@@ -52,9 +52,36 @@ module.exports=class Tabla{
     }
   }*/
 
-  orderColumns(){
-    $('table thead tr td').click(function(){
-      alert("lest go")
+
+
+  orderColumns(ruta){
+
+    let self=this
+
+    $('.tableHeader tr th').click(function(){
+      let valor=$(this).data('order')
+      $('div.orderType').hide()
+      $(this).append('<div class="orderType"><p data-typeOrder="Asc">Asc</p><p data-typeOrder="Desc">Desc</p></div>')
+      $('div.orderType p').click(function(){
+        let order=$(this).text()
+        console.log(order)
+        funcion.getTableOrder(ruta,valor,order)
+        .then(response=>{
+          let tabla=template(response,ruta)
+          $('div.loader').remove()
+          $('div#main-content').html(tabla);
+          self.clickTr();
+          self.orderColumns(ruta)
+        })
+      })
+      /*funcion.getTableOrder(ruta,valor)
+      .then(response=>{
+        let tabla=template(response,ruta)
+        $('div.loader').remove()
+        $('div#main-content').html(tabla);
+        self.clickTr();
+        self.orderColumns(ruta)
+      })*/
     })
   }
 

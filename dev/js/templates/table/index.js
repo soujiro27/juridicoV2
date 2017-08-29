@@ -9,7 +9,7 @@ if(data.register!='No se encontro registro'){
 
 var th=$.parseHTML(header(data[0]));
 var el =yo`<table class="table table-striped table-bordered table-hover principal" id="${ruta}">
-	<thead>
+	<thead class="tableHeader">
 		<tr>
 			${th}
 		</tr>

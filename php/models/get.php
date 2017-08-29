@@ -42,6 +42,9 @@ class Get{
 			echo json_encode($datos);
 	}
 
+
+
+
 		//necesaria
 	public function getDuplicado($tabla,$datos){
 			$procesa=new procesaDatosQuery();

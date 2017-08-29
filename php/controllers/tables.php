@@ -135,14 +135,28 @@ where sub.nombre='IRAC' and v.idTurnado=
 
 
 
+/*--------------------------Inicia el modulo de Order Table --------------------------*/
 
-
-
-
-
-
+public function inicioOrder($modulo,$order,$type){
+	$obtener= new Get();
+	if($modulo=='Volantes'){$sql=$this->orderVolantes($order,$type);}
+	$obtener->getTable($sql);
+	//echo $sql;
 }
 
+public function orderVolantes($order,$type){
+	$sql="select v.idVolante, v.folio, v.subfolio, v.numDocumento, v.idRemitente as Remitente, v.idTurnado as Turnado, v.fRecepcion,  v.extemporaneo, 
+a.clave as auditoria,
+sub.nombre as documento,
+t.estadoProceso as estado,
+v.estatus
+from sia_VolantesDocumentos vd
+inner join sia_Volantes v on vd.idVolante=v.idVolante
+inner join sia_turnosJuridico t on v.idVolante=t.idVolante
+inner join sia_auditorias a on vd.cveAuditoria=a.idAuditoria
+inner join sia_catSubTiposDocumentos sub on vd.idSubTipoDocumento=sub.idSubTipoDocumento order by '$order' $type";
+return $sql;}
+}
 
 
 

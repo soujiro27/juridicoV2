@@ -2968,9 +2968,25 @@ div#principal h2 {
 table.principal th {
   background-color: #428bca;
   color: #fff;
+  position: relative;
 }
-table.principal th:first-letter {
-  text-transform: uppercase;
+table.principal div.orderType {
+  position: absolute;
+  top: -75px;
+  left: 0;
+  background-color: #26bce0;
+  padding: 5px;
+  border-radius: 5px;
+}
+table.principal div.orderType:after {
+  content: "";
+  border-top: 10px solid #26bce0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 100px solid transparent;
+  position: absolute;
+  top: 63px;
+  left: 11px;
 }
 form#Caracteres div,
 form#Acciones div,

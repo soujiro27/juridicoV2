@@ -29,6 +29,13 @@ $app->get('/table/:modulo',function($modulo) use ($app){
 	$controllersTabla->incio($modulo);
 });
 
+
+$app->get('/table/:modulo/:order/:type',function($modulo,$order,$type) use ($app){
+	$controllersTabla=new Tables();
+	$controllersTabla->inicioOrder($modulo,$order,$type);
+});
+
+
 /*-----------------obtiene registro para update---------------*/
 
 $app->get('/getRegister/:modulo',function($modulo) use ($app){

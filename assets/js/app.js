@@ -219,6 +219,20 @@ module.exports = function (_link) {
 			});
 			return get;
 		}
+	}, {
+		key: 'getTableOrder',
+		value: function getTableOrder(ruta, order, type) {
+			var get = new Promise(function (resolve, reject) {
+				$.get({
+					url: '/table/' + ruta + '/' + order + '/' + type,
+					success: function success(data) {
+						var json = JSON.parse(data);
+						resolve(json);
+					}
+				});
+			});
+			return get;
+		}
 	}]);
 
 	return Funciones;
@@ -1008,7 +1022,7 @@ module.exports = function () {
         $('div.loader').remove();
         $('div#main-content').html(tabla);
         self.clickTr();
-        self.btnOrderBy(ruta);
+        self.orderColumns(ruta);
       });
     }
   }, {
@@ -1020,14 +1034,46 @@ module.exports = function () {
         page.redirect('/juridico/' + ruta + '/update/' + campo + '/' + id);
       });
     }
+
+    /*checar esta funcion para ver si si se queda 
+     btnOrderBy(ruta){
+       if(ruta=='Volantes'){
+         $('button#orderBy').click(function(){
+             orderVolantes.menu()
+         })
+       }
+     }*/
+
   }, {
-    key: 'btnOrderBy',
-    value: function btnOrderBy(ruta) {
-      if (ruta == 'Volantes') {
-        $('button#orderBy').click(function () {
-          orderVolantes.menu();
+    key: 'orderColumns',
+    value: function orderColumns(ruta) {
+
+      var self = this;
+
+      $('.tableHeader tr th').click(function () {
+        var valor = $(this).data('order');
+        $('div.orderType').hide();
+        $(this).append('<div class="orderType"><p data-typeOrder="Asc">Asc</p><p data-typeOrder="Desc">Desc</p></div>');
+        $('div.orderType p').click(function () {
+          var order = $(this).text();
+          console.log(order);
+          funcion.getTableOrder(ruta, valor, order).then(function (response) {
+            var tabla = template(response, ruta);
+            $('div.loader').remove();
+            $('div#main-content').html(tabla);
+            self.clickTr();
+            self.orderColumns(ruta);
+          });
         });
-      }
+        /*funcion.getTableOrder(ruta,valor)
+        .then(response=>{
+          let tabla=template(response,ruta)
+          $('div.loader').remove()
+          $('div#main-content').html(tabla);
+          self.clickTr();
+          self.orderColumns(ruta)
+        })*/
+      });
     }
   }, {
     key: 'drawTableIfa',
@@ -1532,7 +1578,7 @@ var yo = require('yo-yo');
 module.exports = function (data) {
 
   function render(llave) {
-    return '<th id="' + llave + '" class="' + llave + '">' + llave + '</th>';
+    return '<th id="' + llave + '" class="' + llave + '" data-order="' + llave + '">' + llave + '</th>';
   }
 
   var th = '';
@@ -1546,7 +1592,7 @@ module.exports = function (data) {
 },{"jquery":203,"yo-yo":275}],32:[function(require,module,exports){
 'use strict';
 
-var _templateObject = _taggedTemplateLiteral(['<table class="table table-striped table-bordered table-hover principal" id="', '">\n\t<thead>\n\t\t<tr>\n\t\t\t', '\n\t\t</tr>\n\t</thead>\n\t<tbody>\n\t\t', '\n\t</tbody>\n\t</table>'], ['<table class="table table-striped table-bordered table-hover principal" id="', '">\n\t<thead>\n\t\t<tr>\n\t\t\t', '\n\t\t</tr>\n\t</thead>\n\t<tbody>\n\t\t', '\n\t</tbody>\n\t</table>']);
+var _templateObject = _taggedTemplateLiteral(['<table class="table table-striped table-bordered table-hover principal" id="', '">\n\t<thead class="tableHeader">\n\t\t<tr>\n\t\t\t', '\n\t\t</tr>\n\t</thead>\n\t<tbody>\n\t\t', '\n\t</tbody>\n\t</table>'], ['<table class="table table-striped table-bordered table-hover principal" id="', '">\n\t<thead class="tableHeader">\n\t\t<tr>\n\t\t\t', '\n\t\t</tr>\n\t</thead>\n\t<tbody>\n\t\t', '\n\t</tbody>\n\t</table>']);
 
 function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 

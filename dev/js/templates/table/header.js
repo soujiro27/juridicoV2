@@ -4,7 +4,7 @@ module.exports=function(data){
 
 
   function render(llave){
-    return `<th id="${llave}" class="${llave}">${llave}</th>`;
+    return `<th id="${llave}" class="${llave}" data-order="${llave}">${llave}</th>`;
   }
 
   var th=``;

@@ -178,4 +178,20 @@ module.exports=class Funciones extends link{
 
 
 
+
+	getTableOrder(ruta,order,type){
+		let get=new Promise((resolve,reject)=>{
+			$.get({
+				url:'/table/'+ruta+'/'+order+'/'+type,
+				success:function(data){
+					let json=JSON.parse(data);
+					resolve(json)
+
+				}
+			})
+		})
+		return get
+	}
+
+
 }

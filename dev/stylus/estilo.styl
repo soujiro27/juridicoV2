@@ -90,8 +90,26 @@ div#principal
 table.principal th
 	background-color #428bca
 	color #fff
-	&:first-letter
-		text-transform uppercase
+	position relative
+	
+table.principal div.orderType
+	position absolute
+	top -75px
+	left 0
+	background-color #26bce0
+	padding: 5px
+	border-radius: 5px
+	&:after
+		content: "";
+		border-top: 10px solid #26bce0;
+		border-left: 5px solid transparent;
+		border-right: 5px solid transparent;
+		border-bottom: 100px solid transparent;
+		position: absolute;
+		top: 63px;
+		left: 11px;
+
+
 
 form#Caracteres, form#Acciones, form#Volantes, form#DoctosTextos, form#confrontasJuridico, form#Ifa, form#CatDoctosTextos, form#DocumentosSiglas, form#documentosJur, form#Irac
 	div
