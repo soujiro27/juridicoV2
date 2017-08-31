@@ -28,19 +28,20 @@ a.idEmpleadoTitular,a.nombre as area,
 CONCAT(u.saludo,' ',e.nombre,' ',e.paterno,' ',e.materno) as titular,
 audi.clave,
 dbo.lstSujetosByAuditoria(audi.idAuditoria) as ente,
-audi.fConfronta,
 con.notaInformativa, con.nombreResponsable, con.cargoResponsable, con.siglas, con.siglas,con.fOficio,con.hConfronta, con.fConfronta
 from sia_Volantes v
-inner join sia_VolantesDocumentos vd on v.idVolante=vd.idVolante
-inner join sia_areas a on v.idRemitente=a.idArea
-inner join sia_empleados e on a.idEmpleadoTitular=e.idEmpleado
-inner join sia_usuarios u on e.idEmpleado=u.idEmpleado
-inner join sia_auditorias audi on vd.cveAuditoria=audi.idAuditoria
-inner join sia_confrontasJuridico con on v.idVolante=con.idVolante
+left join sia_VolantesDocumentos vd on v.idVolante=vd.idVolante
+left join sia_areas a on v.idRemitente=a.idArea
+left join sia_empleados e on a.idEmpleadoTitular=e.idEmpleado
+left join sia_usuarios u on e.idEmpleado=u.idEmpleado
+left join sia_auditorias audi on vd.cveAuditoria=audi.idAuditoria
+left join sia_confrontasJuridico con on v.idVolante=con.idVolante
 where v.idVolante='$idVolante'";
 
 $db=conecta();
 $datos=consultaRetorno($sql, $db);
+
+//var_dump($datos);
 
 function convierte($cadena){
   $str = utf8_decode($cadena);
@@ -53,8 +54,8 @@ function mes($num){
 }
 
 
-$ente=str_replace('/',',', $datos[0]['ente']);
-
+//$ente=str_replace('/',',', $datos[0]['ente']);
+$ente=$datos[0]['ente'];
 $fecha=explode('-',$datos[0]['fOficio']);
 $mes=mes($fecha[1]);
 

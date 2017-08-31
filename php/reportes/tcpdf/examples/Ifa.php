@@ -25,13 +25,13 @@ $cuenta=$_SESSION["idCuentaActual"];
 
 $sql="SELECT a.idAuditoria auditoria,ta.nombre tipo, COALESCE(convert(varchar(20),a.clave),convert(varchar(20),a.idAuditoria)) claveAuditoria,
  dbo.lstSujetosByAuditoria(a.idAuditoria) sujeto, dbo.lstObjetosByAuditoria(a.idAuditoria) objeto, a.idArea,
- ar.nombre
+ ar.nombre,a.rubros
  FROM sia_programas p
  INNER JOIN sia_auditorias a on p.idCuenta=a.idCuenta and p.idPrograma=a.idPrograma
  INNER JOIN sia_areas ar on a.idArea=ar.idArea
  LEFT JOIN sia_tiposauditoria ta on a.tipoAuditoria= ta.idTipoAuditoria
  WHERE a.idCuenta='$cuenta' and a.idAuditoria=(select cveAuditoria from sia_VolantesDocumentos where idVolante='$idVolante')
- GROUP BY a.idAuditoria, a.clave,ta.nombre,a.idProceso,a.idEtapa,ar.nombre, a.idArea,ar.nombre";
+ GROUP BY a.idAuditoria, a.clave,ta.nombre,a.idProceso,a.idEtapa,ar.nombre, a.idArea,ar.nombre, a.rubros";
 
 $db=conecta();
 $datos=consultaRetorno($sql, $db);
@@ -45,7 +45,7 @@ $sql="select pagina,observacion from sia_ObservacionesDoctosJuridico  where idVo
 
 $tabla=consultaRetorno($sql,$db);
 
-$sql="select ds.siglas, ds.fOficio, ds.idEmpleadosFirma,dt.texto from sia_DocumentosSiglas ds
+$sql="select ds.siglas, ds.fOficio, ds.idPuestosJuridico,dt.texto from sia_DocumentosSiglas ds
 inner join sia_CatDoctosTextos dt on ds.idDocumentoTexto=dt.idDocumentoTexto
 where ds.idVolante='$idVolante'";
 
@@ -59,7 +59,9 @@ function convierte($cadena){
 }
 
 
-$ente=str_replace('/',"\n", $datos[0]['objeto']);
+//$ente=str_replace('/',"\n", $datos[0]['objeto']);
+
+$ente=$datos[0]['rubros'];
 $sujeto=str_replace('/',"\n", $datos[0]['sujeto']);
 
 $audit=convierte('AUDITORÍA SUPERIOR DE LA CIUDAD DE MÉXICO');
@@ -256,22 +258,24 @@ $pdf->Ln(15);
 
 $usr=$_SESSION["idUsuario"];
 
-$sql="select u.saludo, CONCAT(u.nombre,' ',u.paterno,' ',u.materno) as titular,p.cargo from sia_usuarios u
-inner join sia_empleados e on u.idEmpleado=e.idEmpleado
-inner join sia_plazas p on e.idPlaza=p.idPlaza
-where u.idUsuario='$usr'";
+$sql="SELECT ar.idArea,pj.puesto juridico,CONCAT(us.saludo,' ',us.nombre,' ',us.paterno,' ',us.materno) nombre, ds.siglas,ds.fOficio FROM sia_Volantes vo INNER JOIN sia_areas ar on vo.idTurnado= ar.idArea INNER JOIN sia_usuarios us on ar.idEmpleadoTitular=us.idEmpleado INNER JOIN sia_PuestosJuridico pj on us.idEmpleado=pj.rpe INNER JOIN sia_DocumentosSiglas ds on vo.idVolante = ds.idVolante WHERE vo.idVolante='$idVolante'";
 
 $jefe=consultaRetorno($sql,$db);
-$saludo=$jefe[0]['saludo'];
-$titular=$jefe[0]['titular'];
-$area=$jefe[0]['cargo'];
+$titular=$jefe[0]['nombre'];
+$area=$jefe[0]['juridico'];
 $html = <<<EOD
 <table cellspacing="0" cellpadding="1" border="0">
 <tr>
 <td colspan="1" width="70"></td>
-<td align="center" colspan="1" width="200" style="border-top:1px solid black" >DR. IVÁN DE JESÚS OLMOS CANSINO DIRECTOR GENERAL DE ASUNTOS JURIDICOS</td>
+<td align="center" colspan="1" width="200" style="border-top:1px solid black" >DR. IVÁN DE JESÚS OLMOS CANSINO</td>
 <td colspan="1" width="120"></td>
-<td align="center" colspan="1" width="230" style="border-top:1px solid black" >$saludo $titular $area</td>
+<td align="center" colspan="1" width="230" style="border-top:1px solid black" >$titular</td>
+</tr>
+<tr>
+<td colspan="1" width="70"></td>
+<td align="center" colspan="1" width="200"  >DIRECTOR GENERAL DE ASUNTOS JURIDICOS</td>
+<td colspan="1" width="120"></td>
+<td align="center" colspan="1" width="230"  >$area</td>
 </tr>
 
 </table>
@@ -280,46 +284,68 @@ EOD;
 $pdf->writeHTML($html, true, false, false, false, '');
 
 
-$ef=explode(",",$promo[0]['idEmpleadosFirma']);
+$ef=explode(",",$promo[0]['idPuestosJuridico']);
 $nombres=array();
+$puestos=array();
 for($i=0;$i<count($ef)-1;$i++){
     $usrf=$ef[$i];
-    $sql="select concat(e.nombre,' ',e.paterno,' ',e.materno) as nombre, p.cargo from sia_empleados e
-inner join sia_plazas p on e.idPlaza=p.idPlaza
-where idEmpleado='$usrf'";
+    $sql="select concat(nombre,' ',paterno,' ',materno) as nombre,puesto  
+from sia_PuestosJuridico
+where idPuestoJuridico='$usrf'";
     $nombre=consultaRetorno($sql,$db);
     array_push($nombres,$nombre[0]['nombre']);
+    array_push($puestos,$nombre[0]['puesto']);
 }
  
 
 $linea='';
 $elaboro='';
+$cont=1;
+$firmaSecond='';
 foreach($nombres as $llave => $valor){
-    $elaboro=$elaboro.'<td align="center" colspan="1">ELABORÓ</td>';
-    $linea=$linea.'<td align="center" colspan="1"  style="border-top:1px solid black">'.$valor.'</td>';
+ 
+    if($cont%2==0){
+         $elaboro=$elaboro.'<td align="center"><p>ELABORÓ</p><br><br>'.$valor.'<br>'.$puestos[$llave].'</td></tr>';
+
+
+    }else{
+      if($cont==3){
+           $firmaSecond=$firmaSecond.'<tr><td align="center" ><p>ELABORÓ</p><br><br>'.$valor.'<br>'.$puestos[$llave].'</td><td></td></tr>';
+      }else{
+
+        $elaboro=$elaboro.'<br><tr><td align="center"><p>ELABORÓ</p><br><br>'.$valor.'<br>'.$puestos[$llave].'</td>';
+      }
+    }
+    //$linea=$linea.'<td align="center" colspan="1"  style="border-top:1px solid black">'.$valor.'</td>';
+    $cont++;
+}
+
+$lineaPuestos='';
+
+foreach ($puestos as $key => $value) {
+  $lineaPuestos=$lineaPuestos.'<td align="center" colspan="1"  >'.$value.'</td>';
 }
 //echo $linea;
 $pdf->Ln(10);
 
 $html = <<<EOD
 <table cellspacing="0" cellpadding="1" border="0" >
-<tr>$elaboro</tr>
+$elaboro
 </table>
 EOD;
 $pdf->writeHTML($html, true, false, false, false, '');
 $pdf->Ln(10);
 
-
-
+if($cont>2){
+  
 $html = <<<EOD
 <table cellspacing="0" cellpadding="1" border="0" >
-<tr>
-$linea
-</tr>
+$firmaSecond
 </table>
 EOD;
-
 $pdf->writeHTML($html, true, false, false, false, '');
+}
+
 $pdf->Ln(10);
 
 $siglas=$promo[0]['siglas'];

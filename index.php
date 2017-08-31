@@ -111,6 +111,9 @@ $app->get('/auditorias/:id',function($id) use ($app){
 
 
 
+
+
+
 /*-------------notificaciones-----------------*/
 $app->get('/juridico/notificaciones/:idVolante',function($idVolante) use ($app){
 	$obtiene= new Get();
@@ -136,8 +139,19 @@ $app->post('/juridico/uploadFile',function() use ($app){
     	{
 			$insert=new Insert();
 			$res=$insert->updateVolante('Volantes',$nombre,$numDoc,$file[1]);
-		
-       		$salida['update']='true';
+			$get = new Get();
+			$sql="select u.idUsuario from sia_Volantes v 
+inner join sia_areas a on v.idTurnado=a.idArea
+inner join sia_usuarios u on a.idEmpleadoTitular=u.idEmpleado
+where numDocumento='".$nombre."'";
+			$data=$get->consultaRetorno($sql);
+			$idUsuario=$data[0]['idUsuario'];
+			if($_SESSION ['idUsuario']=='2301'){
+				$salida['update']=$idUsuario;	
+			}else{
+				$salida['update']='2301';	
+			}
+       		//$salida['update']='true';
 			echo json_encode($salida);
     	}else{
     		$salida['update']='false';
@@ -149,5 +163,9 @@ $app->post('/juridico/uploadFile',function() use ($app){
 	}
 	
 });
+
+
+
+
 
 ?>

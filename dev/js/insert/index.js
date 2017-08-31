@@ -118,6 +118,15 @@ module.exports=class Insert extends link{
 				$('input#idRemitente').val(response[0].idArea)
 				$('div.datosAuditoria').slideDown('slow')
 				$('div.contentVolante').slideDown('slow')
+				for(let x in response){
+					
+					if(response[x].nombre!=null){
+						if(response[x].nombre=='IRAC'){
+							$('select#idTurnado').val(response[x].idTurnado)
+							//$('select#idTurnado').prop("disabled",true)
+						}
+					}
+				}
 			})
 		});
 	}
@@ -154,23 +163,40 @@ module.exports=class Insert extends link{
 			event.preventDefault()
 			let datos=$(this).serializeArray()
 			let datosSend=$(this).serialize()
-			let id=datos[3].value
+			let id=self.findIdVolante(datos)
 			if(funcion.validaDatos(datos)){
+				console.log(ruta)
 				if(ruta=='DocumentosSiglas'){
 					let firma=self.getDataFirma(datos)
+					
 					funcion.sendDataRuta(firma,tipo,ruta).then(response=>{
 						self.successCedulaIfa(response,id)
 					})
+				}else{
+
+					funcion.sendDataRuta(datosSend,tipo,ruta).then(response=>{ 
+						self.successCedulaIfa(response,id)
+	
+	
+					})
 				}
-				/*funcion.sendDataRuta(datosSend,tipo,ruta).then(response=>{ 
-					self.successCedulaIfa(response,id)
-
-
-				})*/
 			}
 
 		});
 	}
+
+	findIdVolante(datos){
+		let id
+		
+		$.each(datos,function(llave,valor){
+			if(datos[llave].name=='idVolante'){
+				id=datos[llave].value;
+			}
+		})
+		return id
+		
+	}
+
 
 
 	successCedulaIfa(json,id){
@@ -190,7 +216,15 @@ module.exports=class Insert extends link{
 				text: 'Imprimir',
 				btnClass:'btn-warning',
 				action:function(){
-					self.reporteObsvIfa(id)
+					if(ruta=='Irac'){
+						self.cedulaIrac(id)
+					}else{
+						
+						self.reporteObsvIfa(id)
+					}
+					
+					self.main(ruta)
+					//Va la funcion de la notificacion
 				}
         },
         	cancel:{
@@ -198,6 +232,7 @@ module.exports=class Insert extends link{
 				btnClass:'btn-red',
 				action:function(){
 					tabla.drawTable(ruta)
+
 				}
         }
     	}
@@ -257,7 +292,10 @@ module.exports=class Insert extends link{
 			  if(data.update=='false'){
 					confirms.modernAlert('El numero de Documento no se encuentra Registrado')
 			  }else{
-				self.main('Documentos');
+				let id=data.update
+				self.sendNotificacion(id,'Tienes un Nuevo Documento','Na',id)
+				//self.main('Documentos');
+				console.log(json)
 			  }
             },
          

@@ -105,12 +105,16 @@ class Get{
 		$cuenta=$_SESSION["idCuentaActual"];
 		$db=$this->conecta();
 		$sql="SELECT a.idAuditoria auditoria,ta.nombre tipo, COALESCE(convert(varchar(20),a.clave),convert(varchar(20),a.idAuditoria)) claveAuditoria,
- dbo.lstSujetosByAuditoria(a.idAuditoria) sujeto, a.idArea, a.rubros
+ dbo.lstSujetosByAuditoria(a.idAuditoria) sujeto, a.idArea, a.rubros, subDoc.nombre, v.idTurnado
  FROM sia_programas p
  INNER JOIN sia_auditorias a on p.idCuenta=a.idCuenta and p.idPrograma=a.idPrograma
  INNER JOIN sia_areas ar on a.idArea=ar.idArea
+ left join sia_VolantesDocumentos vd on a.idAuditoria=vd.cveAuditoria
+ left join sia_catSubTiposDocumentos subDoc on vd.idSubTipoDocumento=subDoc.idSubTipoDocumento
+ left join sia_Volantes v on vd.idVolante=v.idVolante
  LEFT JOIN sia_tiposauditoria ta on a.tipoAuditoria= ta.idTipoAuditoria
- WHERE a.idCuenta='$cuenta' and a.idAuditoria='$id' GROUP BY a.idAuditoria, a.clave,ta.nombre,a.idProceso,a.idEtapa,ar.nombre, a.idArea, a.rubros";
+ WHERE a.idCuenta='$cuenta' and a.idAuditoria='$id' GROUP BY 
+ a.idAuditoria, a.clave,ta.nombre,a.idProceso,a.idEtapa,ar.nombre, a.idArea, a.rubros, subDoc.nombre, v.idTurnado";
 	$datos=$this->consultaRetorno($sql);
 	echo json_encode($datos);
 

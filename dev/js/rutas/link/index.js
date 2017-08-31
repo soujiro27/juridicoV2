@@ -17,6 +17,10 @@ module.exports=class Redireccion{
 		//console.log
 	}
 
+	cedulaIrac(id){
+		window.open('/juridico/php/reportes/IRAC.php'+'?param1='+id)
+	}
+
 }
 
 

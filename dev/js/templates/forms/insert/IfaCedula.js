@@ -15,10 +15,6 @@ return yo`
 <div class="contentIrac" id="contentIrac" >
 <form method="POST" class="form-inline" id="DocumentosSiglas">
 
-
-
-
-
 <div class="form-group textoIfa">
     <button type="button" class="btn btn-primary" id="addPromoAccion">Agregar Promocion de Acciones</button>
     <textarea class="form-control" rows="7" readonly  id="textoIfa"></textarea>
@@ -40,7 +36,7 @@ return yo`
       <option value=""> Seleccione una Opción </option>
         ${empleados.map(function(json){
            
-            return yo `<option value="${json.idEmpleado}">${json.paterno} ${json.materno} ${json.nombre} </option>`
+            return yo `<option value="${json.idPuestoJuridico}">${json.paterno} ${json.materno} ${json.nombre} </option>`
             
         })}
     </select>

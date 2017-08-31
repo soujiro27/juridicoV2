@@ -75,8 +75,15 @@ class InsertController{
 		$funcionUpdateController= new UpdateController();
 		$res=$funcionUpdateController->getRegister($modulo,$folio);
 		if(empty($res)){
-			$insert=new Insert();
-			$insert->insertaVolantes($modulo,$datos);
+			$auditoria=array('idSubTipoDocumento' => $datos['idSubTipoDocumento'], 'cveAuditoria' => $datos['cveAuditoria']);
+			$audi=$funcionUpdateController->getRegister('VolantesDocumentos',$auditoria);
+			if(empty($audi)){
+				$insert=new Insert();
+				$insert->insertaVolantes($modulo,$datos);
+			}else{
+				$salida['insert']='La auditoria ya se encuentra Asignada a un Documento';
+			echo json_encode($salida);	
+			}
 		}else{
 			$salida['insert']='El Numero de Folio y/o Subfolio ya se encuentra asignado';
 			echo json_encode($salida);
