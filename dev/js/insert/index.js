@@ -33,8 +33,13 @@ module.exports=class Insert extends link{
 			event.preventDefault()
 			let datos=$(this).serializeArray()
 			let datosSend=$(this).serialize()
-			if(funcion.validaDatos(datos)){
+			if(ruta=='confrontasJuridico'){
 				funcion.sendData(datosSend,'insert').then(response=>{ self.successInsert(response)})
+			}else{
+
+				if(funcion.validaDatos(datos)){
+					funcion.sendData(datosSend,'insert').then(response=>{ self.successInsert(response)})
+				}
 			}
 
 		});
@@ -293,9 +298,14 @@ module.exports=class Insert extends link{
 					confirms.modernAlert('El numero de Documento no se encuentra Registrado')
 			  }else{
 				let id=data.update
-				self.sendNotificacion(id,'Tienes un Nuevo Documento','Na',id)
-				//self.main('Documentos');
-				console.log(json)
+				self.sendNotificacion(id,'Tienes un Nuevo Documento','0','0')
+				if(nUsr=='2301'){
+					self.main('DocumentosGral');
+
+				}else{
+					self.main('Documentos');
+				}
+				
 			  }
             },
          
@@ -362,6 +372,7 @@ module.exports=class Insert extends link{
 		$.get({
 			url:'/altanotifica/'+userDest+'|'+mensaje+'|'+id+'|'+auditoria+'|Volantes|idVolante'
 		})
+		//self.sendNotificacion(id,'Tienes un Nuevo Documento','0','0')
 	}
 
 

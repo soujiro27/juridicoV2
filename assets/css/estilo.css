@@ -2988,6 +2988,22 @@ table.principal div.orderType:after {
   top: 63px;
   left: 11px;
 }
+table#ObservacionesDoctosJuridico th#idObservacionDoctoJuridico,
+table#ObservacionesDoctosJuridico th#cveAuditoria,
+table#ObservacionesDoctosJuridico th#usrAlta,
+table#ObservacionesDoctosJuridico th#fAlta,
+table#ObservacionesDoctosJuridico th#usrModificacion,
+table#ObservacionesDoctosJuridico th#fModificacion {
+  display: none;
+}
+table#ObservacionesDoctosJuridico td#idObservacionDoctoJuridico,
+table#ObservacionesDoctosJuridico td#cveAuditoria,
+table#ObservacionesDoctosJuridico td#usrAlta,
+table#ObservacionesDoctosJuridico td#fAlta,
+table#ObservacionesDoctosJuridico td#usrModificacion,
+table#ObservacionesDoctosJuridico td#fModificacion {
+  display: none;
+}
 form#Caracteres div,
 form#Acciones div,
 form#Volantes div,

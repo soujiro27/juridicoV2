@@ -62,14 +62,14 @@ $mes=mes($fecha[1]);
 
 $texto='Hago referencia a su oficio '.$datos[0]['numDocumento'];
 $textoDos=' y Nota Informativa '.$datos[0]['notaInformativa'];
-$textoTres=' mediante los cuales solicita se proporcione el nombre del servidor público que asistira a la reunión de Confronta, correspondiente a la Cuenta Pública 2015, sobre el particular, se informa el nombre del representante:';
+$textoTres=' mediante los cuales solicita se proporcione el nombre del servidor público que asistira a la reunión de Confronta, correspondiente a la Cuenta Pública 2016, sobre el particular, se informa el nombre del representante:';
 $textoTres=convierte($textoTres);
 
-
-if(isset($datos[0]['notaInformativa'])){
-    $textoFinal=$texto.$textoDos.$textoTres;
-}else{
+//echo empty($datos[0]['notaInformativa']);
+if(empty($datos[0]['notaInformativa'])){
   $textoFinal=$texto.$textoTres;
+}else{
+    $textoFinal=$texto.$textoDos.$textoTres;
 }
 
 
@@ -102,7 +102,7 @@ $pdf->Cell(50,5,'NOTA INFORMATIVA',0,0,'L');
 
 $pdf->SetFont('Arial','',10);
 $pdf->Ln(10);
-$pdf->Cell(180,5,$fecha[2].' de '.$mes.' de '.$fecha[0],0,0,'R');
+$pdf->Cell(180,5,$fechaTxt.$fecha[2].' de '.$mes.' de '.$fecha[0],0,0,'R');
 $pdf->Ln(10);
 $pdf->SetFont('Arial','B',10);
 $pdf->Cell(20,5,'PARA: ',0,0,'L');

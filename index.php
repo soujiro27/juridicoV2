@@ -143,7 +143,7 @@ $app->post('/juridico/uploadFile',function() use ($app){
 			$sql="select u.idUsuario from sia_Volantes v 
 inner join sia_areas a on v.idTurnado=a.idArea
 inner join sia_usuarios u on a.idEmpleadoTitular=u.idEmpleado
-where numDocumento='".$nombre."'";
+where numDocumento='".$numDoc."'";
 			$data=$get->consultaRetorno($sql);
 			$idUsuario=$data[0]['idUsuario'];
 			if($_SESSION ['idUsuario']=='2301'){
