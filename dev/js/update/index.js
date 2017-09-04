@@ -153,7 +153,7 @@ tableIfa(id,titulo){
 						let idArea=json["0"].idArea
 						let nombre=ruta.toUpperCase()
 						let docSiglas=funcion.getDatos('DocumentosSiglas',{idVolante:id})
-						let usuario=funcion.getDatos('PuestosJuridico',{idArea:idArea}) 
+						let usuario=funcion.getDatos('PuestosJuridico',{idArea:idArea,titular:'NO'}) 
 						let idTipoDocto=funcion.getDatos('catSubTiposDocumentos',{nombre:nombre})
 						Promise.all([docSiglas,usuario,idTipoDocto])
 						.then(resolve=>{

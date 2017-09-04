@@ -32,14 +32,13 @@ return yo`
 
 <div class="form-group firmas">
     <label for="firmas">Personal que Firma</label>
-    <select name="firma" id="firma" required="required" class="form-control" multiple >
-      <option value=""> Seleccione una Opción </option>
+    
         ${empleados.map(function(json){
            
-            return yo `<option value="${json.idPuestoJuridico}">${json.paterno} ${json.materno} ${json.nombre} </option>`
+            return yo `<label><input type="checkbox" value="${json.idPuestoJuridico}">${json.paterno} ${json.materno} ${json.nombre} </label>`
             
         })}
-    </select>
+   
 </div>
 
 
@@ -60,7 +59,8 @@ return yo`
 
 </div>`;
 }else{
-let firmas=docSiglas[0].idEmpleadosFirma;
+    console.log(docSiglas)
+let firmas=docSiglas[0].idPuestosJuridico;
 let firmasArray=firmas.split(',')
 let largo=parseInt(firmasArray.length);
 largo=largo-1
@@ -92,23 +92,11 @@ return yo`
     <input type="text"  id="siglas" name="siglas" required class="form-control" value="${docSiglas[0].siglas}"   >
    
 </div>
-<div class="form-group subDocumento">
-    <label for="subDocumento">Tipo de SubDocumento</label>
-    <select name="idSubTipoDocumento" id="subDocumento" required="required" class="form-control" >
-      <option value=""> Seleccione una Opción </option>
-        ${SubTipoDocumento.map(function(json){
-            if(json.idSubTipoDocumento==docSiglas[0].idSubTipoDocumento)
-                {
-                    return yo`<option value="${json.idSubTipoDocumento}" selected >${json.nombre} </option>`    
-                }
-            return yo `<option value="${json.idSubTipoDocumento}">${json.nombre}</option>`
-            
-        })}
-    </select>
-</div>
+
 
 <div class="form-group textoIfa">
     <label for="textoIfa">Promociones de Acciones</label>
+    <button type="button" class="btn btn-primary" id="addPromoAccion">Agregar Promocion de Acciones</button>
     <textarea class="form-control" rows="3" readonly  id="textoIfa" >${texto}</textarea>
     <input type="hidden"  name="idDocumentoTexto" id="idDocumentoTexto" value="${docSiglas[0].idDocumentoTexto}"  >
 </div>
@@ -120,9 +108,9 @@ return yo`
         ${empleados.map(function(json){
            for(let x in final){
                if(final[x]==json.idEmpleado){
-                    return `<option value="${json.idEmpleado}" selected>${json.paterno} ${json.materno} ${json.nombre} </option>`       
+                    return `<option value="${json.idPuestoJuridico}" selected>${json.paterno} ${json.materno} ${json.nombre} </option>`       
                }else{
-                    return yo `<option value="${json.idEmpleado}">${json.paterno} ${json.materno} ${json.nombre} </option>`
+                    return yo `<option value="${json.idPuestoJuridico}">${json.paterno} ${json.materno} ${json.nombre} </option>`
                }
            }
             

@@ -170,7 +170,7 @@ module.exports=class Insert extends link{
 			let datosSend=$(this).serialize()
 			let id=self.findIdVolante(datos)
 			if(funcion.validaDatos(datos)){
-				console.log(ruta)
+				
 				if(ruta=='DocumentosSiglas'){
 					let firma=self.getDataFirma(datos)
 					

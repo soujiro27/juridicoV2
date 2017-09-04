@@ -285,6 +285,7 @@ $pdf->writeHTML($html, true, false, false, false, '');
 
 
 $ef=explode(",",$promo[0]['idPuestosJuridico']);
+//var_dump($ef);
 $nombres=array();
 $puestos=array();
 for($i=0;$i<count($ef)-1;$i++){
@@ -296,29 +297,47 @@ where idPuestoJuridico='$usrf'";
     array_push($nombres,$nombre[0]['nombre']);
     array_push($puestos,$nombre[0]['puesto']);
 }
- 
-
+//var_dump($nombres);
+//var_dump($puestos);
 $linea='';
 $elaboro='';
-$cont=1;
+
 $firmaSecond='';
-foreach($nombres as $llave => $valor){
- 
-    if($cont%2==0){
-         $elaboro=$elaboro.'<td align="center"><p>ELABORÓ</p><br><br>'.$valor.'<br>'.$puestos[$llave].'</td></tr>';
+$elementos=count($nombres);
 
 
-    }else{
-      if($cont==3){
-           $firmaSecond=$firmaSecond.'<tr><td align="center" ><p>ELABORÓ</p><br><br>'.$valor.'<br>'.$puestos[$llave].'</td><td></td></tr>';
-      }else{
+  if($elementos==1){
+     $elaboro=$elaboro.'<br><tr><td align="center"><p>ELABORÓ</p><br><br>'.$nombres[$elementos-1].'<br>'.$puestos[$elementos-1].'</td><td></td></tr>';
+     
+  }elseif ($elementos==2) {
+    $elaboro='<tr>';
+    foreach ($nombres as $llave => $valor) {
+      
+        $elaboro=$elaboro.'<td align="center"><p>ELABORÓ</p><br><br>'.$valor.'<br>'.$puestos[$llave].'</td>';
+      } 
+    $elaboro=$elaboro.'</tr>';
+  }elseif ($elementos==3) {
+    $cont=1;
+    $elaboro='<tr>';
+    foreach ($nombres as $llave => $valor) {
+        if($cont>2){
+          $elaboro=$elaboro.'<br><br><tr><td align="center"><p>ELABORÓ</p><br><br>'.$valor.'<br>'.$puestos[$llave].'</td></tr>';
+        }elseif($cont>1){
 
-        $elaboro=$elaboro.'<br><tr><td align="center"><p>ELABORÓ</p><br><br>'.$valor.'<br>'.$puestos[$llave].'</td>';
-      }
-    }
-    //$linea=$linea.'<td align="center" colspan="1"  style="border-top:1px solid black">'.$valor.'</td>';
-    $cont++;
-}
+        $elaboro=$elaboro.'<td align="center"><p>ELABORÓ</p><br><br>'.$valor.'<br>'.$puestos[$llave].'</td></tr>';
+
+        }else{
+           $elaboro=$elaboro.'<td align="center"><p>ELABORÓ</p><br><br>'.$valor.'<br>'.$puestos[$llave].'</td>';
+        }
+        $cont++;
+      } 
+   
+  }
+
+
+
+
+
 
 $lineaPuestos='';
 
