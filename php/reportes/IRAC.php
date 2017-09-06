@@ -23,7 +23,7 @@ function consultaRetorno($sql,$db){
     return $query->fetchAll(PDO::FETCH_ASSOC);
 }
 
-$sql = "SELECT vo.numDocumento,a.clave claveAuditoria,vo.fDocumento,CONCAT(us.nombre,' ',us.paterno,' ', us.materno) nombreres, ar.nombre direccion,ds.fOficio,ds.siglas FROM sia_Volantes vo INNER JOIN sia_volantesDocumentos vd on vo.idVolante = vd.idVolante INNER JOIN sia_areas ar on vo.idRemitente=ar.idArea INNER JOIN sia_usuarios us on ar.idEmpleadoTitular=us.idEmpleado INNER JOIN sia_DocumentosSiglas ds on vo.idVolante=ds.idVolante INNER JOIN sia_auditorias a on vd.cveAuditoria=a.idAuditoria WHERE vo.idVolante='$idVolante';";      
+$sql = "SELECT vo.numDocumento,CASE WHEN SUBSTRING(a.tipoAuditoria,1,3)='FIN' THEN '<b>C.P. FELIPE DE JESÚS ALVA MARTÍNEZ,</b> Titular de la Unidad Técnica Sustantiva de Fiscalización Financiera y Administración.- Presente.- Para su conocimiento.<br>' ELSE ' ' END tipoau,a.idAuditoria audi ,a.clave claveAuditoria,vo.fDocumento,CONCAT(us.nombre,' ',us.paterno,' ', us.materno) nombreres, ar.nombre direccion,ds.fOficio,ds.siglas,ds.idPuestosJuridico FROM sia_Volantes vo INNER JOIN sia_volantesDocumentos vd on vo.idVolante = vd.idVolante INNER JOIN sia_areas ar on vo.idRemitente=ar.idArea INNER JOIN sia_usuarios us on ar.idEmpleadoTitular=us.idEmpleado INNER JOIN sia_DocumentosSiglas ds on vo.idVolante=ds.idVolante INNER JOIN sia_auditorias a on vd.cveAuditoria=a.idAuditoria WHERE vo.idVolante='$idVolante';";      
       
 $db=conecta();
 $datos=consultaRetorno($sql, $db);
@@ -50,6 +50,8 @@ $fdocume=$datos[0]['fDocumento'];
 $nomarers=$datos[0]['nombreres'];
 $direc=$datos[0]['direccion'];
 $sig=$datos[0]['siglas'];
+$puesjud=$datos[0]['idPuestosJuridico'];
+$tipo=$datos[0]['tipoau'];
 
 class MYPDF extends TCPDF {
       // Page footer
@@ -208,11 +210,13 @@ EOD;
 
 $pdf->writeHTML($tbl, true, false, false, false, '');
 // -----------------------------------------------------------------------------
+
+
 $tbl = <<<EOD
 <table cellspacing="0" cellpadding="0" border="0">
     <tr>
         <td colspan="1">c.c.p.</td>  
-        <td colspan="5"><b>DR. DAVID MANUEL VEGA VERA,</b> Auditor Superior.- Presente.- Para su conocimiento.<br><b>C.P. FELIPE DE JESÚS ALVA MARTÍNEZ,</b> Titular de la Unidad Técnica Sustantiva de Fiscalización Financiera y Administración.- Presente.- Para su conocimiento.<br><b>DR. ARTURO VÁZQUEZ ESPINOSA,</b> Titular de la Unidad Técnica Sustantiva de Fiscalización Especializada y de Asuntos Jurídicos.- Presente.- Para su conocimiento.</td>
+        <td colspan="5"><b>DR. DAVID MANUEL VEGA VERA,</b> Auditor Superior.- Presente.- Para su conocimiento.<br>{$tipo}<b>DR. ARTURO VÁZQUEZ ESPINOSA,</b> Titular de la Unidad Técnica Sustantiva de Fiscalización Especializada y de Asuntos Jurídicos.- Presente.- Para su conocimiento.</td>
     </tr>
 </table>
 EOD;
@@ -276,14 +280,6 @@ $pdf->writeHTML($text1);
 
 // -------------------------------------------------------------------
 
-/*
-$sql="SELECT f.nombre sFase, orden, min(aa.fInicio ) desde, max(aa.fFin) hasta, sum(convert(int,aa.diasEfectivos)) cantidad " .
-        "FROM sia_fases f " . 
-        "LEFT JOIN sia_auditoriasactividades aa on f.idFase = aa.idFase and  aa.idAuditoria='$p2' Group by f.nombre, orden order by f.orden;";
-
-$db=conecta();
-$datos=consultaRetorno($sql, $db);
-*/
 $tbl = <<<EOD
   <table cellspacing="0" cellpadding="1" border="1" style="background-color:#E7E6E6;">
     <tr>
@@ -343,7 +339,7 @@ EOD;
 $tbl .= <<<EOD
   <tr><td colspan="6"></td></tr>
   <tr>
-    <td colspan="6"><p align="center"><b>POTENCIALES PROMOCIONES DE ACCIONES</b></p><br>Esta Dirección General de Asuntos Jurídicos coincide con la Potencial Promoción de Acción señalada en la cédula pertinente del Informe Final de Auditoría en revisión.<br><br>Se debe considerar que la Dirección General de Asuntos Jurídicos no cuenta con soporte documental que permita determinar si se reúnen o no los elementos suficientes e idóneos para acreditar las observaciones detectadas en la auditoría.</td>  
+    <td colspan="6">Se debe considerar que la Dirección General de Asuntos Jurídicos no cuenta con soporte documental que permita determinar si se reúnen o no los elementos suficientes e idóneos para acreditar las observaciones detectadas en la auditoría.<br><br>Una vez evaluada la respuesta presentada en confronta y en caso de que esa UAA determine la existencia de Potenciales Promociones de Acción, se sugiere lo siguiente: 1).- Señalar los resultados en la cédula de potenciales promociones de acciones correspondiente. 2).- Indicar la normatividad infringida vigente en el período de revisión.</td>  
   </tr>
  </table>
 EOD;
@@ -353,7 +349,7 @@ $pdf->writeHTML($tbl, true, false, false, false, '');
 
 // -----------------------------------------------------------------------------
 
-$sql="SELECT ar.idArea,pj.puesto juridico,CONCAT(us.saludo,' ',us.nombre,' ',us.paterno,' ',us.materno) nombre, ds.siglas,ds.fOficio FROM sia_Volantes vo INNER JOIN sia_areas ar on vo.idTurnado= ar.idArea INNER JOIN sia_usuarios us on ar.idEmpleadoTitular=us.idEmpleado INNER JOIN sia_PuestosJuridico pj on us.idEmpleado=pj.rpe INNER JOIN sia_DocumentosSiglas ds on vo.idVolante = ds.idVolante WHERE vo.idVolante='$idVolante'";
+$sql="SELECT ar.idArea,pj.puesto juridico,CONCAT(us.saludo,' ',pj.nombre,' ',pj.paterno,' ',pj.materno) nombre, ds.siglas,ds.fOficio FROM sia_Volantes vo INNER JOIN sia_areas ar on vo.idTurnado= ar.idArea INNER JOIN sia_usuarios us on ar.idEmpleadoTitular=us.idEmpleado INNER JOIN sia_PuestosJuridico pj on us.idEmpleado=pj.rpe INNER JOIN sia_DocumentosSiglas ds on vo.idVolante = ds.idVolante WHERE vo.idVolante='$idVolante'";
 
 $db=conecta();
 $date=consultaRetorno($sql, $db);
@@ -371,7 +367,7 @@ $mes=mes(intval($fecha[1]));
 
 $tbl = <<<EOD
   <table cellspacing="0" cellpadding="0" border="0">
-    <tr><td colspan="6" align="right">Ciudad de México, $fecha[2] de $mes de $fecha[0]<br><br></td></tr>  
+    <tr><td colspan="6" align="right">Ciudad de México, $fecha[2] de $mes de $fecha[0]</td></tr>  
   </table>
 EOD;
 
@@ -386,11 +382,11 @@ $tbl = <<<EOD
  
  <tr>
   <td align="center"><b>REVISÓ</b></td>
-  <td align="center"><b>AUTORIZO</b></td>
+  <td align="center"><b>AUTORIZÓ</b></td>
  </tr>
  <tr>
-  <td align="center"><b><br><br><br><br><br>{$nombrecon}</b></td>
-  <td align="center"><b><br><br><br><br><br>DR. IVAN DE JESÚS OLMOS CANSINO</b></td>
+  <td align="center"><b><br><br>{$nombrecon}</b></td>
+  <td align="center"><b><br><br>DR. IVÁN DE JESÚS OLMOS CANSINO</b></td>
  </tr>
   <tr>
   <td align="center"><b>{$Nombreela}</b></td>
@@ -404,57 +400,77 @@ $pdf->writeHTML($tbl, true, false, false, false, '');
 
 
 // -----------------------------------------------------------------------------
+$ef=explode(",",$puesjud);
+$nombres=array();
+$puestos=array();
+for($i=0;$i<count($ef)-1;$i++){
+    $usrf=$ef[$i];
+    $sql="select concat(nombre,' ',paterno,' ',materno) as nombre,puesto from sia_PuestosJuridico where idPuestoJuridico='$usrf'";
+    $nombre=consultaRetorno($sql,$db);
+    array_push($nombres,$nombre[0]['nombre']);
+    array_push($puestos,$nombre[0]['puesto']);
+}
 
-$tbl = <<<EOD
-<table cellspacing="0" cellpadding="0" border="">
- 
- <tr>
-  <td align="center"><br><br><br><br><b>ELABORÓ</b></td>
-  <td align="center"><br><br><br><br><b>ELABORÓ</b></td>
- </tr>
- <tr>
-  <td align="center"><b><br><br><br><br><br>LIC. ROGELIO COHEN RAMIREZ</b></td>
-  <td align="center"><b><br><br><br><br><br>DR. IVAN DE JESÚS OLMOS CANSINO</b></td>
- </tr>
-  <tr>
-  <td align="center"><b>DIRECTOR DE INTERPRETACIÓN JURÍDICA Y PROMOCIÓN DE ACCIONES</b></td>
-  <td align="center"><b>DIRECTOR GENERAL DE ASUNTOS JURIDICOS</b></td>
- </tr>
+$linea='';
+$elaboro='';
+$cont=1;
+$firmaSecond='';
+$elementos=count($nombres);
+  if($elementos==1){
+     $elaboro=$elaboro.'<tr><td align="center"><b><p>ELABORÓ</p></b><br><br><b>'.$nombres[$elementos-1].'<br>'.$puestos[$elementos-1].'</b></td><td></td></tr>';
+  }elseif ($elementos==2) {
+    $elaboro='<tr>';
+    foreach ($nombres as $llave => $valor) {
+        $elaboro=$elaboro.'<td align="center"><p>ELABORÓ</p><br><br>'.$valor.'<br>'.$puestos[$llave].'</td>';
+      } 
+    $elaboro=$elaboro.'</tr>';
+  }elseif ($elementos==3) {
+    $cont=1;
+    $elaboro='<tr>';
+    foreach ($nombres as $llave => $valor) {
+        if($cont>2){
+          $elaboro=$elaboro.'<tr><td align="center"><b><p>ELABORÓ</p></b><br><br><b>'.$valor.'<br>'.$puestos[$llave].'</b></td></tr>';
+        }elseif($cont>1){
 
+        $elaboro=$elaboro.'<td align="center"><b><p>ELABORÓ</p></b><br><br><b>'.$valor.'<br>'.$puestos[$llave].'</b></td></tr>';
+
+        }else{
+           $elaboro=$elaboro.'<td align="center"><b><p>ELABORÓ</p></b><br><br><b>'.$valor.'<br>'.$puestos[$llave].'</b></td>';
+        }
+        $cont++;
+      } 
+   
+  }
+$lineaPuestos='';
+
+foreach ($puestos as $key => $value) {
+  $lineaPuestos=$lineaPuestos.'<td align="center" colspan="0"  >'.$value.'</td>';
+}
+
+
+$html = <<<EOD
+<table cellspacing="0" cellpadding="0" border="0" >
+$elaboro
 </table>
 EOD;
+$pdf->writeHTML($html, true, false, false, false, '');
 
-$pdf->writeHTML($tbl, true, false, false, false, '');
-
-
-// -----------------------------------------------------------------------------
-/*
-$tbl = <<<EOD
-<table cellspacing="0" cellpadding="0" border="">
- 
- <tr>
-  <td align="center"><br><br><br><br><b>ELABORÓ</b></td>
-  <td></td>
- </tr>
- <tr>
-  <td align="center"><b><br><br><br><br><br><br>LIC. ROGELIO COHEN RAMIREZ</b></td>
- </tr>
-  <tr>
-  <td align="center"><b>DIRECTOR DE INTERPRETACIÓN JURÍDICA Y PROMOCIÓN DE ACCIONES</b></td>
-  </tr>
-
+if($cont>2){
+  
+$html = <<<EOD
+<table cellspacing="0" cellpadding="0" border="0" >
+$firmaSecond
 </table>
 EOD;
-
-$pdf->writeHTML($tbl, true, false, false, false, '');
-*/
+$pdf->writeHTML($html, true, false, false, false, '');
+}
 
 // -----------------------------------------------------------------------------
 
 $tbl = <<<EOD
   <table cellspacing="0" cellpadding="0" border="0">
-    <tr><td colspan="6" align="left">{$sig}<br><br></td>
-    <td><br><b>Ref. ACF-</b></td></tr>  
+    <tr><td colspan="6" align="left">{$sig}</td>
+    <td><b>Ref. ACF-</b></td></tr>  
   </table>
 EOD;
 

@@ -19,7 +19,7 @@ return yo`
     <button type="button" class="btn btn-primary" id="addPromoAccion">Agregar Promocion de Acciones</button>
     <textarea class="form-control" rows="7" readonly  id="textoIfa"></textarea>
     <input type="hidden"  name="idDocumentoTexto" id="idDocumentoTexto" value=""  >
-    <input type="hidden"  name="idSubTipoDocumento" id="idDocumentoTexto" value="${idTipoDocto}"  >
+    <input type="hidden"  name="idSubTipoDocumento"  value="${idTipoDocto}"  >
 </div>
 
 
@@ -35,7 +35,7 @@ return yo`
     
         ${empleados.map(function(json){
            
-            return yo `<label><input type="checkbox" value="${json.idPuestoJuridico}">${json.paterno} ${json.materno} ${json.nombre} </label>`
+            return yo `<label><input name="firma" type="checkbox" value="${json.idPuestoJuridico}">${json.paterno} ${json.materno} ${json.nombre} </label>`
             
         })}
    
@@ -59,7 +59,7 @@ return yo`
 
 </div>`;
 }else{
-    console.log(docSiglas)
+   
 let firmas=docSiglas[0].idPuestosJuridico;
 let firmasArray=firmas.split(',')
 let largo=parseInt(firmasArray.length);
@@ -68,6 +68,7 @@ let final=firmasArray.splice(0,largo)
 let id=docSiglas[0].idDocumentoTexto
 let texto
 
+console.log(final)
 $.get({
         url:'/getRegister/CatDoctosTextos',
         data:{
@@ -81,6 +82,10 @@ $.get({
         }
         
 })
+
+
+
+
 
 
 return yo`
@@ -103,20 +108,12 @@ return yo`
 
 <div class="form-group firmas">
     <label for="firmas">Personal que Firma</label>
-    <select name="firma" id="firma" required="required" class="form-control" multiple >
-      <option value=""> Seleccione una Opción </option>
-        ${empleados.map(function(json){
-           for(let x in final){
-               if(final[x]==json.idEmpleado){
-                    return `<option value="${json.idPuestoJuridico}" selected>${json.paterno} ${json.materno} ${json.nombre} </option>`       
-               }else{
-                    return yo `<option value="${json.idPuestoJuridico}">${json.paterno} ${json.materno} ${json.nombre} </option>`
-               }
-           }
-            
-            
-        })}
-    </select>
+    ${empleados.map(function(json){
+        
+         return yo `<label><input name="firma" type="checkbox" value="${json.idPuestoJuridico}">${json.paterno} ${json.materno} ${json.nombre} </label>`
+         
+     })}
+
 </div>
 
 

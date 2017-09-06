@@ -67,14 +67,8 @@ public function sqlConfronta($usuario){
 v.idVolante,v.folio, numDocumento, v.fRecepcion,v.idRemitente,v.asunto,v.extemporaneo,
 cc.nombre as Caracter,
 ac.nombre as Accion,
-a.clave,
+a.clave as Auditoria,
 tj.estadoProceso,
-p.valor as diasValor,
-case when v.extemporaneo='NO' then
-	CONVERT(nvarchar, DATEDIFF(DAY,'2017-06-20',CONVERT (date, SYSDATETIME())))
-else
-	'Extemporaneo'
-end as dias,
 v.estatus
 from sia_usuarios u
 inner join sia_empleados e on u.idEmpleado=e.idEmpleado
@@ -141,6 +135,7 @@ public function inicioOrder($modulo,$order,$type){
 	if($modulo=='confrontasJuridico'){$sql=$this->orderConfronta($_SESSION["idUsuario"],$order,$type);}
 	if($modulo=='Irac'){$sql=$this->sqlIracOrder($order,$type);}
 	if($modulo=='Ifa'){$sql=$this->sqlIfaOrder($order,$type);}
+	if($modulo=='Documentos'){$sql=$this->DocumentosOrder($_SESSION["idUsuario"],$order,$type);}
 	$obtener->getTable($sql);
 	//echo $sql;
 }
@@ -218,7 +213,18 @@ where sub.nombre='Ifa' and v.idTurnado=
 
 
 
-
+public function DocumentosOrder($usuario,$order, $type)
+{
+	$sql="select v.idVolante,v.numDocumento,a.clave as Auditoria,subd.nombre as Tipo,
+v.anexoDoc
+from sia_Volantes v
+inner join sia_VolantesDocumentos vd on v.idVolante=vd.idVolante
+inner join sia_auditorias a on vd.cveAuditoria=a.idAuditoria
+inner join sia_catSubTiposDocumentos subd on vd.idSubTipoDocumento=subd.idSubTipoDocumento
+where v.idTurnado=(select idArea from sia_usuarios where idUsuario='$usuario')
+and v.anexoDoc is not null order by '$order' $type";
+return $sql;
+}
 
 
 

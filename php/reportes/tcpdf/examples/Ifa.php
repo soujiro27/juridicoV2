@@ -288,14 +288,16 @@ $ef=explode(",",$promo[0]['idPuestosJuridico']);
 //var_dump($ef);
 $nombres=array();
 $puestos=array();
+$saludo=array();
 for($i=0;$i<count($ef)-1;$i++){
     $usrf=$ef[$i];
-    $sql="select concat(nombre,' ',paterno,' ',materno) as nombre,puesto  
+    $sql="select concat(nombre,' ',paterno,' ',materno) as nombre,puesto,saludo  
 from sia_PuestosJuridico
 where idPuestoJuridico='$usrf'";
     $nombre=consultaRetorno($sql,$db);
     array_push($nombres,$nombre[0]['nombre']);
     array_push($puestos,$nombre[0]['puesto']);
+     array_push($saludo,$nombre[0]['saludo']);
 }
 //var_dump($nombres);
 //var_dump($puestos);
@@ -307,13 +309,13 @@ $elementos=count($nombres);
 
 
   if($elementos==1){
-     $elaboro=$elaboro.'<br><tr><td align="center"><p>ELABORÓ</p><br><br>'.$nombres[$elementos-1].'<br>'.$puestos[$elementos-1].'</td><td></td></tr>';
+     $elaboro=$elaboro.'<br><tr><td align="center"><p>ELABORÓ</p><br><br>'.$saludo[$elementos-1]. $nombres[$elementos-1].'<br>'.$puestos[$elementos-1].'</td><td></td></tr>';
      
   }elseif ($elementos==2) {
     $elaboro='<tr>';
     foreach ($nombres as $llave => $valor) {
       
-        $elaboro=$elaboro.'<td align="center"><p>ELABORÓ</p><br><br>'.$valor.'<br>'.$puestos[$llave].'</td>';
+        $elaboro=$elaboro.'<td align="center"><p>ELABORÓ</p><br><br>'.$saludo[$llave]. $valor.'<br>'.$puestos[$llave].'</td>';
       } 
     $elaboro=$elaboro.'</tr>';
   }elseif ($elementos==3) {
@@ -321,13 +323,13 @@ $elementos=count($nombres);
     $elaboro='<tr>';
     foreach ($nombres as $llave => $valor) {
         if($cont>2){
-          $elaboro=$elaboro.'<br><br><tr><td align="center"><p>ELABORÓ</p><br><br>'.$valor.'<br>'.$puestos[$llave].'</td></tr>';
+          $elaboro=$elaboro.'<br><br><tr><td align="center"><p>ELABORÓ</p><br><br>'.$saludo[$llave]. $valor.'<br>'.$puestos[$llave].'</td></tr>';
         }elseif($cont>1){
 
-        $elaboro=$elaboro.'<td align="center"><p>ELABORÓ</p><br><br>'.$valor.'<br>'.$puestos[$llave].'</td></tr>';
+        $elaboro=$elaboro.'<td align="center"><p>ELABORÓ</p><br><br>'.$saludo[$llave].$valor.'<br>'.$puestos[$llave].'</td></tr>';
 
         }else{
-           $elaboro=$elaboro.'<td align="center"><p>ELABORÓ</p><br><br>'.$valor.'<br>'.$puestos[$llave].'</td>';
+           $elaboro=$elaboro.'<td align="center"><p>ELABORÓ</p><br><br>'.$saludo[$llave].$valor.'<br>'.$puestos[$llave].'</td>';
         }
         $cont++;
       } 

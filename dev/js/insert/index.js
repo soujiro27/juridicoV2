@@ -246,6 +246,7 @@ module.exports=class Insert extends link{
 	
 
 	getDataFirma(datos){
+		console.log(datos)
 		let firma=''
 		let data=''
 		let volante=''

@@ -146,7 +146,7 @@ inner join sia_usuarios u on a.idEmpleadoTitular=u.idEmpleado
 where numDocumento='".$numDoc."'";
 			$data=$get->consultaRetorno($sql);
 			$idUsuario=$data[0]['idUsuario'];
-			if($_SESSION ['idUsuario']=='2301'){
+			if($_SESSION['idUsuario']=='2301'){
 				$salida['update']=$idUsuario;	
 			}else{
 				$salida['update']='2301';	

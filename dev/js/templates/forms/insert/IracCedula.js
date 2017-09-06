@@ -18,14 +18,12 @@ return yo`
 
 <div class="form-group firmas">
 <label for="firmas">Personal que Firma</label>
-<select name="firma" id="firma" required="required" class="form-control" multiple >
-<option value=""> Seleccione una Opción </option>
-  ${empleados.map(function(json){
+${empleados.map(function(json){
+    
+     return yo `<label><input name="firma" type="checkbox" value="${json.idPuestoJuridico}">${json.paterno} ${json.materno} ${json.nombre} </label>`
      
-      return yo `<option value="${json.idPuestoJuridico}">${json.paterno} ${json.materno} ${json.nombre} </option>`
-      
-  })}
-</select>
+ })}
+
 </div>
 
 
@@ -83,11 +81,13 @@ return yo`
 </div>
 
 <div class="form-group firmas">
-    <label for="firmas">Personal que Firma</label>
-    <select name="firma" id="firma" required="required" class="form-control" multiple >
-      <option value=""> Seleccione una Opción </option>
-        ${opt}
-    </select>
+<label for="firmas">Personal que Firma</label>
+${empleados.map(function(json){
+    
+     return yo `<label><input name="firma" type="checkbox" value="${json.idPuestoJuridico}">${json.paterno} ${json.materno} ${json.nombre} </label>`
+     
+ })}
+
 </div>
 
 

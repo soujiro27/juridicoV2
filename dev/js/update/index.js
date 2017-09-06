@@ -160,7 +160,10 @@ tableIfa(id,titulo){
 							let idDocto=resolve[2][0].idSubTipoDocumento
 							//console.log(resolve[1][0].idArea)					
 
-							if(ruta=='Ifa'){var template=cedulaIfa(id,resolve[0],resolve[1],idDocto)}
+							if(ruta=='Ifa'){
+								var template=cedulaIfa(id,resolve[0],resolve[1],idDocto)
+								
+							}
 							else if(ruta=='Irac'){var template=cedulaIrac(id,resolve[0],resolve[1],idDocto)}
 							//let template=cedulaIfa(id,resolve[0],resolve[1],idDocto)
 							/* carga el template de la cedula del ifa */
